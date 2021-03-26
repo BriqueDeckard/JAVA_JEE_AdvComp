@@ -17,6 +17,7 @@ import edu.bd.advcomp.core.service.AdvCompServiceFactory;
  * @author Brique DECKARD
  *
  */
+// Annotation @Stateful ?
 public class AdvCompServerImpl implements AdvCompServer {
 
     /**

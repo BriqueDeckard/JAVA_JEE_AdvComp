@@ -10,6 +10,7 @@ import edu.bd.advcomp.core.service.AdvCompService;
  * @author Brique DECKARD
  *
  */
+// TODO :  Annotation @Stateful ?
 public class AdvCompServiceImpl implements AdvCompService {
 
     /**

@@ -10,6 +10,7 @@ import edu.bd.advcomp.authentification.entity.Utilisateur;
  * @author Brique DECKARD
  *
  */
+// TODO : Annotation @Local ?
 public interface AdvCompService {
     public void setClient(Utilisateur client);
 

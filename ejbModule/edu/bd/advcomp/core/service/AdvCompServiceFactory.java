@@ -9,6 +9,7 @@ import edu.bd.advcomp.authentification.entity.Utilisateur;
  * @author Brique DECKARD
  *
  */
+// TODO : Annotation @Local ?
 @FunctionalInterface
 public interface AdvCompServiceFactory {
 
