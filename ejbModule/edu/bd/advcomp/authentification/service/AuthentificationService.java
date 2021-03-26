@@ -7,6 +7,7 @@ package edu.bd.advcomp.authentification.service;
  * @author Brique DECKARD
  *
  */
+// TODO : Annotation Local ?
 public interface AuthentificationService {
     /**
      * Authentification d'un utilisateur.

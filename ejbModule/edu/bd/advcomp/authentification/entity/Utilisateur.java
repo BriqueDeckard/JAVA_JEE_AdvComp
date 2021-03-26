@@ -9,6 +9,7 @@ import edu.bd.advcomp.authentification.Role;
  * @author Brique DECKARD
  *
  */
+// TODO : Annotation ?
 public interface Utilisateur {
     /**
      * getLogin Retourne le Login

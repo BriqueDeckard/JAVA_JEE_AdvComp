@@ -13,6 +13,7 @@ import edu.bd.advcomp.authentification.service.UtilisateurService;
  * @author Brique DECKARD
  *
  */
+// TODO : Annotation Stateful ?
 public class AuthentificationServiceEntityImpl implements AuthentificationService {
 
     /**

@@ -10,6 +10,7 @@ import edu.bd.advcomp.authentification.entity.Utilisateur;
  * @author Brique DECKARD
  *
  */
+// TODO : Annotation local ?
 public interface UtilisateurService {
     /**
      * Retourne un utilisateur d'après son login et null si aucun utilisateur avec

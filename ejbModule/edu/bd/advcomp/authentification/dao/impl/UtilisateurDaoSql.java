@@ -13,6 +13,7 @@ import edu.bd.advcomp.authentification.entity.impl.UtilisateurImpl;
  * @author Brique DECKARD
  *
  */
+// TODO : Annotation @Stateless ?
 public class UtilisateurDaoSql implements UtilisateurDao {
 
     /**

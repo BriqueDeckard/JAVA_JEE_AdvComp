@@ -9,6 +9,7 @@ import edu.bd.advcomp.authentification.service.AuthentificationService;
  * @author Brique DECKARD
  *
  */
+// TODO : Annotation stateful ?
 public class AuthentificationServiceStrict implements AuthentificationService {
 
     /**

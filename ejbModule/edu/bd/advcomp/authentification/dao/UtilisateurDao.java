@@ -10,6 +10,7 @@ import edu.bd.framework.persistence.EntityDao;
  * @author Brique DECKARD
  *
  */
+// TODO : Annotation @Local ?
 public interface UtilisateurDao extends EntityDao<Utilisateur, String> {
 
 }
