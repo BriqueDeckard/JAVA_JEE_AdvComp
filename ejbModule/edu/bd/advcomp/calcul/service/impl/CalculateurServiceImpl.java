@@ -10,6 +10,7 @@ import edu.bd.advcomp.calcul.service.CalculateurService;
  * @author Brique DECKARD
  *
  */
+// TODO : Annotation @Stateless
 public class CalculateurServiceImpl implements CalculateurService {
 
     /**

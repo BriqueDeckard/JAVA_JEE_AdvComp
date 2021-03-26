@@ -9,6 +9,7 @@ import edu.bd.advcomp.calcul.CalculException;
  * @author Brique DECKARD
  *
  */
+// TODO : Annotation @Local ?
 public interface CalculateurService {
     /**
      * Realiser une addition
