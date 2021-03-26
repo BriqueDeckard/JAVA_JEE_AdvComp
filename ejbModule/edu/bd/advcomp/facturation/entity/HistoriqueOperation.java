@@ -12,6 +12,7 @@ import edu.bd.framework.persistence.Entity;
  * @author Brique DECKARD
  *
  */
+// TODO : Annotation ?
 public interface HistoriqueOperation extends Entity {
     /**
      * Do getId

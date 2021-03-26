@@ -13,6 +13,7 @@ import edu.bd.framework.persistence.EntityDao;
  * @author Brique DECKARD
  *
  */
+//TODO :  Annotation @Local ?
 public interface HistoriqueOperationDao extends EntityDao<HistoriqueOperation, Long> {
     /**
      * Obtenir les operations à facturer

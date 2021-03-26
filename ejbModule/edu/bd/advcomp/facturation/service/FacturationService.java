@@ -13,6 +13,7 @@ import edu.bd.advcomp.facturation.entity.Facture;
  * @author Brique DECKARD
  *
  */
+// TODO : Annotation @local ?
 public interface FacturationService {
     /**
      * Enregistre l'opération réaliser par le client

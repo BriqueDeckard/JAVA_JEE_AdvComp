@@ -11,7 +11,7 @@ import edu.bd.advcomp.facturation.dao.FactureDao;
 import edu.bd.advcomp.facturation.entity.Facture;
 
 /**
- * TODO Fill type utility
+ * Dao pour la maintenance des factures
  * 
  * @author Brique DECKARD
  *
@@ -132,5 +132,4 @@ public class FactureDaoSql implements FactureDao {
 	// TODO : Injecter une entitée facture ?
 	return null;
     }
-    // TODO : Fill class body
 }

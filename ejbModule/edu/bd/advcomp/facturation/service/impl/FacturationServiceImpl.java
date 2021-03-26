@@ -13,6 +13,7 @@ import edu.bd.advcomp.facturation.service.FacturationService;
  * @author Brique DECKARD
  *
  */
+// TODO : Annotation @Stateless ?
 public class FacturationServiceImpl implements FacturationService {
 
     /**

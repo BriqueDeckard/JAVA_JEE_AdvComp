@@ -11,6 +11,7 @@ import edu.bd.advcomp.facturation.entity.Facture;
  * @author Brique DECKARD
  *
  */
+// TODO : Annotation ?
 public class FactureImpl implements Facture {
 
     /**
