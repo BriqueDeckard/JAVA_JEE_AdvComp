@@ -36,7 +36,7 @@ public interface EntityDao<ENTITY_TYPE, ID_TYPE> {
      * @return
      * @throws AdvcompException
      */
-    public ENTITY_TYPE retrieve(ID_TYPE id) throws AdvcompException, Exception;
+    public ENTITY_TYPE retrieve(ID_TYPE id) throws AdvcompException;
 
     /**
      * <u><b>update : </b></u><br/>
