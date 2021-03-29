@@ -58,30 +58,29 @@ public class AdvCompServerImpl implements AdvCompServer {
 	    throw new AdvcompException("Echec lors de l'authentification");
 	}
 	Utilisateur client = utilisateurService.obtenirUtilisateur(login);
-	if(client == null) {
+	if (client == null) {
 	    throw new AdvcompException("Client null !");
 	}
 
-	// [ LOOKUP ]
+	AdvCompService remoteService = doLookup();
+
+	// Set du client
+	remoteService.setClient(client);
+
+	System.out.println("Lookup succeeded.");
+	return remoteService;
+    }
+
+    private AdvCompService doLookup() throws AdvcompException {
 	try {
-	    Properties props = new Properties();
-	    props.put(Context.INITIAL_CONTEXT_FACTORY, "com.sun.enterprise.naming.SerialInitContextFactory");
-	    props.setProperty("org.omg.CORBA.ORBInitialHost", "localhost");
-	    props.setProperty("org.omg.CORBA.ORBInitialPort", "3700");
-
-	    InitialContext ctx = new InitialContext(props);
-	    AdvCompService remoteService = (AdvCompService) ctx.lookup("edu.bd.advcomp.core.service.AdvCompService");
-	    
-	    // Set du client
-	    remoteService.setClient(client);
-	    
-	    System.out.println("Lookup succeeded.");
+	    String serviceName = AdvCompService.class.getName();
+	    AdvCompService remoteService = (AdvCompService) InitialContext.doLookup(serviceName);
+	    // .doLookup("edu.bd.advcomp.core.service.AdvCompService");
 	    return remoteService;
-	} catch (Exception e) {
+	} catch (NamingException e) {
 	    e.printStackTrace();
+	    throw new AdvcompException(e.getMessage());
 	}
-	return null;
-
     }
 
 }

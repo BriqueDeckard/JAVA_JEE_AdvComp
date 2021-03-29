@@ -2,12 +2,12 @@
 package edu.bd.advcomp;
 
 /**
- * TODO Fill type utility
+ * Config for dev
  * @author Brique DECKARD
  *
  */
 public enum DEV_CONFIG {
-    USERNAME,
-    PASSWORD
+    toto,
+    secret
     
 }

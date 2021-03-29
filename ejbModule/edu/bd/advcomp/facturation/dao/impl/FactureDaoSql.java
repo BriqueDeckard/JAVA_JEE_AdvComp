@@ -9,6 +9,7 @@ import javax.transaction.UserTransaction;
 import edu.bd.advcomp.AdvcompException;
 import edu.bd.advcomp.facturation.dao.FactureDao;
 import edu.bd.advcomp.facturation.entity.Facture;
+import edu.bd.advcomp.facturation.entity.impl.FactureImpl;
 
 /**
  * Dao pour la maintenance des factures
@@ -132,6 +133,6 @@ public class FactureDaoSql implements FactureDao {
     public Facture getNew() throws AdvcompException {
 	// TODO : Fill method utility.
 	// TODO : Injecter une entitée facture ?
-	return null;
+	return new FactureImpl();
     }
 }

@@ -33,8 +33,8 @@ public class AdvCompClient {
 	// 1. lookup sur advcomp_server
 	try {
 	    AdvCompServer server = doLookup();
-	    AdvCompService service = server.connexion(DEV_CONFIG.USERNAME.toString(), DEV_CONFIG.PASSWORD.toString());
-	    
+	    AdvCompService service = server.connexion(DEV_CONFIG.toto.toString(), DEV_CONFIG.secret.toString());
+
 	    System.out.println("Connection suceeded");
 	    System.out.println(service.faireOperationBasique(10d, 3d, "+"));
 	    System.out.println(service.faireOperationBasique(10d, 3d, "-"));
@@ -48,16 +48,9 @@ public class AdvCompClient {
 
     private static AdvCompServer doLookup() throws NamingException {
 	// Set des properties du context
-	Properties props = new Properties();
-	props.put(Context.INITIAL_CONTEXT_FACTORY, "com.sun.enterprise.naming.SerialInitContextFactory");
-	props.setProperty("org.omg.CORBA.ORBInitialHost", "localhost");
-	props.setProperty("org.omg.CORBA.ORBInitialPort", "3700");
-
 	try {
-	    // Obtention du contexte
-	    InitialContext context = new InitialContext(props);
-	    // Obtention du bean
-	    AdvCompServer bean = (AdvCompServer) context.doLookup("edu.bd.advcomp.core.service.AdvCompServer");
+
+	    AdvCompServer bean = (AdvCompServer) InitialContext.doLookup("edu.bd.advcomp.core.service.AdvCompServer");
 	    return bean;
 	} catch (Exception e) {
 	    e.printStackTrace();

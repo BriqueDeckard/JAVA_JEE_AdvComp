@@ -1,6 +1,8 @@
 // File FactureDao.java - No copyright - 23 mars 2021
 package edu.bd.advcomp.facturation.dao;
 
+import javax.ejb.Local;
+
 import edu.bd.advcomp.facturation.entity.Facture;
 import edu.bd.framework.persistence.EntityDao;
 
@@ -10,6 +12,6 @@ import edu.bd.framework.persistence.EntityDao;
  * @author Brique DECKARD
  *
  */
-// TODO :  Annotation @Local ?
+@Local
 public interface FactureDao extends EntityDao<Facture, String> {
 }

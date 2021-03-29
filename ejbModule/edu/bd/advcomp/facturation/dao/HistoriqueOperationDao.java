@@ -4,6 +4,8 @@ package edu.bd.advcomp.facturation.dao;
 import java.util.Date;
 import java.util.List;
 
+import javax.ejb.Local;
+
 import edu.bd.advcomp.facturation.entity.HistoriqueOperation;
 import edu.bd.framework.persistence.EntityDao;
 
@@ -13,7 +15,7 @@ import edu.bd.framework.persistence.EntityDao;
  * @author Brique DECKARD
  *
  */
-//TODO :  Annotation @Local ?
+@Local
 public interface HistoriqueOperationDao extends EntityDao<HistoriqueOperation, Long> {
     /**
      * Obtenir les operations à facturer
