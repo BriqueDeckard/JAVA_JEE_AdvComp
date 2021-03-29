@@ -1,6 +1,9 @@
 // File AuthentificationServiceStrict.java - No copyright - 23 mars 2021
 package edu.bd.advcomp.authentification.service.impl;
 
+import javax.ejb.Stateless;
+import javax.enterprise.inject.Default;
+
 import edu.bd.advcomp.authentification.service.AuthentificationService;
 
 /**
@@ -9,7 +12,8 @@ import edu.bd.advcomp.authentification.service.AuthentificationService;
  * @author Brique DECKARD
  *
  */
-// TODO : Annotation stateful ?
+@Stateless
+@Default
 public class AuthentificationServiceStrict implements AuthentificationService {
 
     /**

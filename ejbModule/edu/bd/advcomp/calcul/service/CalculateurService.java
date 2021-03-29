@@ -1,6 +1,8 @@
 // File CalculateurService.java - No copyright - 23 mars 2021
 package edu.bd.advcomp.calcul.service;
 
+import javax.ejb.Local;
+
 import edu.bd.advcomp.calcul.CalculException;
 
 /**
@@ -9,7 +11,7 @@ import edu.bd.advcomp.calcul.CalculException;
  * @author Brique DECKARD
  *
  */
-// TODO : Annotation @Local ?
+@Local
 public interface CalculateurService {
     /**
      * Realiser une addition

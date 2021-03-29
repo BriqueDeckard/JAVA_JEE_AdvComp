@@ -1,6 +1,9 @@
 // File AdvCompService.java - No copyright - 23 mars 2021
 package edu.bd.advcomp.core.service;
 
+import javax.ejb.Local;
+import javax.ejb.Remote;
+
 import edu.bd.advcomp.AdvcompException;
 import edu.bd.advcomp.authentification.entity.Utilisateur;
 
@@ -10,7 +13,7 @@ import edu.bd.advcomp.authentification.entity.Utilisateur;
  * @author Brique DECKARD
  *
  */
-// TODO : Annotation @Local ?
+@Remote
 public interface AdvCompService {
     public void setClient(Utilisateur client);
 

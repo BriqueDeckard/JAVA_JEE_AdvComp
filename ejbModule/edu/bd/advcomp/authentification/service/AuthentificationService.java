@@ -1,13 +1,15 @@
 // File AuthentificationService.java - No copyright - 23 mars 2021
 package edu.bd.advcomp.authentification.service;
 
+import javax.ejb.Local;
+
 /**
- * Service d'authentification 
+ * Service d'authentification
  * 
  * @author Brique DECKARD
  *
  */
-// TODO : Annotation Local ?
+@Local
 public interface AuthentificationService {
     /**
      * Authentification d'un utilisateur.

@@ -1,6 +1,8 @@
 // File UtilisateurService.java - No copyright - 23 mars 2021
 package edu.bd.advcomp.authentification.service;
 
+import javax.ejb.Local;
+
 import edu.bd.advcomp.AdvcompException;
 import edu.bd.advcomp.authentification.entity.Utilisateur;
 
@@ -10,7 +12,7 @@ import edu.bd.advcomp.authentification.entity.Utilisateur;
  * @author Brique DECKARD
  *
  */
-// TODO : Annotation local ?
+@Local
 public interface UtilisateurService {
     /**
      * Retourne un utilisateur d'après son login et null si aucun utilisateur avec
