@@ -3,6 +3,8 @@ package edu.bd.advcomp.facturation.service.impl;
 
 import java.util.Date;
 
+import javax.ejb.Stateless;
+
 import edu.bd.advcomp.AdvcompException;
 import edu.bd.advcomp.authentification.entity.Utilisateur;
 import edu.bd.advcomp.facturation.entity.Facture;
@@ -13,16 +15,16 @@ import edu.bd.advcomp.facturation.service.FacturationService;
  * @author Brique DECKARD
  *
  */
-// TODO : Annotation @Stateless ?
-public class FacturationServiceImpl implements FacturationService {
-
+@Stateless
+public class FacturationServiceImpl implements FacturationService {    
+    
     /**
      * Constructor for FacturationServiceImpl
      *
      */
     public FacturationServiceImpl() {
     }
-    // TODO : Fill class body
+
 
     /**
      * See @see edu.bd.advcomp.facturation.service.FacturationService#historiserOperation(edu.bd.advcomp.authentification.entity.Utilisateur, java.lang.String)
@@ -33,7 +35,13 @@ public class FacturationServiceImpl implements FacturationService {
      */
     @Override
     public void historiserOperation(Utilisateur client, String descriptionOperation) throws AdvcompException {
-	// TODO Fill method utility.
+	if(client == null) {
+	    throw new AdvcompException(this.getClass().getName() + " Client nul !");
+	}
+	if(descriptionOperation == null) {
+	    throw new AdvcompException("Description nule.");
+	}
+	System.out.println("Historisation " + client.getNom() + " ==> " + descriptionOperation);
 	
     }
 

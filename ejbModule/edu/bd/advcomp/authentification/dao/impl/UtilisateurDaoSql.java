@@ -52,7 +52,8 @@ public class UtilisateurDaoSql implements UtilisateurDao {
     @Override
     public Utilisateur retrieve(String id) throws AdvcompException {
 	// TODO : Implements real persistence
-	if ("toto".equals(id)) {
+	System.out.println(this.getClass().getName() + " Retrieve " + id);
+	if ("tutu".equals(id)) {
 	    return utilisateurToto;
 	}
 	return null;

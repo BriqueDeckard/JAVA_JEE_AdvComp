@@ -9,6 +9,7 @@ import edu.bd.advcomp.authentification.entity.Utilisateur;
 import edu.bd.advcomp.calcul.CalculException;
 import edu.bd.advcomp.calcul.service.CalculateurService;
 import edu.bd.advcomp.core.service.AdvCompService;
+import edu.bd.advcomp.facturation.service.FacturationService;
 
 /**
  * TODO Fill type utility
@@ -22,7 +23,10 @@ public class AdvCompServiceImpl implements AdvCompService {
     private Utilisateur client;
 
     @Inject
-    private CalculateurService calculateurService;
+    private FacturationService facturationService;
+    
+    @Inject
+    private CalculateurService calculateurService;    
 
     public AdvCompServiceImpl(Utilisateur client) {
 	this.client = client;
@@ -43,7 +47,7 @@ public class AdvCompServiceImpl implements AdvCompService {
      */
     @Override
     public void setClient(Utilisateur client) {
-	// TODO Fill method utility.
+	this.client = client;
 
     }
 
@@ -83,6 +87,8 @@ public class AdvCompServiceImpl implements AdvCompService {
 		throw new AdvcompException("Opérateur " + operateur + " non géré.");
 
 	    }
+	    
+	    facturationService.historiserOperation(client, descriptionOperation);
 	    return resultat;
 	} catch (CalculException e) {
 	    e.printStackTrace();
