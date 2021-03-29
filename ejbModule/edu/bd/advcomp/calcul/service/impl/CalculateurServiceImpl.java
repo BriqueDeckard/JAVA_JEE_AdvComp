@@ -1,6 +1,8 @@
 // File CalculateurServiceImpl.java - No copyright - 23 mars 2021
 package edu.bd.advcomp.calcul.service.impl;
 
+import javax.ejb.Stateless;
+
 import edu.bd.advcomp.calcul.CalculException;
 import edu.bd.advcomp.calcul.service.CalculateurService;
 
@@ -10,7 +12,7 @@ import edu.bd.advcomp.calcul.service.CalculateurService;
  * @author Brique DECKARD
  *
  */
-// TODO : Annotation @Stateless
+@Stateless
 public class CalculateurServiceImpl implements CalculateurService {
 
     /**

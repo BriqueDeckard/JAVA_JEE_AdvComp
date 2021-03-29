@@ -20,11 +20,7 @@ import edu.bd.advcomp.facturation.entity.Facture;
 @TransactionManagement(TransactionManagementType.BEAN)
 public class FactureDaoSql implements FactureDao {
 
-    /**
-     * Transaction 
-     */
-    @Resource
-    private UserTransaction transaction;
+
 
     /**
      * Constructor for FactureDaoSql
@@ -33,6 +29,12 @@ public class FactureDaoSql implements FactureDao {
     public FactureDaoSql() {
     }
 
+    /**
+     * Transaction 
+     */
+    @Resource
+    private UserTransaction transaction;
+    
     /**
      * See @see edu.bd.framework.persistence.EntityDao#create(java.lang.Object)
      *
@@ -48,7 +50,7 @@ public class FactureDaoSql implements FactureDao {
 	    transaction.begin();
 	    System.out.println("INFO : Create Facture " + entity);
 	    System.out.println("INFO : INSERT INTO ...");
-	    // TODO : implémenter la vrai structure/persistance de données
+	    // TODO : implémenter la vrai structure/persistance de données (JPA ?)
 	    transaction.commit();
 	    return entity;
 	} catch (Exception e) {

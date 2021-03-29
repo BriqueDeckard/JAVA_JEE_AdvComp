@@ -1,6 +1,8 @@
 // File AdvCompServer.java - No copyright - 23 mars 2021
 package edu.bd.advcomp.core.service;
 
+import javax.ejb.Remote;
+
 import edu.bd.advcomp.AdvcompException;
 
 /**
@@ -10,7 +12,7 @@ import edu.bd.advcomp.AdvcompException;
  * @author Brique DECKARD
  *
  */
-// TODO : Annotation @Remote ?
+@Remote
 public interface AdvCompServer {
     /**
      * Traite la demande de connexion d'un client et lui retourne un

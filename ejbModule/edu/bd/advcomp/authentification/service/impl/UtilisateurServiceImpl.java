@@ -1,6 +1,7 @@
 // File UtilisateurServiceImpl.java - No copyright - 23 mars 2021
 package edu.bd.advcomp.authentification.service.impl;
 
+import javax.ejb.Stateless;
 import javax.inject.Inject;
 
 import edu.bd.advcomp.AdvcompException;
@@ -14,7 +15,7 @@ import edu.bd.advcomp.authentification.service.UtilisateurService;
  * @author Brique DECKARD
  *
  */
-// TODO : Annotation stateful ?
+@Stateless
 public class UtilisateurServiceImpl implements UtilisateurService {
 
     /**

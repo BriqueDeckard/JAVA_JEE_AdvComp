@@ -1,6 +1,8 @@
 // File UtilisateurDaoSql.java - No copyright - 23 mars 2021
 package edu.bd.advcomp.authentification.dao.impl;
 
+import javax.ejb.Stateless;
+
 import edu.bd.advcomp.AdvcompException;
 import edu.bd.advcomp.authentification.Role;
 import edu.bd.advcomp.authentification.dao.UtilisateurDao;
@@ -13,7 +15,8 @@ import edu.bd.advcomp.authentification.entity.impl.UtilisateurImpl;
  * @author Brique DECKARD
  *
  */
-// TODO : Annotation @Stateless ?
+// TODO : Or stateful ?
+@Stateless
 public class UtilisateurDaoSql implements UtilisateurDao {
 
     /**

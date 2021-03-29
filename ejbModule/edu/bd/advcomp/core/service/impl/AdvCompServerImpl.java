@@ -1,7 +1,13 @@
 // File AdvCompServerImpl.java - No copyright - 23 mars 2021
 package edu.bd.advcomp.core.service.impl;
 
+import java.util.Properties;
+
+import javax.ejb.Stateful;
 import javax.inject.Inject;
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
 
 import edu.bd.advcomp.AdvcompException;
 import edu.bd.advcomp.authentification.entity.Utilisateur;
@@ -9,7 +15,6 @@ import edu.bd.advcomp.authentification.service.AuthentificationService;
 import edu.bd.advcomp.authentification.service.UtilisateurService;
 import edu.bd.advcomp.core.service.AdvCompServer;
 import edu.bd.advcomp.core.service.AdvCompService;
-import edu.bd.advcomp.core.service.AdvCompServiceFactory;
 
 /**
  * TODO Fill type utility
@@ -17,7 +22,7 @@ import edu.bd.advcomp.core.service.AdvCompServiceFactory;
  * @author Brique DECKARD
  *
  */
-// Annotation @Stateful ?
+@Stateful
 public class AdvCompServerImpl implements AdvCompServer {
 
     /**
@@ -33,12 +38,6 @@ public class AdvCompServerImpl implements AdvCompServer {
     private UtilisateurService utilisateurService;
 
     /**
-     * Factory for services
-     */
-    @Inject
-    private AdvCompServiceFactory advCompServiceFactory;
-
-    /**
      * Constructor for AdvCompServerImpl
      *
      */
@@ -50,18 +49,31 @@ public class AdvCompServerImpl implements AdvCompServer {
      * edu.bd.advcomp.core.service.AdvCompServer#connexion(java.lang.String,
      * java.lang.String)
      *
-     * @param login
-     * @param password
-     * @return
-     * @throws AdvcompException
+     * @param login @param password @return @throws AdvcompException @throws
      */
     @Override
     public AdvCompService connexion(String login, String password) throws AdvcompException {
+
 	if (!this.authentificationService.authentifier(login, password)) {
 	    throw new AdvcompException("Echec lors de l'authentification");
 	}
 	Utilisateur client = utilisateurService.obtenirUtilisateur(login);
-	return advCompServiceFactory.createAdvCompService(client);
+
+	// [ LOOKUP ]
+	try {
+	    Properties props = new Properties();
+	    props.put(Context.INITIAL_CONTEXT_FACTORY, "com.sun.enterprise.naming.SerialInitContextFactory");
+	    props.setProperty("org.omg.CORBA.ORBInitialHost", "localhost");
+	    props.setProperty("org.omg.CORBA.ORBInitialPort", "3700");
+
+	    InitialContext ctx = new InitialContext(props);
+	    AdvCompService remoteService = (AdvCompService) ctx.lookup("edu.bd.advcomp.core.service.AdvCompService");
+	    System.out.println("Lookup succeeded.");
+	    return remoteService;
+	} catch (Exception e) {
+	    e.printStackTrace();
+	}
+	return null;
 
     }
 
