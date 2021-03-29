@@ -4,6 +4,7 @@ package edu.bd.advcomp.authentification.service.impl;
 import javax.ejb.Stateless;
 import javax.enterprise.inject.Default;
 
+import edu.bd.advcomp.DEV_CONFIG;
 import edu.bd.advcomp.authentification.service.AuthentificationService;
 
 /**
@@ -33,6 +34,6 @@ public class AuthentificationServiceStrict implements AuthentificationService {
      */
     @Override
     public Boolean authentifier(String login, String password) {
-	return "tutu".equals(login);
+	return DEV_CONFIG.USERNAME.toString().equals(login);
     }
 }

@@ -4,6 +4,7 @@ package edu.bd.advcomp.authentification.dao.impl;
 import javax.ejb.Stateless;
 
 import edu.bd.advcomp.AdvcompException;
+import edu.bd.advcomp.DEV_CONFIG;
 import edu.bd.advcomp.authentification.Role;
 import edu.bd.advcomp.authentification.dao.UtilisateurDao;
 import edu.bd.advcomp.authentification.entity.Utilisateur;
@@ -53,7 +54,7 @@ public class UtilisateurDaoSql implements UtilisateurDao {
     public Utilisateur retrieve(String id) throws AdvcompException {
 	// TODO : Implements real persistence
 	System.out.println(this.getClass().getName() + " Retrieve " + id);
-	if ("tutu".equals(id)) {
+	if (DEV_CONFIG.USERNAME.toString().equals(id)) {
 	    return utilisateurToto;
 	}
 	return null;

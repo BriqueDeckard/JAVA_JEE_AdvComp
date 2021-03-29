@@ -59,7 +59,7 @@ public class AdvCompServerImpl implements AdvCompServer {
 	}
 	Utilisateur client = utilisateurService.obtenirUtilisateur(login);
 	if(client == null) {
-	    
+	    throw new AdvcompException("Client null !");
 	}
 
 	// [ LOOKUP ]
@@ -71,6 +71,7 @@ public class AdvCompServerImpl implements AdvCompServer {
 
 	    InitialContext ctx = new InitialContext(props);
 	    AdvCompService remoteService = (AdvCompService) ctx.lookup("edu.bd.advcomp.core.service.AdvCompService");
+	    
 	    // Set du client
 	    remoteService.setClient(client);
 	    

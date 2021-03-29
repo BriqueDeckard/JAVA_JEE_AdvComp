@@ -8,6 +8,7 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
 import edu.bd.advcomp.AdvcompException;
+import edu.bd.advcomp.DEV_CONFIG;
 import edu.bd.advcomp.core.service.AdvCompServer;
 import edu.bd.advcomp.core.service.AdvCompService;
 
@@ -32,7 +33,8 @@ public class AdvCompClient {
 	// 1. lookup sur advcomp_server
 	try {
 	    AdvCompServer server = doLookup();
-	    AdvCompService service = server.connexion("tutu", "tutu");
+	    AdvCompService service = server.connexion(DEV_CONFIG.USERNAME.toString(), DEV_CONFIG.PASSWORD.toString());
+	    
 	    System.out.println("Connection suceeded");
 	    System.out.println(service.faireOperationBasique(10d, 3d, "+"));
 	    System.out.println(service.faireOperationBasique(10d, 3d, "-"));
