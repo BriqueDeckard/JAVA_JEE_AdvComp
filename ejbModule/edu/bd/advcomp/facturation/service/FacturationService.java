@@ -3,6 +3,8 @@ package edu.bd.advcomp.facturation.service;
 
 import java.util.Date;
 
+import javax.ejb.Local;
+
 import edu.bd.advcomp.AdvcompException;
 import edu.bd.advcomp.authentification.entity.Utilisateur;
 import edu.bd.advcomp.facturation.entity.Facture;
@@ -13,7 +15,7 @@ import edu.bd.advcomp.facturation.entity.Facture;
  * @author Brique DECKARD
  *
  */
-// TODO : Annotation @local ?
+@Local
 public interface FacturationService {
     /**
      * Enregistre l'opération réaliser par le client

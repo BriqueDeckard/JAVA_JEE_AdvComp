@@ -58,6 +58,9 @@ public class AdvCompServerImpl implements AdvCompServer {
 	    throw new AdvcompException("Echec lors de l'authentification");
 	}
 	Utilisateur client = utilisateurService.obtenirUtilisateur(login);
+	if(client == null) {
+	    
+	}
 
 	// [ LOOKUP ]
 	try {
@@ -68,6 +71,9 @@ public class AdvCompServerImpl implements AdvCompServer {
 
 	    InitialContext ctx = new InitialContext(props);
 	    AdvCompService remoteService = (AdvCompService) ctx.lookup("edu.bd.advcomp.core.service.AdvCompService");
+	    // Set du client
+	    remoteService.setClient(client);
+	    
 	    System.out.println("Lookup succeeded.");
 	    return remoteService;
 	} catch (Exception e) {
