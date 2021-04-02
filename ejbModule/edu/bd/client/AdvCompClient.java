@@ -9,6 +9,7 @@ import javax.naming.NamingException;
 
 import edu.bd.advcomp.AdvcompException;
 import edu.bd.advcomp.DEV_CONFIG;
+import edu.bd.advcomp.authentification.service.AuthentificationService;
 import edu.bd.advcomp.core.service.AdvCompServer;
 import edu.bd.advcomp.core.service.AdvCompService;
 
@@ -40,6 +41,7 @@ public class AdvCompClient {
 	    System.out.println(service.faireOperationBasique(10d, 3d, "-"));
 	    System.out.println(service.faireOperationBasique(10d, 3d, "*"));
 	    System.out.println(service.faireOperationBasique(10d, 3d, "/"));
+
 	} catch (NamingException e) {
 	    e.printStackTrace();
 	}
