@@ -3,6 +3,7 @@ package edu.bd.advcomp.facturation.entity.impl;
 
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -44,7 +45,7 @@ public class HistoriqueOperationImpl implements HistoriqueOperation {
      * représentée par une interface - nullable à false, parce qu'un historique ne
      * peut pas être créé sans utilisateur
      */
-    @ManyToOne(targetEntity = UtilisateurImpl.class)
+    @ManyToOne(targetEntity = UtilisateurImpl.class, cascade = { CascadeType.ALL })
     @JoinColumn(name = "fk_utilisateur", nullable = false)
     private Utilisateur utilisateur;
 
@@ -54,7 +55,7 @@ public class HistoriqueOperationImpl implements HistoriqueOperation {
      * une interface - nullable à true parce que la facture peut être nulle à la
      * création de Historique
      */
-    @ManyToOne(targetEntity = FactureImpl.class)
+    @ManyToOne(targetEntity = FactureImpl.class, cascade = { CascadeType.ALL })
     @JoinColumn(name = "fk_facture", nullable = true)
     private Facture facture;
 

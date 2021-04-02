@@ -5,11 +5,14 @@ import javax.annotation.Resource;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionManagement;
 import javax.ejb.TransactionManagementType;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.transaction.UserTransaction;
 import edu.bd.advcomp.AdvcompException;
 import edu.bd.advcomp.facturation.dao.FactureDao;
 import edu.bd.advcomp.facturation.entity.Facture;
 import edu.bd.advcomp.facturation.entity.impl.FactureImpl;
+import edu.bd.framework.persistence.EntityDaoImpl;
 
 /**
  * Dao pour la maintenance des factures
@@ -18,10 +21,10 @@ import edu.bd.advcomp.facturation.entity.impl.FactureImpl;
  *
  */
 @Stateless
-@TransactionManagement(TransactionManagementType.BEAN)
-public class FactureDaoSql implements FactureDao {
+public class FactureDaoSql extends EntityDaoImpl<Facture, String> implements FactureDao {
 
-
+    @PersistenceContext(unitName = "advcomp")
+    EntityManager em;
 
     /**
      * Constructor for FactureDaoSql
@@ -30,37 +33,6 @@ public class FactureDaoSql implements FactureDao {
     public FactureDaoSql() {
     }
 
-    /**
-     * Transaction 
-     */
-    @Resource
-    private UserTransaction transaction;
-    
-    /**
-     * See @see edu.bd.framework.persistence.EntityDao#create(java.lang.Object)
-     *
-     * @param entity
-     * @return
-     * @throws AdvcompException
-     * @throws Exception
-     */
-    @Override
-    public Facture create(Facture entity) throws AdvcompException, Exception {
-
-	try {
-	    transaction.begin();
-	    System.out.println("INFO : Create Facture " + entity);
-	    System.out.println("INFO : INSERT INTO ...");
-	    // TODO : implémenter la vrai structure/persistance de données (JPA ?)
-	    transaction.commit();
-	    return entity;
-	} catch (Exception e) {
-	    System.out.println("EXCEPT : ROLLBACK");
-	    System.out.println("EXCEPT : Delete Facture " + entity);
-	    transaction.rollback();
-	}
-	return null;
-    }
 
     /**
      * See @see edu.bd.framework.persistence.EntityDao#retrieve(java.lang.Object)
@@ -72,55 +44,17 @@ public class FactureDaoSql implements FactureDao {
      */
     @Override
     public Facture retrieve(String id) throws AdvcompException {
-	System.out.println("INFO : Retrieve Facture " + id);
-	System.out.println("INFO : SELECT ... WHERE ...");
-	// TODO : implémenter la vrai structure/persistance de données
-	return null;
-    }
-
-    /**
-     * See @see edu.bd.framework.persistence.EntityDao#update(java.lang.Object)
-     *
-     * @param entity
-     * @return
-     * @throws AdvcompException
-     */
-    @Override
-    public Facture update(Facture entity) throws AdvcompException, Exception {
-	try {
-	    transaction.begin();
-	    System.out.println("INFO : Update Facture " + entity);
-	    System.out.println("INFO : UPDATE ... SET ... WHERE ...");
-	    // TODO : implémenter la vrai structure/persistance de données
-	    transaction.commit();
-	} catch (Exception e) {
-	    System.out.println("EXCEPT : ROLLBACK");
-	    System.out.println("EXCEPT : Reverse update Facture " + entity);
-	    transaction.rollback();
+	System.out.println("RETRIEVE Facture " + id);
+	if (id.isEmpty()) {
+	    throw new AdvcompException("ERROR : Id is null");
 	}
-	return entity;
-    }
-
-    /**
-     * See @see edu.bd.framework.persistence.EntityDao#delete(java.lang.Object)
-     *
-     * @param entity
-     * @throws AdvcompException
-     */
-    @Override
-    public void delete(Facture entity) throws AdvcompException, Exception {
 	try {
-	    transaction.begin();
-	    System.out.println("INFO : Delete Facture " + entity);
-	    System.out.println("INFO : DELETE FROM ... WHERE ...");
-	    // TODO : implémenter la vrai structure/persistance de données
-	    transaction.commit();
+	    Facture facture = em.find(FactureImpl.class, id);
+	    return facture;
 	} catch (Exception e) {
-	    System.out.println("EXCEPT : ROLLBACK");
-	    System.out.println("EXCEPT : Reverse delete facture " + entity);
-	    transaction.rollback();
+	    e.printStackTrace();
+	    throw new AdvcompException(e);
 	}
-
     }
 
     /**
@@ -131,8 +65,6 @@ public class FactureDaoSql implements FactureDao {
      */
     @Override
     public Facture getNew() throws AdvcompException {
-	// TODO : Fill method utility.
-	// TODO : Injecter une entitée facture ?
 	return new FactureImpl();
     }
 }
