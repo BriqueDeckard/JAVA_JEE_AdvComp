@@ -3,17 +3,77 @@ package edu.bd.advcomp.facturation.entity.impl;
 
 import java.util.Date;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
 import edu.bd.advcomp.authentification.entity.Utilisateur;
+import edu.bd.advcomp.authentification.entity.impl.UtilisateurImpl;
 import edu.bd.advcomp.facturation.entity.Facture;
 import edu.bd.advcomp.facturation.entity.HistoriqueOperation;
 
 /**
  * TODO Fill type utility
+ * 
  * @author Brique DECKARD
  *
  */
-// TODO : Annotation ?
+@Entity
+@Table(name = "historique")
 public class HistoriqueOperationImpl implements HistoriqueOperation {
+    /**
+     * Identifiant marqué de @Id, indepensable.
+     */
+    @Id
+    private Long id;
+    /**
+     * @Temporal
+     */
+    @Temporal(TemporalType.DATE)
+    private Date date;
+
+    private String description;
+
+    /**
+     * - @ManyToOne parce que Historique connait Utilisateur, mais Utilisateur ne
+     * connait pas Historique - "targetEntity" parce que l'entité visée est
+     * représentée par une interface - nullable à false, parce qu'un historique ne
+     * peut pas être créé sans utilisateur
+     */
+    @ManyToOne(targetEntity = UtilisateurImpl.class)
+    @JoinColumn(name = "fk_utilisateur", nullable = false)
+    private Utilisateur utilisateur;
+
+    /**
+     * - @ManyToOne parce que Historique connait Facture, mais Facture ne connait
+     * pas Historique - "targetEntity" parce que l'entité visée est représentée par
+     * une interface - nullable à true parce que la facture peut être nulle à la
+     * création de Historique
+     */
+    @ManyToOne(targetEntity = FactureImpl.class)
+    @JoinColumn(name = "fk_facture", nullable = true)
+    private Facture facture;
+
+    /**
+     * Constructor for HistoriqueOperationImpl
+     *
+     * @param id
+     * @param date
+     * @param description
+     * @param utilisateur
+     * @param facture
+     */
+    public HistoriqueOperationImpl(Long id, Date date, String description, Utilisateur utilisateur) {
+	super();
+	this.id = id;
+	this.date = date;
+	this.description = description;
+	this.utilisateur = utilisateur;
+    }
 
     /**
      * Constructor for HistoriqueOperationImpl
@@ -29,18 +89,18 @@ public class HistoriqueOperationImpl implements HistoriqueOperation {
      */
     @Override
     public Long getId() {
-	// TODO Fill method utility.
-	return null;
+	return this.id;
     }
 
     /**
-     * See @see edu.bd.advcomp.facturation.entity.HistoriqueOperation#setId(java.lang.Long)
+     * See @see
+     * edu.bd.advcomp.facturation.entity.HistoriqueOperation#setId(java.lang.Long)
      *
      * @param id
      */
     @Override
     public void setId(Long id) {
-	// TODO Fill method utility.
+	this.id = id;
 
     }
 
@@ -51,62 +111,64 @@ public class HistoriqueOperationImpl implements HistoriqueOperation {
      */
     @Override
     public Date getDate() {
-	// TODO Fill method utility.
-	return null;
+	return this.date;
     }
 
     /**
-     * See @see edu.bd.advcomp.facturation.entity.HistoriqueOperation#setDate(java.util.Date)
+     * See @see
+     * edu.bd.advcomp.facturation.entity.HistoriqueOperation#setDate(java.util.Date)
      *
      * @param date
      */
     @Override
     public void setDate(Date date) {
-	// TODO Fill method utility.
+	this.date = date;
 
     }
 
     /**
-     * See @see edu.bd.advcomp.facturation.entity.HistoriqueOperation#getDescription()
+     * See @see
+     * edu.bd.advcomp.facturation.entity.HistoriqueOperation#getDescription()
      *
      * @return
      */
     @Override
     public String getDescription() {
-	// TODO Fill method utility.
-	return null;
+	return this.description;
     }
 
     /**
-     * See @see edu.bd.advcomp.facturation.entity.HistoriqueOperation#setDescription(java.lang.String)
+     * See @see
+     * edu.bd.advcomp.facturation.entity.HistoriqueOperation#setDescription(java.lang.String)
      *
      * @param description
      */
     @Override
     public void setDescription(String description) {
-	// TODO Fill method utility.
+	this.description = description;
 
     }
 
     /**
-     * See @see edu.bd.advcomp.facturation.entity.HistoriqueOperation#getUtilisateur()
+     * See @see
+     * edu.bd.advcomp.facturation.entity.HistoriqueOperation#getUtilisateur()
      *
      * @return
      */
     @Override
     public Utilisateur getUtilisateur() {
-	// TODO Fill method utility.
-	return null;
+	return this.utilisateur;
     }
 
     /**
-     * See @see edu.bd.advcomp.facturation.entity.HistoriqueOperation#setUtilisateur(edu.bd.advcomp.authentification.entity.Utilisateur)
+     * See @see
+     * edu.bd.advcomp.facturation.entity.HistoriqueOperation#setUtilisateur(edu.bd.advcomp.authentification.entity.Utilisateur)
      *
      * @param utilisateur
      */
     @Override
     public void setUtilisateur(Utilisateur utilisateur) {
-	// TODO Fill method utility.
+	this.utilisateur = utilisateur;
 
     }
 
@@ -117,19 +179,29 @@ public class HistoriqueOperationImpl implements HistoriqueOperation {
      */
     @Override
     public Facture getFacture() {
-	// TODO Fill method utility.
-	return null;
+	return this.facture;
     }
 
     /**
-     * See @see edu.bd.advcomp.facturation.entity.HistoriqueOperation#setFacture(edu.bd.advcomp.facturation.entity.Facture)
+     * See @see java.lang.Object#toString()
+     *
+     * @return
+     */
+    @Override
+    public String toString() {
+	return "HistoriqueOperationImpl [id=" + this.id + ", date=" + this.date + ", description=" + this.description
+		+ ", utilisateur=" + this.utilisateur + ", facture=" + this.facture + "]";
+    }
+
+    /**
+     * See @see
+     * edu.bd.advcomp.facturation.entity.HistoriqueOperation#setFacture(edu.bd.advcomp.facturation.entity.Facture)
      *
      * @param facture
      */
     @Override
     public void setFacture(Facture facture) {
-	// TODO Fill method utility.
+	this.facture = facture;
 
     }
-    // TODO : Fill class body
 }
