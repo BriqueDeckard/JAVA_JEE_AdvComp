@@ -1,16 +1,27 @@
 // File UtilisateurImpl.java - No copyright - 23 mars 2021
 package edu.bd.advcomp.authentification.entity.impl;
 
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 import edu.bd.advcomp.authentification.Role;
 import edu.bd.advcomp.authentification.entity.Utilisateur;
 
+// TODO : Pour JPA
+// TODO : @Entity sur la classe 
+// TODO : @Table sur la classe
+// TODO : @id sur la PK
 /**
  * TODO Fill type utility
  * 
  * @author Brique DECKARD
- *
+ * 
  */
-// TODO : Annotation ?
+@Entity
+@Table(name = "utilisateur")
 public class UtilisateurImpl implements Utilisateur {
 
     /**
@@ -21,7 +32,10 @@ public class UtilisateurImpl implements Utilisateur {
 
     /**
      * Login de l'utilisateur
+     * 
+     * @Id pour JPA
      */
+    @Id
     private String login;
     /**
      * MOt de passe de l'utilisateur
@@ -38,8 +52,29 @@ public class UtilisateurImpl implements Utilisateur {
     /**
      * Rôle (Admin ou simple Clinet)
      */
+    @Enumerated(EnumType.STRING)
     private Role role;
 
+    /**
+     * See @see java.lang.Object#toString()
+     *
+     * @return
+     */
+    @Override
+    public String toString() {
+	return "UtilisateurImpl [login=" + this.login + ", password=" + this.password + ", nom=" + this.nom
+		+ ", adresse=" + this.adresse + ", role=" + this.role + "]";
+    }
+
+    /**
+     * Constructor for UtilisateurImpl
+     *
+     * @param login
+     * @param password
+     * @param nom
+     * @param adresse
+     * @param role
+     */
     public UtilisateurImpl(String login, String password, String nom, String adresse, Role role) {
 	super();
 	this.login = login;
@@ -49,51 +84,106 @@ public class UtilisateurImpl implements Utilisateur {
 	this.role = role;
     }
 
+    /**
+     * See @see edu.bd.advcomp.authentification.entity.Utilisateur#getLogin()
+     *
+     * @return
+     */
     @Override
     public String getLogin() {
 	return login;
     }
 
+    /**
+     * See @see
+     * edu.bd.advcomp.authentification.entity.Utilisateur#setLogin(java.lang.String)
+     *
+     * @param login
+     */
     @Override
     public void setLogin(String login) {
 	this.login = login;
     }
 
+    /**
+     * See @see edu.bd.advcomp.authentification.entity.Utilisateur#getPassword()
+     *
+     * @return
+     */
     @Override
     public String getPassword() {
 	return password;
     }
 
+    /**
+     * See @see
+     * edu.bd.advcomp.authentification.entity.Utilisateur#setPassword(java.lang.String)
+     *
+     * @param password
+     */
     @Override
     public void setPassword(String password) {
 	this.password = password;
     }
 
+    /**
+     * See @see edu.bd.advcomp.authentification.entity.Utilisateur#getNom()
+     *
+     * @return
+     */
     @Override
     public String getNom() {
 	return nom;
     }
 
+    /**
+     * See @see
+     * edu.bd.advcomp.authentification.entity.Utilisateur#setNom(java.lang.String)
+     *
+     * @param nom
+     */
     @Override
     public void setNom(String nom) {
 	this.nom = nom;
     }
 
+    /**
+     * See @see edu.bd.advcomp.authentification.entity.Utilisateur#getAdresse()
+     *
+     * @return
+     */
     @Override
     public String getAdresse() {
 	return adresse;
     }
 
+    /**
+     * See @see
+     * edu.bd.advcomp.authentification.entity.Utilisateur#setAdresse(java.lang.String)
+     *
+     * @param adresse
+     */
     @Override
     public void setAdresse(String adresse) {
 	this.adresse = adresse;
     }
 
+    /**
+     * See @see edu.bd.advcomp.authentification.entity.Utilisateur#getRole()
+     *
+     * @return
+     */
     @Override
     public Role getRole() {
 	return role;
     }
 
+    /**
+     * See @see
+     * edu.bd.advcomp.authentification.entity.Utilisateur#setRole(edu.bd.advcomp.authentification.Role)
+     *
+     * @param role
+     */
     @Override
     public void setRole(Role role) {
 	this.role = role;

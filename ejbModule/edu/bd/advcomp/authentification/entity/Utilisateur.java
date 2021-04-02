@@ -1,6 +1,8 @@
 // File Utilisateur.java - No copyright - 23 mars 2021
 package edu.bd.advcomp.authentification.entity;
 
+import java.io.Serializable;
+
 import edu.bd.advcomp.authentification.Role;
 
 /**
@@ -10,7 +12,7 @@ import edu.bd.advcomp.authentification.Role;
  *
  */
 // TODO : Annotation ?
-public interface Utilisateur {
+public interface Utilisateur extends Serializable{
     /**
      * getLogin Retourne le Login
      * 
