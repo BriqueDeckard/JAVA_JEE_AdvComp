@@ -4,6 +4,7 @@ package edu.bd.advcomp.authentification.dao;
 import javax.ejb.Local;
 
 import edu.bd.advcomp.authentification.entity.Utilisateur;
+import edu.bd.advcomp.authentification.entity.impl.UtilisateurImpl;
 import edu.bd.framework.persistence.EntityDao;
 
 /**

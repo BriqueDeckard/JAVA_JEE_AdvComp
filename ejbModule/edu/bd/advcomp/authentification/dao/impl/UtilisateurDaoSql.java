@@ -37,25 +37,6 @@ public class UtilisateurDaoSql extends EntityDaoImpl<Utilisateur, String> implem
     }
 
     /**
-     * See @see edu.bd.framework.persistence.EntityDao#create(java.lang.Object)
-     * 
-     * @param entity
-     * @return
-     * @throws AdvcompException
-     */
-
-    /*
-     * @Override public Utilisateur create(Utilisateur entity) throws
-     * AdvcompException { System.out.println("CREATE Utilisateur " +
-     * entity.getLogin()); if (entity == null) { throw new
-     * AdvcompException("ERROR : Entity is null"); } try { em.persist(entity);
-     * return entity; } catch (Exception e) { e.printStackTrace(); throw new
-     * AdvcompException("ERROR : Echec persistance"); }
-     * 
-     * }
-     */
-
-    /**
      * See @see edu.bd.framework.persistence.EntityDao#retrieve(java.lang.Object)
      * 
      * @param id
@@ -75,54 +56,9 @@ public class UtilisateurDaoSql extends EntityDaoImpl<Utilisateur, String> implem
 
 	} catch (Exception e) {
 	    e.printStackTrace();
-	    throw new AdvcompException("ERROR : Echec persistance");
+	    throw new AdvcompException(e);
 	}
 
-    }
-
-    /**
-     * See @see edu.bd.framework.persistence.EntityDao#update(java.lang.Object)
-     * 
-     * @param entity
-     * @return
-     * @throws AdvcompException
-     */
-
-    @Override
-    public Utilisateur update(Utilisateur entity) throws AdvcompException {
-	System.out.println("UPDATE Utilisateur " + entity.getLogin());
-	if (entity == null) {
-	    throw new AdvcompException("ERROR : Entity is null");
-	}
-	try {
-	    em.merge(entity);
-	    return entity;
-	} catch (Exception e) {
-	    e.printStackTrace();
-	    throw new AdvcompException("ERROR : Echec persistance");
-	}
-
-    }
-
-    /**
-     * See @see edu.bd.framework.persistence.EntityDao#delete(java.lang.Object)
-     * 
-     * @param entity
-     * @throws AdvcompException
-     */
-
-    @Override
-    public void delete(Utilisateur entity) throws AdvcompException {
-	System.out.println("DELETE Utilisateur " + entity.getLogin());
-	if (entity == null) {
-	    throw new AdvcompException("ERROR : Entity is null");
-	}
-	try {
-	    em.remove(entity);
-	} catch (Exception e) {
-	    e.printStackTrace();
-	    throw new AdvcompException("ERROR : Echec suppression");
-	}
     }
 
     /**
