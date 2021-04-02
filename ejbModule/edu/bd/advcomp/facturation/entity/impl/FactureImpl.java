@@ -2,17 +2,89 @@
 package edu.bd.advcomp.facturation.entity.impl;
 
 import java.util.Date;
+import java.util.List;
+
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import edu.bd.advcomp.authentification.entity.Utilisateur;
+import edu.bd.advcomp.authentification.entity.impl.UtilisateurImpl;
 import edu.bd.advcomp.facturation.entity.Facture;
+import edu.bd.advcomp.facturation.entity.HistoriqueOperation;
 
 /**
  * TODO Fill type utility
+ * 
  * @author Brique DECKARD
  *
  */
-// TODO : Annotation ?
+@Entity
+@Table(name = "facture")
 public class FactureImpl implements Facture {
+    // TODO : fill class
+
+    /**
+     * Utilisateur lié à la facture
+     * - @ManyToOne parce que Facture connait utilisateur, mais utilisateur ne connait pas facture
+     * - nullable à false parce qu'une facture n'existe pas sans utilisateur
+     * - target entity parce que l'entité est accessible via une interface
+     */
+    @ManyToOne(targetEntity = UtilisateurImpl.class )
+    @JoinColumn(name = "fk_utilisateur", nullable = false)
+    private Utilisateur utilisateur;
+    /**
+     * See @see java.lang.Object#toString()
+     *
+     * @return
+     */
+    @Override
+    public String toString() {
+	return "FactureImpl [utilisateur=" + this.utilisateur + ", numero=" + this.numero + ", date=" + this.date
+		+ ", montant=" + this.montant + ", isSoldee=" + this.isSoldee + "]";
+    }
+
+    /**
+     * Numéro de la facture - Clé primaire
+     */
+    @Id
+    private String numero;
+    /**
+     * Date de la facture
+     */
+    @Temporal(TemporalType.DATE)
+    private Date date;
+    /**
+     * montant de la facture
+     */
+    private double montant;
+    /**
+     * La facture est elle soldée ?
+     */
+    private boolean isSoldee;
+
+    /**
+     * Constructor for FactureImpl
+     *
+     * @param utilisateur
+     * @param numero
+     * @param date
+     * @param montant
+     * @param isSoldee
+     */
+    public FactureImpl(Utilisateur utilisateur, String numero, Date date, double montant, boolean isSoldee) {
+	super();
+	this.utilisateur = utilisateur;
+	this.numero = numero;
+	this.date = date;
+	this.montant = montant;
+	this.isSoldee = isSoldee;
+    }
 
     /**
      * Constructor for FactureImpl
@@ -28,18 +100,18 @@ public class FactureImpl implements Facture {
      */
     @Override
     public Utilisateur getUtilisateur() {
-	// TODO Fill method utility.
-	return null;
+	return this.utilisateur;
     }
 
     /**
-     * See @see edu.bd.advcomp.facturation.entity.Facture#setUtilisateur(edu.bd.advcomp.authentification.entity.Utilisateur)
+     * See @see
+     * edu.bd.advcomp.facturation.entity.Facture#setUtilisateur(edu.bd.advcomp.authentification.entity.Utilisateur)
      *
      * @param utilisateur
      */
     @Override
     public void setUtilisateur(Utilisateur utilisateur) {
-	// TODO Fill method utility.
+	this.utilisateur = utilisateur;
 
     }
 
@@ -50,18 +122,18 @@ public class FactureImpl implements Facture {
      */
     @Override
     public String getNumero() {
-	// TODO Fill method utility.
-	return null;
+	return this.numero;
     }
 
     /**
-     * See @see edu.bd.advcomp.facturation.entity.Facture#setNumero(java.lang.String)
+     * See @see
+     * edu.bd.advcomp.facturation.entity.Facture#setNumero(java.lang.String)
      *
      * @param numero
      */
     @Override
     public void setNumero(String numero) {
-	// TODO Fill method utility.
+	this.numero = numero;
 
     }
 
@@ -72,8 +144,7 @@ public class FactureImpl implements Facture {
      */
     @Override
     public Date getDate() {
-	// TODO Fill method utility.
-	return null;
+	return this.date;
     }
 
     /**
@@ -83,7 +154,7 @@ public class FactureImpl implements Facture {
      */
     @Override
     public void setDate(Date date) {
-	// TODO Fill method utility.
+	this.date = date;
 
     }
 
@@ -94,8 +165,7 @@ public class FactureImpl implements Facture {
      */
     @Override
     public double getMontant() {
-	// TODO Fill method utility.
-	return 0;
+	return this.montant;
     }
 
     /**
@@ -105,7 +175,7 @@ public class FactureImpl implements Facture {
      */
     @Override
     public void setMontant(double montant) {
-	// TODO Fill method utility.
+	this.montant = montant;
 
     }
 
@@ -116,8 +186,7 @@ public class FactureImpl implements Facture {
      */
     @Override
     public boolean isSoldee() {
-	// TODO Fill method utility.
-	return false;
+	return this.isSoldee;
     }
 
     /**
@@ -127,8 +196,9 @@ public class FactureImpl implements Facture {
      */
     @Override
     public void setSoldee(boolean soldee) {
-	// TODO Fill method utility.
+	this.isSoldee = soldee;
 
     }
-    // TODO : Fill class body
+
+
 }
