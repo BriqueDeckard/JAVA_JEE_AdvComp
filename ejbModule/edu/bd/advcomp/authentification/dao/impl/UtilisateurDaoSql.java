@@ -14,6 +14,7 @@ import edu.bd.advcomp.authentification.Role;
 import edu.bd.advcomp.authentification.dao.UtilisateurDao;
 import edu.bd.advcomp.authentification.entity.Utilisateur;
 import edu.bd.advcomp.authentification.entity.impl.UtilisateurImpl;
+import edu.bd.framework.persistence.EntityDaoImpl;
 
 /**
  * Implémentation du DAO pour la maintenance des {@link Utilisateur}
@@ -23,7 +24,7 @@ import edu.bd.advcomp.authentification.entity.impl.UtilisateurImpl;
  */
 
 @Stateless
-public class UtilisateurDaoSql implements UtilisateurDao {
+public class UtilisateurDaoSql extends EntityDaoImpl<Utilisateur, String> implements UtilisateurDao {
 
     @PersistenceContext(unitName = "advcomp")
     EntityManager em;
@@ -43,21 +44,16 @@ public class UtilisateurDaoSql implements UtilisateurDao {
      * @throws AdvcompException
      */
 
-    @Override
-    public Utilisateur create(Utilisateur entity) throws AdvcompException {
-	System.out.println("CREATE Utilisateur " + entity.getLogin());
-	if (entity == null) {
-	    throw new AdvcompException("ERROR : Entity is null");
-	}
-	try {
-	    em.persist(entity);
-	    return entity;
-	} catch (Exception e) {
-	    e.printStackTrace();
-	    throw new AdvcompException("ERROR : Echec persistance");
-	}
-
-    }
+    /*
+     * @Override public Utilisateur create(Utilisateur entity) throws
+     * AdvcompException { System.out.println("CREATE Utilisateur " +
+     * entity.getLogin()); if (entity == null) { throw new
+     * AdvcompException("ERROR : Entity is null"); } try { em.persist(entity);
+     * return entity; } catch (Exception e) { e.printStackTrace(); throw new
+     * AdvcompException("ERROR : Echec persistance"); }
+     * 
+     * }
+     */
 
     /**
      * See @see edu.bd.framework.persistence.EntityDao#retrieve(java.lang.Object)
