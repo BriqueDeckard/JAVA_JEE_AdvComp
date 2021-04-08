@@ -22,11 +22,13 @@ public class AdvCompServiceImpl implements AdvCompService {
 
     private Utilisateur client;
 
+    private Double resultatTemporaire;
+
     @Inject
     private FacturationService facturationService;
-    
+
     @Inject
-    private CalculateurService calculateurService;    
+    private CalculateurService calculateurService;
 
     public AdvCompServiceImpl(Utilisateur client) {
 	this.client = client;
@@ -37,6 +39,11 @@ public class AdvCompServiceImpl implements AdvCompService {
      *
      */
     public AdvCompServiceImpl() {
+    }
+
+    private boolean operationChaineeEnCours() {
+	return resultatTemporaire != null;
+
     }
 
     /**
@@ -87,15 +94,76 @@ public class AdvCompServiceImpl implements AdvCompService {
 		throw new AdvcompException("Opérateur " + operateur + " non géré.");
 
 	    }
-	    
-	    facturationService.historiserOperation(client, descriptionOperation);
+
+	    try {
+		facturationService.historiserOperation(client, descriptionOperation);
+	    } catch (Exception e) {
+		e.printStackTrace();
+		throw new AdvcompException(e);
+	    }
+
+	    System.out.println(this.getClass().getSimpleName() + " RESULTAT operation basique " + resultat);
 	    return resultat;
 	} catch (CalculException e) {
 	    e.printStackTrace();
 	    throw new AdvcompException("Echec calcul", e);
 	} catch (AdvcompException e) {
-	    throw e;
-	    // TODO: handle exception
+	    throw new AdvcompException(e);
 	}
     }
+
+    /**
+     * See @see
+     * edu.bd.advcomp.core.service.AdvCompService#commencerOperationChainee(java.lang.Double,
+     * java.lang.Double, java.lang.String)
+     *
+     * @param facteur1
+     * @param facteur2
+     * @param operateur
+     * @throws AdvcompException
+     */
+    @Override
+    public void commencerOperationChainee(Double facteur1, Double facteur2, String operateur) throws AdvcompException {
+
+	if (operationChaineeEnCours()) {
+	    throw new AdvcompException("Operation chainee déjà en cours");
+	}
+	resultatTemporaire = faireOperationBasique(facteur1, facteur2, operateur);
+	System.out.println(this.getClass().getSimpleName() + " RESULTAT TEMPORAIRE : " + resultatTemporaire);
+    }
+
+    /**
+     * See @see
+     * edu.bd.advcomp.core.service.AdvCompService#poursuivreOperationChainee(java.lang.Double,
+     * java.lang.String)
+     *
+     * @param facteur
+     * @param operateur
+     * @throws AdvcompException
+     */
+    @Override
+    public void poursuivreOperationChainee(Double facteur, String operateur) throws AdvcompException {
+	if (!operationChaineeEnCours()) {
+	    throw new AdvcompException("Operation chainee pas en cours");
+	}
+	resultatTemporaire = faireOperationBasique(resultatTemporaire, facteur, operateur);
+	System.out.println(this.getClass().getSimpleName() + " RESULTAT TEMPORAIRE : " + resultatTemporaire);
+    }
+
+    /**
+     * See @see edu.bd.advcomp.core.service.AdvCompService#acheverOperationChainee()
+     *
+     * @return
+     * @throws AdvcompException
+     */
+    @Override
+    public Double acheverOperationChainee() throws AdvcompException {
+	if (!operationChaineeEnCours()) {
+	    throw new AdvcompException("Operation chainee pas en cours");
+	}
+	Double resultat = resultatTemporaire;
+	resultatTemporaire = null;
+	return resultat;
+    }
+
 }

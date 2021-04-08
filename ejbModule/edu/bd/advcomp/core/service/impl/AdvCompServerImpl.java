@@ -67,7 +67,7 @@ public class AdvCompServerImpl implements AdvCompServer {
 	// Set du client
 	remoteService.setClient(client);
 
-	System.out.println("Lookup succeeded.");
+	System.out.println(this.getClass().getSimpleName() + " - Connexion succeeded.");
 	return remoteService;
     }
 
