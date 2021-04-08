@@ -1,12 +1,15 @@
 // File AdvCompStartup.java - No copyright - 31 mars 2021
 package edu.bd.advcomp;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
 import javax.naming.InitialContext;
+import javax.naming.NamingException;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
@@ -14,13 +17,16 @@ import edu.bd.advcomp.authentification.Role;
 import edu.bd.advcomp.authentification.dao.UtilisateurDao;
 import edu.bd.advcomp.authentification.entity.Utilisateur;
 import edu.bd.advcomp.authentification.entity.impl.UtilisateurImpl;
+import edu.bd.advcomp.authentification.service.UtilisateurService;
 import edu.bd.advcomp.core.service.AdvCompServer;
+import edu.bd.advcomp.core.service.AdvCompService;
 import edu.bd.advcomp.facturation.dao.FactureDao;
 import edu.bd.advcomp.facturation.dao.HistoriqueOperationDao;
 import edu.bd.advcomp.facturation.entity.Facture;
 import edu.bd.advcomp.facturation.entity.HistoriqueOperation;
 import edu.bd.advcomp.facturation.entity.impl.FactureImpl;
 import edu.bd.advcomp.facturation.entity.impl.HistoriqueOperationImpl;
+import edu.bd.advcomp.facturation.service.FacturationService;
 
 /**
  * TODO Fill type utility
@@ -32,6 +38,29 @@ import edu.bd.advcomp.facturation.entity.impl.HistoriqueOperationImpl;
 @Singleton
 public class AdvCompStartup {
 
+    private Utilisateur clientFactory(Utilisateur utilisateur) {
+	utilisateur.setLogin(DEV_CONFIG.client_001.toString());
+	utilisateur.setAdresse(DEV_CONFIG.adresse.toString());
+	utilisateur.setNom(DEV_CONFIG.client_001.toString());
+	utilisateur.setPassword(DEV_CONFIG.secret.toString());
+	utilisateur.setRole(Role.CLIENT);
+
+	System.out.println("Utilisateur : " + utilisateur.toString());
+	return utilisateur;
+    }
+
+    private Utilisateur adminFactory(Utilisateur utilisateur) {
+
+	utilisateur.setLogin(DEV_CONFIG.admin_001.toString());
+	utilisateur.setAdresse(DEV_CONFIG.adresse.toString());
+	utilisateur.setNom(DEV_CONFIG.admin_001.toString());
+	utilisateur.setPassword(DEV_CONFIG.secret.toString());
+	utilisateur.setRole(Role.ADMINISTRATEUR);
+
+	System.out.println("Utilisateur : " + utilisateur.toString());
+	return utilisateur;
+    }
+
     /**
      * Entity Manager
      */ // persistence.xml --> <persistence-unit name="advcomp"
@@ -42,191 +71,87 @@ public class AdvCompStartup {
      * init TODO : init avec PostConstruct pour fair ele bootstrap. Bootstrap de
      * l'application AdvComp
      * 
+     * @throws AdvcompException
+     * 
      * @throws Exception
      */
     @PostConstruct
     public void init() {
-	System.out.println("*** BOOTSTRAP EXECUTE ***");
-
+	System.out.println("*************************");
+	System.out.println(this.getClass().getSimpleName() + " - BOOTSTRAP EXECUTE ***");
 	try {
-	    // [ USER ]
-	    // ***************************************************************************************************
-	    String idForUser = "toto";
+	    // GETS THE USER SERVICE
+	    UtilisateurService userService = InitialContext.doLookup(
+		    "java:global/AdvCompEjb/UtilisateurServiceImpl!edu.bd.advcomp.authentification.service.UtilisateurService");
+	    if (userService == null) {
+		throw new AdvcompException("userService is null");
+	    }
+	    System.out.println(this.getClass().getSimpleName() + " - GOT USER SERVICE");
 
-	    // Get the DAO for User
-	    String utilisateurDaoClass = UtilisateurDao.class.getName();
-	    UtilisateurDao userDao = (UtilisateurDao) InitialContext
-		    .doLookup("java:global/AdvCompEjb/UtilisateurDaoSql!" + utilisateurDaoClass);
+	    // INSERTS AN USER
+	    Utilisateur client_001 = userService.getNewUtilisateur();
+	    System.out.println(this.getClass().getSimpleName() + " - CLIENT_001 = " + client_001.toString());
+	    client_001 = clientFactory(client_001);
+	    try {
+		userService.creerUtilisateur(client_001);
+	    } catch (Exception e) {
+		e.printStackTrace();
+	    }
+	    System.out.println(this.getClass().getSimpleName() + " - USER INSERTED");
 
-	    // Create an entity
-	    UtilisateurImpl utilisateur = new UtilisateurImpl(idForUser, "secret", "toto", "clermont", Role.CLIENT);
+	    // GETS THE SERVER
+	    AdvCompServer serveur = InitialContext
+		    .doLookup("java:global/AdvCompEjb/AdvCompServerImpl!edu.bd.advcomp.core.service.AdvCompServer");
+	    if (serveur == null) {
+		throw new AdvcompException("AdvCompServer is null");
+	    }
+	    System.out.println(this.getClass().getSimpleName() + " - GOT SERVER");
 
-	    // Persists entity
-	    userDao.create(utilisateur);
+	    // GETS THE SERVICE
+	    AdvCompService advCompService = null;
+	    try {
+		advCompService = serveur.connexion(DEV_CONFIG.client_001.toString(), DEV_CONFIG.secret.toString());
+	    } catch (Exception e) {
+		e.printStackTrace();
+		throw new AdvcompException(e);
+	    }
+	    if (advCompService == null) {
+		throw new AdvcompException("AdvCompService is null");
+	    }
+	    System.out.println(this.getClass().getSimpleName() + " - GOT ADVCOMPSERVICE");
 
-	    // Find the entity
-	    Utilisateur utilisateurObtenu = userDao.retrieve(idForUser);
+	    Double resultat = advCompService.faireOperationBasique(1d, 1d, "+");
+	    resultat = advCompService.faireOperationBasique(2d, 2d, "+");
 
-	    // Display
-	    System.out.println("INFO : Persisté " + utilisateurObtenu.toString());
+	    System.out.println("* RESULTAT operation basique = " + resultat);
 
-	    // Modifies entity
-	    utilisateurObtenu.setNom("tata");
-	    utilisateurObtenu.setPassword("password");
-	    utilisateurObtenu.setAdresse("nevers");
-	    utilisateurObtenu.setRole(Role.ADMINISTRATEUR);
+	    resultat = null;
+//
+//	    advCompService.commencerOperationChainee(1d, 1d, "+");
+//	    advCompService.poursuivreOperationChainee(1d, "+");
+//	    resultat = advCompService.acheverOperationChainee();
+//	    System.out.println("* RESULTAT operation chaînée = " + resultat);
 
-	    // Update entity
-	    userDao.update(utilisateurObtenu);
-	    // Find the entity
-	    Utilisateur utilisateurMisAJour = userDao.retrieve(utilisateurObtenu.getLogin());
-	    // Display
-	    System.out.println("INFO : Mis à jour : " + utilisateurMisAJour.toString());
-
-	    // [ HISTORIQUE ]
-	    // ***************************************************************************************************
-	    // Get the DAO for HistoriqueOperation
-	    String historiqueOperationClass = HistoriqueOperationDao.class.getName();
-	    HistoriqueOperationDao historiqueOperationDao = (HistoriqueOperationDao) InitialContext
-		    .doLookup("java:global/AdvCompEjb/HistoriqueOperationDaoSql!" + historiqueOperationClass);
-
-	    // Create an entity
-	    HistoriqueOperation historique = new HistoriqueOperationImpl(001l, new Date(), "la description",
-		    utilisateurObtenu);
-
-	    // Persists entity
-	    historiqueOperationDao.create(historique);
-
-	    // Find entity
-	    HistoriqueOperation historiqueObtenu = historiqueOperationDao.retrieve(historique.getId());
-
-	    // Display
-	    System.out.println("INFO : Persisté " + historiqueObtenu.toString());
-
-	    // Modifies entity
-	    historiqueObtenu.setDate(new Date());
-	    historiqueObtenu.setDescription("Lorem ipsum");
-
-	    // update entity
-	    historiqueOperationDao.update(historiqueObtenu);
-
-	    // Finds the entity
-	    HistoriqueOperation historiqueMisAJour = historiqueOperationDao.retrieve(historiqueObtenu.getId());
-	    // Display
-	    System.out.println("INFO : Mis à jour : " + historiqueMisAJour.toString());
-
-	    // [ FACTURE ]
-	    // ***************************************************************************************************
-	    // Get the DAO for Facture
-	    String factureClass = FactureDao.class.getName();
-	    FactureDao factureDao = (FactureDao) InitialContext
-		    .doLookup("java:global/AdvCompEjb/FactureDaoSql!" + factureClass);
-	    // Create an entity
-	    Facture facture = new FactureImpl(utilisateurMisAJour, "001", new Date(), 10d, false);
-
-	    // Persists entity
-	    factureDao.create(facture);
-
-	    // Find entity
-	    Facture factureObtenue = factureDao.retrieve(facture.getNumero());
-
-	    // Displays
-	    System.out.println("INFO : Persisté " + factureObtenue.toString());
-
-	    // Modifies entity
-	    factureObtenue.setDate(new Date());
-	    factureObtenue.setMontant(45d);
-	    factureObtenue.setSoldee(true);
-
-	    // Updates entity
-	    factureDao.update(factureObtenue);
-
-	    // Finds the entity
-	    Facture factureMiseAJour = factureDao.retrieve(factureObtenue.getNumero());
-	    // Display
-	    System.out.println("INFO : Mis à jour : " + factureMiseAJour.toString());
-
-	    // [DELETION ]
-	    // Delete entity
-	    userDao.delete(utilisateurMisAJour);
-	    Utilisateur utilisateurNul = userDao.retrieve(utilisateurMisAJour.getLogin());
-	    if (utilisateurNul != null) {
-		throw new AdvcompException("Utilisateur non supprimé !");
+	    FacturationService facturationService = InitialContext.doLookup(
+		    "java:global/AdvCompEjb/FacturationServiceImpl!edu.bd.advcomp.facturation.service.FacturationService");
+	    if (facturationService == null) {
+		throw new AdvcompException("Facturation service is null");
 	    }
 
-	    System.out.println("USER Supprimé");
-	    // Delete entity
-	    historiqueOperationDao.delete(historiqueMisAJour);
-	    HistoriqueOperation historiqueNul = historiqueOperationDao.retrieve(historiqueMisAJour.getId());
-	    if (historiqueNul != null) {
-		throw new AdvcompException("Historique non supprimé !");
-	    }
-	    System.out.println("HISTORIQUE supprimé");
-	    
-	    //Delete entity
-	    factureDao.delete(factureMiseAJour);
-	    Facture factureNulle = factureDao.retrieve(factureMiseAJour.getNumero());
-	    if(factureNulle != null) {
-		throw new AdvcompException("Facture non supprimée ! ");
-	    }
-	    System.out.println("FACTURE supprimée.");
+	    SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+	    String dateInStringBegin = "04-04-2021";
+	    Date beginDate = formatter.parse(dateInStringBegin);
+	    String dateInStringEnd = "06-04-2021";
+	    Date endDate = formatter.parse(dateInStringEnd);
+
+	    facturationService.facturer(beginDate, endDate);
 
 	} catch (Exception e) {
-	    e.printStackTrace();
+	    AdvcompException exception = new AdvcompException(e);
+	    exception.printStackTrace();
 	}
-
-	// demo();
-
-    }
-
-    /**
-     * demo
-     *
-     * TODO : Fill method utility
-     */
-    private void demo() {
-	// Creation de l'utilisateur et persistance
-	// UtilisateurImpl(login, password, nom, adresse, role)
-	Utilisateur utilisateur = new UtilisateurImpl("toto", "secret", "toto", "clermont", Role.CLIENT);
-	try {
-	    em.persist(utilisateur);
-	} catch (Exception e) {
-	    System.out.println("**********\nERROR ! ");
-	    e.printStackTrace();
-	}
-	Utilisateur gotUser = em.find(UtilisateurImpl.class, "toto");
-	System.out.println("GOT USER : " + gotUser.toString());
-
-	// Creation de l'historique et persistance
-	// HistoriqueOperationImpl(Long id, Date date, String description, Utilisateur
-	// utilisateur)
-	HistoriqueOperation historique = new HistoriqueOperationImpl(001l, new Date(), "la description", gotUser);
-	try {
-	    em.persist(historique);
-	} catch (Exception e) {
-	    System.out.println("**********\nERROR ! ");
-	    e.printStackTrace();
-	}
-	HistoriqueOperation gotHist = em.find(HistoriqueOperationImpl.class, 001l);
-	System.out.println("GOT HIST : " + gotHist.toString());
-
-	// Creation d'une facture et persistance
-	// FactureImpl(Utilisateur utilisateur, String numero, Date date, double
-	// montant, boolean isSoldee)
-	Facture facture = new FactureImpl(gotUser, "f001", new Date(), 42d, false);
-	try {
-	    em.persist(facture);
-	} catch (Exception e) {
-	    System.out.println("**********\nERROR ! ");
-	    e.printStackTrace();
-	}
-	Facture gotFact = em.find(FactureImpl.class, "f001");
-	System.out.println("GOT FACT : " + gotFact.toString());
-
-	gotHist.setFacture(facture);
-	em.merge(gotHist);
-	HistoriqueOperation gotHist2 = em.find(HistoriqueOperationImpl.class, 001l);
-	System.out.println("GOT HIST 2 : " + gotHist2.toString());
+	System.out.println(this.getClass().getSimpleName() + "*** BOOTSTRAP END ***");
+	System.out.println("*************************");
     }
 
 }

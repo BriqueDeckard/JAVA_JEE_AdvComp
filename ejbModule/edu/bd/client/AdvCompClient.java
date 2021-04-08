@@ -34,7 +34,7 @@ public class AdvCompClient {
 	// 1. lookup sur advcomp_server
 	try {
 	    AdvCompServer server = doLookup();
-	    AdvCompService service = server.connexion(DEV_CONFIG.toto.toString(), DEV_CONFIG.secret.toString());
+	    AdvCompService service = server.connexion(DEV_CONFIG.client_001.toString(), DEV_CONFIG.secret.toString());
 
 	    System.out.println("Connection suceeded");
 	    System.out.println(service.faireOperationBasique(10d, 3d, "+"));
