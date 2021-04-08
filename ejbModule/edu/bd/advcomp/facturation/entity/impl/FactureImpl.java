@@ -4,8 +4,8 @@ package edu.bd.advcomp.facturation.entity.impl;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -36,7 +36,7 @@ public class FactureImpl implements Facture {
      * - nullable à false parce qu'une facture n'existe pas sans utilisateur
      * - target entity parce que l'entité est accessible via une interface
      */
-    @ManyToOne(targetEntity = UtilisateurImpl.class, cascade = {CascadeType.ALL} )
+    @ManyToOne(targetEntity = UtilisateurImpl.class)
     @JoinColumn(name = "fk_utilisateur", nullable = false)
     private Utilisateur utilisateur;
     /**
@@ -54,6 +54,7 @@ public class FactureImpl implements Facture {
      * Numéro de la facture - Clé primaire
      */
     @Id
+    @GeneratedValue(generator = "uuid")
     private String numero;
     /**
      * Date de la facture
@@ -113,7 +114,6 @@ public class FactureImpl implements Facture {
     @Override
     public void setUtilisateur(Utilisateur utilisateur) {
 	this.utilisateur = utilisateur;
-
     }
 
     /**

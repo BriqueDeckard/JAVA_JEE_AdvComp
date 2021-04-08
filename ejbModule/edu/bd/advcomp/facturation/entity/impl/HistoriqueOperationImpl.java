@@ -3,11 +3,13 @@ package edu.bd.advcomp.facturation.entity.impl;
 
 import java.util.Date;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -25,11 +27,20 @@ import edu.bd.advcomp.facturation.entity.HistoriqueOperation;
  */
 @Entity
 @Table(name = "historique")
+@NamedQueries({ @NamedQuery(name = "liste_historique", query = "SELECT h FROM HistoriqueOperationImpl h"),
+	@NamedQuery(name = "liste_historique_between", query = "SELECT h FROM HistoriqueOperationImpl h WHERE h.date >= :beginDateTime")
+
+})
 public class HistoriqueOperationImpl implements HistoriqueOperation {
+    /**
+     * UID for class.
+     */
+    private static final long serialVersionUID = 8954103111843672345L;
     /**
      * Identifiant marqué de @Id, indepensable.
      */
     @Id
+    @GeneratedValue(generator = "uuid")
     private Long id;
     /**
      * @Temporal
@@ -45,7 +56,7 @@ public class HistoriqueOperationImpl implements HistoriqueOperation {
      * représentée par une interface - nullable à false, parce qu'un historique ne
      * peut pas être créé sans utilisateur
      */
-    @ManyToOne(targetEntity = UtilisateurImpl.class, cascade = { CascadeType.ALL })
+    @ManyToOne(targetEntity = UtilisateurImpl.class)
     @JoinColumn(name = "fk_utilisateur", nullable = false)
     private Utilisateur utilisateur;
 
@@ -55,7 +66,7 @@ public class HistoriqueOperationImpl implements HistoriqueOperation {
      * une interface - nullable à true parce que la facture peut être nulle à la
      * création de Historique
      */
-    @ManyToOne(targetEntity = FactureImpl.class, cascade = { CascadeType.ALL })
+    @ManyToOne(targetEntity = FactureImpl.class)
     @JoinColumn(name = "fk_facture", nullable = true)
     private Facture facture;
 

@@ -4,6 +4,7 @@ package edu.bd.advcomp.authentification.entity.impl;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -36,6 +37,7 @@ public class UtilisateurImpl implements Utilisateur {
      * @Id pour JPA
      */
     @Id
+    @GeneratedValue(generator = "uuid")
     private String login;
     /**
      * MOt de passe de l'utilisateur
