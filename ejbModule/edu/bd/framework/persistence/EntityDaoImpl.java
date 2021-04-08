@@ -52,6 +52,7 @@ public abstract class EntityDaoImpl<ENTITY_TYPE, ID_TYPE> implements EntityDao<E
 	    e.printStackTrace();
 	    throw new AdvcompException(e);
 	}
+	System.out.println(this.getClass().getSimpleName() + " CREATED.");
 	return entity;
     }
 
@@ -72,6 +73,7 @@ public abstract class EntityDaoImpl<ENTITY_TYPE, ID_TYPE> implements EntityDao<E
 	    e.printStackTrace();
 	    throw new AdvcompException(e);
 	}
+	System.out.println(this.getClass().getSimpleName() + " UPDATED");
 	return entity;
     }
 
@@ -86,6 +88,7 @@ public abstract class EntityDaoImpl<ENTITY_TYPE, ID_TYPE> implements EntityDao<E
     public void delete(ENTITY_TYPE entity) throws AdvcompException, Exception {
 	System.out.println(this.getClass().getSimpleName() + " DELETE");
 	this.em.remove(entity);
+	System.out.println(this.getClass().getSimpleName() + " DELETED");
     }
 
     /**
