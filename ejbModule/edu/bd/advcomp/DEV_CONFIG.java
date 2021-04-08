@@ -7,7 +7,9 @@ package edu.bd.advcomp;
  *
  */
 public enum DEV_CONFIG {
-    toto,
-    secret
+    client_001,
+    admin_001,
+    secret,
+    adresse
     
 }
