@@ -6,7 +6,14 @@ import java.util.List;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.NamedQuery;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
+import javax.ws.rs.QueryParam;
 
 import edu.bd.advcomp.AdvcompException;
 import edu.bd.advcomp.facturation.dao.HistoriqueOperationDao;
@@ -79,7 +86,22 @@ public class HistoriqueOperationDaoSql extends EntityDaoImpl<HistoriqueOperation
      */
     @Override
     public List<HistoriqueOperation> getOperationAFacturer(Date dateDebut, Date datefin) {
-	// TODO Fill method utility.
-	return null;
+	Query query = em.createNamedQuery("liste_historique_between", HistoriqueOperation.class);
+	query.setParameter("beginDateTime", dateDebut);
+	List<HistoriqueOperation> list = query.getResultList();
+	return list;
+    }
+
+    /**
+     * See @see edu.bd.advcomp.facturation.dao.HistoriqueOperationDao#retrieveAll()
+     *
+     * @return
+     */
+    @Override
+    public List<HistoriqueOperation> retrieveAll() {
+	Query query = em.createNamedQuery("liste_historique", HistoriqueOperation.class);
+	List<HistoriqueOperation> list = query.getResultList();
+	return list;
+
     }
 }

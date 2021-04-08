@@ -4,6 +4,7 @@ package edu.bd.advcomp.facturation.service;
 import java.util.Date;
 
 import javax.ejb.Local;
+import javax.ejb.Remote;
 
 import edu.bd.advcomp.AdvcompException;
 import edu.bd.advcomp.authentification.entity.Utilisateur;

@@ -5,6 +5,8 @@ import java.util.Date;
 import java.util.List;
 
 import javax.ejb.Local;
+import javax.ws.rs.QueryParam;
+
 
 import edu.bd.advcomp.facturation.entity.HistoriqueOperation;
 import edu.bd.framework.persistence.EntityDao;
@@ -25,5 +27,8 @@ public interface HistoriqueOperationDao extends EntityDao<HistoriqueOperation, L
      * @return
      */
     List<HistoriqueOperation> getOperationAFacturer(Date dateDebut, Date datefin);
+
+    @Override
+    List<HistoriqueOperation> retrieveAll();
 
 }
