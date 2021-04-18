@@ -9,6 +9,8 @@ import javax.ejb.Remote;
 import edu.bd.advcomp.AdvcompException;
 import edu.bd.advcomp.authentification.entity.Utilisateur;
 import edu.bd.advcomp.facturation.entity.Facture;
+import edu.bd.advcomp.facturation.event.FacturationEvent;
+import edu.bd.advcomp.facturation.event.FacturationSignalEvent;
 
 /**
  * TODO Fill type utility
@@ -18,6 +20,9 @@ import edu.bd.advcomp.facturation.entity.Facture;
  */
 @Local
 public interface FacturationService {
+
+    public static String JNDI = "java:global/AdvCompEjb/FacturationServiceImpl!edu.bd.advcomp.facturation.service.FacturationService";
+
     /**
      * Enregistre l'opération réaliser par le client
      * 
@@ -50,4 +55,20 @@ public interface FacturationService {
      * @return
      */
     public Facture obtenirFacture(String numeroFacture);
+
+    /**
+     * listen To AdvCompService Events *
+     * 
+     * @param facturationEvent
+     * @throws AdvcompException
+     */
+    void listenToAdvCompServiceEvents(FacturationEvent facturationEvent) throws AdvcompException;
+
+    /**
+     * listen To Timer Events
+     *
+     * @param facturationSignalEvent
+     * @throws AdvcompException
+     */
+    void listenToTimerEvents(FacturationSignalEvent facturationSignalEvent) throws AdvcompException;
 }

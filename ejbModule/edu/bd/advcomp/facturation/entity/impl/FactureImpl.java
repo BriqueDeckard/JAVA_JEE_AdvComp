@@ -9,6 +9,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -27,14 +29,15 @@ import edu.bd.advcomp.facturation.entity.HistoriqueOperation;
  */
 @Entity
 @Table(name = "facture")
+@NamedQueries({ @NamedQuery(name = "liste_factures", query = "SELECT f FROM FactureImpl f") })
 public class FactureImpl implements Facture {
     // TODO : fill class
 
     /**
-     * Utilisateur lié à la facture
-     * - @ManyToOne parce que Facture connait utilisateur, mais utilisateur ne connait pas facture
-     * - nullable à false parce qu'une facture n'existe pas sans utilisateur
-     * - target entity parce que l'entité est accessible via une interface
+     * Utilisateur lié à la facture - @ManyToOne parce que Facture connait
+     * utilisateur, mais utilisateur ne connait pas facture - nullable à false parce
+     * qu'une facture n'existe pas sans utilisateur - target entity parce que
+     * l'entité est accessible via une interface
      */
     @ManyToOne(targetEntity = UtilisateurImpl.class)
     @JoinColumn(name = "fk_utilisateur", nullable = false)
@@ -44,11 +47,6 @@ public class FactureImpl implements Facture {
      *
      * @return
      */
-    @Override
-    public String toString() {
-	return "FactureImpl [utilisateur=" + this.utilisateur + ", numero=" + this.numero + ", date=" + this.date
-		+ ", montant=" + this.montant + ", isSoldee=" + this.isSoldee + "]";
-    }
 
     /**
      * Numéro de la facture - Clé primaire
@@ -56,6 +54,21 @@ public class FactureImpl implements Facture {
     @Id
     @GeneratedValue(generator = "uuid")
     private String numero;
+
+    /**
+     * See @see java.lang.Object#toString()
+     *
+     * @return
+     */
+    @Override
+    public String toString() {
+	return "\n\n" + "########################################\n" + "# Facture :\n".toUpperCase() + "# -\n"
+		+ "#\tUtilisateur :\t" + this.utilisateur.getLogin() + "\n" + "#\tNumero : \t" + this.numero + "\n"
+		+ "#\tDate :\t\t" + this.date.getDate() + "/" + this.date.getMonth() + "/" + this.date.getYear() + "\n"
+		+ "#\tMontant :\t" + this.montant + "\n" + "#\tIsSoldee : \t" + (this.isSoldee ? "OUI" : "NON")
+		+ "\n########################################";
+    }
+
     /**
      * Date de la facture
      */
@@ -200,6 +213,5 @@ public class FactureImpl implements Facture {
 	this.isSoldee = soldee;
 
     }
-
 
 }

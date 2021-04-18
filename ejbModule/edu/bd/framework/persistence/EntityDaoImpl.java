@@ -45,14 +45,15 @@ public abstract class EntityDaoImpl<ENTITY_TYPE, ID_TYPE> implements EntityDao<E
      */
     @Override
     public ENTITY_TYPE create(ENTITY_TYPE entity) throws AdvcompException, Exception {
-	System.out.println(this.getClass().getSimpleName() + " CREATE.");
+	System.out
+		.println("INFO : " + this.getClass().getSimpleName() + " CREATE " + entity.getClass().getSimpleName());
 	try {
 	    em.persist(entity);
 	} catch (Exception e) {
 	    e.printStackTrace();
 	    throw new AdvcompException(e);
 	}
-	System.out.println(this.getClass().getSimpleName() + " CREATED.");
+	System.out.println("INFO : " + entity.toString() + " CREATED BY " + this.getClass().getSimpleName());
 	return entity;
     }
 
@@ -66,14 +67,15 @@ public abstract class EntityDaoImpl<ENTITY_TYPE, ID_TYPE> implements EntityDao<E
      */
     @Override
     public ENTITY_TYPE update(ENTITY_TYPE entity) throws AdvcompException, Exception {
-	System.out.println(this.getClass().getSimpleName() + " UPDATE");
+	System.out
+		.println("INFO : " + this.getClass().getSimpleName() + " UPDATE " + entity.getClass().getSimpleName());
 	try {
 	    em.merge(entity);
 	} catch (Exception e) {
 	    e.printStackTrace();
 	    throw new AdvcompException(e);
 	}
-	System.out.println(this.getClass().getSimpleName() + " UPDATED");
+	System.out.println("INFO : " + entity.toString() + " UPDATED BY " + this.getClass().getSimpleName());
 	return entity;
     }
 
@@ -86,9 +88,11 @@ public abstract class EntityDaoImpl<ENTITY_TYPE, ID_TYPE> implements EntityDao<E
      */
     @Override
     public void delete(ENTITY_TYPE entity) throws AdvcompException, Exception {
-	System.out.println(this.getClass().getSimpleName() + " DELETE");
+	System.out
+		.println("INFO : " + this.getClass().getSimpleName() + " DELETE " + entity.getClass().getSimpleName());
+	entity = em.merge(entity);
 	this.em.remove(entity);
-	System.out.println(this.getClass().getSimpleName() + " DELETED");
+	System.out.println("INFO : " + entity.toString() + " DELETED BY " + this.getClass().getSimpleName());
     }
 
     /**

@@ -33,6 +33,7 @@ public class CalculateurServiceImpl implements CalculateurService {
      */
     @Override
     public Double additionner(Double facteur1, Double facteur2) throws CalculException {
+	System.out.println("INFO : Additionner " + facteur1 + " + " + facteur2);
 	checkFacteurs(facteur1, facteur2);
 	try {
 	    return facteur1 + facteur2;
@@ -55,6 +56,7 @@ public class CalculateurServiceImpl implements CalculateurService {
      */
     @Override
     public Double soustraire(Double facteur1, Double facteur2) throws CalculException {
+	System.out.println("INFO : Soustraire " + facteur1 + " - " + facteur2);
 	checkFacteurs(facteur1, facteur2);
 	try {
 	    return facteur1 - facteur2;
@@ -76,6 +78,7 @@ public class CalculateurServiceImpl implements CalculateurService {
      */
     @Override
     public Double multiplier(Double facteur1, Double facteur2) throws CalculException {
+	System.out.println("INFO : Multiplier " + facteur1 + " * " + facteur2);
 	checkFacteurs(facteur1, facteur2);
 	try {
 	    return facteur1 * facteur2;
@@ -97,6 +100,7 @@ public class CalculateurServiceImpl implements CalculateurService {
      */
     @Override
     public Double diviser(Double facteur1, Double facteur2) throws CalculException {
+	System.out.println("INFO : diviser " + facteur1 + " / " + facteur2);
 	checkFacteurs(facteur1, facteur2);
 	if (facteur2 == 0) {
 	    throw new CalculException("La division par Zero est interdite.");
@@ -123,4 +127,6 @@ public class CalculateurServiceImpl implements CalculateurService {
 	    throw new CalculException("L'un des facteurs est null");
 	}
     }
+
+
 }

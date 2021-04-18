@@ -5,6 +5,7 @@ package edu.bd.advcomp.authentification.service.impl;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 
+import edu.bd.advcomp.AdvcompException;
 import edu.bd.advcomp.authentification.entity.Utilisateur;
 import edu.bd.advcomp.authentification.service.AuthentificationService;
 import edu.bd.advcomp.authentification.service.UtilisateurService;
@@ -41,19 +42,19 @@ public class AuthentificationServiceEntityImpl implements AuthentificationServic
      * @param login
      * @param password
      * @return
+     * @throws AdvcompException
      */
     @Override
-    public Boolean authentifier(String login, String password) {
+    public Boolean authentifier(String login, String password) throws AdvcompException {
 	try {
 	    Utilisateur utilisateur = utilisateurService.obtenirUtilisateur(login);
-	    System.out.println( utilisateur.toString());
-	    System.out.println("Utilisateur password : " +utilisateur.getPassword()+ " vs " + password);
-	    
-	    return utilisateur != null && password != null && utilisateur.getPassword().equals(password);
+
+	    return utilisateur != null && password != null && utilisateur.getPassword().equals(password)
+		    && utilisateur.getIsActive();
 
 	} catch (Exception e) {
 	    e.printStackTrace();
-	    return false;
+	    throw new AdvcompException(e);
 	}
     }
 }

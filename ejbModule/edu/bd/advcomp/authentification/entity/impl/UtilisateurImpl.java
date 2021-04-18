@@ -58,33 +58,9 @@ public class UtilisateurImpl implements Utilisateur {
     private Role role;
 
     /**
-     * See @see java.lang.Object#toString()
-     *
-     * @return
+     * Determine si l'utilisateur est activé ou non
      */
-    @Override
-    public String toString() {
-	return "UtilisateurImpl [login=" + this.login + ", password=" + this.password + ", nom=" + this.nom
-		+ ", adresse=" + this.adresse + ", role=" + this.role + "]";
-    }
-
-    /**
-     * Constructor for UtilisateurImpl
-     *
-     * @param login
-     * @param password
-     * @param nom
-     * @param adresse
-     * @param role
-     */
-    public UtilisateurImpl(String login, String password, String nom, String adresse, Role role) {
-	super();
-	this.login = login;
-	this.password = password;
-	this.nom = nom;
-	this.adresse = adresse;
-	this.role = role;
-    }
+    private Boolean isActive = false;
 
     /**
      * See @see edu.bd.advcomp.authentification.entity.Utilisateur#getLogin()
@@ -190,4 +166,47 @@ public class UtilisateurImpl implements Utilisateur {
     public void setRole(Role role) {
 	this.role = role;
     }
+
+    /**
+     * See @see edu.bd.advcomp.authentification.entity.Utilisateur#getIsActive()
+     *
+     * @return
+     */
+    @Override
+    public Boolean getIsActive() {
+	return this.isActive;
+    }
+
+    /**
+     * See @see
+     * edu.bd.advcomp.authentification.entity.Utilisateur#setIsActive(boolean)
+     *
+     * @param active
+     */
+    @Override
+    public void setIsActive(boolean active) {
+	this.isActive = active;
+
+    }
+
+    /**
+     * Constructor for UtilisateurImpl
+     *
+     * @param login
+     * @param password
+     * @param nom
+     * @param adresse
+     * @param role
+     * @param isActive
+     */
+    public UtilisateurImpl(String login, String password, String nom, String adresse, Role role, Boolean isActive) {
+	super();
+	this.login = login;
+	this.password = password;
+	this.nom = nom;
+	this.adresse = adresse;
+	this.role = role;
+	this.isActive = isActive;
+    }
+
 }

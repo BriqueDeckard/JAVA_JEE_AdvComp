@@ -14,4 +14,6 @@ import edu.bd.framework.persistence.EntityDao;
  */
 @Local
 public interface FactureDao extends EntityDao<Facture, String> {
+    
+    public static String JNDI = "java:global/AdvCompEjb/FactureDaoSql!edu.bd.advcomp.facturation.dao.FactureDao";
 }

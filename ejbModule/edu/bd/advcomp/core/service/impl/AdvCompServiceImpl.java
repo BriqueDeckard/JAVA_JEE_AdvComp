@@ -2,6 +2,7 @@
 package edu.bd.advcomp.core.service.impl;
 
 import javax.ejb.Stateful;
+import javax.enterprise.event.Event;
 import javax.inject.Inject;
 
 import edu.bd.advcomp.AdvcompException;
@@ -9,6 +10,7 @@ import edu.bd.advcomp.authentification.entity.Utilisateur;
 import edu.bd.advcomp.calcul.CalculException;
 import edu.bd.advcomp.calcul.service.CalculateurService;
 import edu.bd.advcomp.core.service.AdvCompService;
+import edu.bd.advcomp.facturation.event.FacturationEvent;
 import edu.bd.advcomp.facturation.service.FacturationService;
 
 /**
@@ -20,15 +22,23 @@ import edu.bd.advcomp.facturation.service.FacturationService;
 @Stateful
 public class AdvCompServiceImpl implements AdvCompService {
 
-    private Utilisateur client;
+    private Utilisateur client = null;
 
     private Double resultatTemporaire;
+
+    private Double resultatFinal;
 
     @Inject
     private FacturationService facturationService;
 
     @Inject
     private CalculateurService calculateurService;
+
+    /**
+     * Evènements pour la facturation
+     */
+    @Inject
+    Event<FacturationEvent> facturationEvents;
 
     public AdvCompServiceImpl(Utilisateur client) {
 	this.client = client;
@@ -39,6 +49,16 @@ public class AdvCompServiceImpl implements AdvCompService {
      *
      */
     public AdvCompServiceImpl() {
+    }
+
+    private boolean clientConnecte() {
+	return this.client != null;
+    }
+    
+    private void testConnexion() throws AdvcompException {
+	if(!clientConnecte()) {
+	    throw new AdvcompException("Non connecté");
+	}
     }
 
     private boolean operationChaineeEnCours() {
@@ -71,39 +91,34 @@ public class AdvCompServiceImpl implements AdvCompService {
      */
     @Override
     public Double faireOperationBasique(Double facteur1, Double facteur2, String operateur) throws AdvcompException {
+	testConnexion();
+	
 	try {
-	    Double resultat;
 	    String descriptionOperation = facteur1 + " " + operateur + " " + facteur2;
 
 	    // CALCUL
 	    switch (operateur) {
 
 	    case "+":
-		resultat = calculateurService.additionner(facteur1, facteur2);
+		resultatFinal = calculateurService.additionner(facteur1, facteur2);
 		break;
 	    case "-":
-		resultat = calculateurService.soustraire(facteur1, facteur2);
+		resultatFinal = calculateurService.soustraire(facteur1, facteur2);
 		break;
 	    case "*":
-		resultat = calculateurService.multiplier(facteur1, facteur2);
+		resultatFinal = calculateurService.multiplier(facteur1, facteur2);
 		break;
 	    case "/":
-		resultat = calculateurService.diviser(facteur1, facteur2);
+		resultatFinal = calculateurService.diviser(facteur1, facteur2);
 		break;
 	    default:
 		throw new AdvcompException("Opérateur " + operateur + " non géré.");
 
 	    }
 
-	    try {
-		facturationService.historiserOperation(client, descriptionOperation);
-	    } catch (Exception e) {
-		e.printStackTrace();
-		throw new AdvcompException(e);
-	    }
-
-	    System.out.println(this.getClass().getSimpleName() + " RESULTAT operation basique " + resultat);
-	    return resultat;
+	    // Fire event for facturation
+	    facturationEvents.fire(new FacturationEvent(this.client, descriptionOperation));
+	    return resultatFinal;
 	} catch (CalculException e) {
 	    e.printStackTrace();
 	    throw new AdvcompException("Echec calcul", e);
@@ -124,12 +139,12 @@ public class AdvCompServiceImpl implements AdvCompService {
      */
     @Override
     public void commencerOperationChainee(Double facteur1, Double facteur2, String operateur) throws AdvcompException {
-
+	testConnexion();
+	resultatTemporaire = null;
 	if (operationChaineeEnCours()) {
 	    throw new AdvcompException("Operation chainee déjà en cours");
 	}
 	resultatTemporaire = faireOperationBasique(facteur1, facteur2, operateur);
-	System.out.println(this.getClass().getSimpleName() + " RESULTAT TEMPORAIRE : " + resultatTemporaire);
     }
 
     /**
@@ -143,11 +158,11 @@ public class AdvCompServiceImpl implements AdvCompService {
      */
     @Override
     public void poursuivreOperationChainee(Double facteur, String operateur) throws AdvcompException {
+	testConnexion();
 	if (!operationChaineeEnCours()) {
 	    throw new AdvcompException("Operation chainee pas en cours");
 	}
 	resultatTemporaire = faireOperationBasique(resultatTemporaire, facteur, operateur);
-	System.out.println(this.getClass().getSimpleName() + " RESULTAT TEMPORAIRE : " + resultatTemporaire);
     }
 
     /**
@@ -158,12 +173,67 @@ public class AdvCompServiceImpl implements AdvCompService {
      */
     @Override
     public Double acheverOperationChainee() throws AdvcompException {
+	testConnexion();
 	if (!operationChaineeEnCours()) {
 	    throw new AdvcompException("Operation chainee pas en cours");
 	}
-	Double resultat = resultatTemporaire;
+	resultatFinal = resultatTemporaire;
+
 	resultatTemporaire = null;
-	return resultat;
+	return resultatFinal;
+    }
+
+    /**
+     * See @see edu.bd.advcomp.core.service.AdvCompService#seDeconnecter()
+     *
+     * @throws AdvcompException
+     */
+    @Override
+    public void seDeconnecter() throws AdvcompException {
+	testConnexion();
+	System.out.println("DECONNEXION");
+	this.client = null;
+
+    }
+
+    /**
+     * See @see edu.bd.advcomp.core.service.AdvCompService#afficherResultatFinal()
+     *
+     * @return
+     * @throws AdvcompException
+     */
+    @Override
+    public String afficherResultatFinal() throws AdvcompException {
+	testConnexion();
+	if (operationChaineeEnCours()) {
+	    throw new AdvcompException("Opperation chaine en cours");
+	}
+	try {
+	    return Double.toString(this.resultatFinal);
+	} catch (Exception e) {
+	    throw new AdvcompException(e);
+	}
+
+    }
+
+    /**
+     * See @see
+     * edu.bd.advcomp.core.service.AdvCompService#afficherResultatIntermediaire()
+     *
+     * @return
+     * @throws AdvcompException
+     */
+    @Override
+    public String afficherResultatIntermediaire() throws AdvcompException {
+	testConnexion();
+	if (!operationChaineeEnCours()) {
+	    throw new AdvcompException("Opperation chaine pas en cours");
+	}
+	try {
+	    return Double.toString(this.resultatTemporaire);
+	} catch (Exception e) {
+	    throw new AdvcompException(e);
+	}
     }
 
 }

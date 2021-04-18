@@ -49,4 +49,5 @@ public interface CalculateurService {
      * @return le resultat de la division de facteur1 par facteur2
      */
     public Double diviser(Double facteur1, Double facteur2) throws CalculException;
+
 }

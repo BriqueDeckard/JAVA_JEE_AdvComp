@@ -11,6 +11,21 @@ import edu.bd.framework.persistence.Entity;
  *
  */
 public interface Utilisateur extends Entity {
+
+    /**
+     * is Active
+     *
+     * @return
+     */
+    Boolean getIsActive();
+
+    /**
+     * set IsActive
+     *
+     * @param active
+     */
+    void setIsActive(boolean active);
+
     /**
      * getLogin Retourne le Login
      * 

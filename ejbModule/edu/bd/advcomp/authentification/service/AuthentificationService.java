@@ -3,6 +3,8 @@ package edu.bd.advcomp.authentification.service;
 
 import javax.ejb.Local;
 
+import edu.bd.advcomp.AdvcompException;
+
 /**
  * Service d'authentification
  * 
@@ -18,5 +20,5 @@ public interface AuthentificationService {
      * @param password
      * @return retourne true si l'authentification a réussi et false sinon
      */
-    public Boolean authentifier(String login, String password);
+    public Boolean authentifier(String login, String password)throws AdvcompException;
 }

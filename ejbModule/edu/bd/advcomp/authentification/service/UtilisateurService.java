@@ -14,6 +14,8 @@ import edu.bd.advcomp.authentification.entity.Utilisateur;
  */
 @Local
 public interface UtilisateurService {
+    String JNDI = "java:global/AdvCompEjb/UtilisateurServiceImpl!edu.bd.advcomp.authentification.service.UtilisateurService";
+    
     /**
      * Retourne un utilisateur d'après son login et null si aucun utilisateur avec
      * le login n'existe

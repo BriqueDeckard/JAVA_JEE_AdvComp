@@ -28,7 +28,7 @@ import edu.bd.advcomp.facturation.entity.HistoriqueOperation;
 @Entity
 @Table(name = "historique")
 @NamedQueries({ @NamedQuery(name = "liste_historique", query = "SELECT h FROM HistoriqueOperationImpl h"),
-	@NamedQuery(name = "liste_historique_between", query = "SELECT h FROM HistoriqueOperationImpl h WHERE h.date >= :beginDateTime")
+	@NamedQuery(name = "liste_historique_between", query = "SELECT h FROM HistoriqueOperationImpl h WHERE h.date >= :beginDateTime AND h.facture IS NULL ")
 
 })
 public class HistoriqueOperationImpl implements HistoriqueOperation {

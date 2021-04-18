@@ -86,9 +86,13 @@ public class HistoriqueOperationDaoSql extends EntityDaoImpl<HistoriqueOperation
      */
     @Override
     public List<HistoriqueOperation> getOperationAFacturer(Date dateDebut, Date datefin) {
+	System.out.println("---------------------------------------------------");
+	System.out.println("INFO : Get operation a facturer");
+
 	Query query = em.createNamedQuery("liste_historique_between", HistoriqueOperation.class);
 	query.setParameter("beginDateTime", dateDebut);
 	List<HistoriqueOperation> list = query.getResultList();
+
 	return list;
     }
 
