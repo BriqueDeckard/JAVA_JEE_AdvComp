@@ -1,13 +1,9 @@
 // File AdvCompStartup.java - No copyright - 31 mars 2021
 package edu.bd.advcomp;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.Date;
-import java.util.Locale;
-import java.util.zip.Adler32;
+import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.Singleton;
@@ -17,8 +13,10 @@ import javax.naming.NamingException;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import edu.bd.advcomp.admin.entity.ConnexionAttempt;
 import edu.bd.advcomp.admin.service.AdvCompAdminService;
 import edu.bd.advcomp.authentification.Role;
+import edu.bd.advcomp.authentification.dao.UtilisateurDao;
 import edu.bd.advcomp.authentification.entity.Utilisateur;
 import edu.bd.advcomp.authentification.entity.impl.UtilisateurImpl;
 import edu.bd.advcomp.authentification.service.UtilisateurService;
@@ -27,7 +25,6 @@ import edu.bd.advcomp.core.service.AdvCompService;
 import edu.bd.advcomp.facturation.dao.FactureDao;
 import edu.bd.advcomp.facturation.entity.Facture;
 import edu.bd.advcomp.facturation.entity.impl.FactureImpl;
-import edu.bd.advcomp.facturation.service.FacturationService;
 
 /**
  * TODO Fill type utility
@@ -38,9 +35,9 @@ import edu.bd.advcomp.facturation.service.FacturationService;
 @Startup
 @Singleton
 public class AdvCompStartup {
-    
+
     public static String JNDI = "java:global/AdvCompEjb/AdvCompStartup!edu.bd.advcomp.AdvCompStartup";
-    
+
     public static Utilisateur testUserInactif = new UtilisateurImpl("CLIENT1", "SECRET", "CLIENT1", "ADRESSE1",
 	    Role.CLIENT, false);
     public static Utilisateur testUserActif = new UtilisateurImpl("CLIENT2", "SECRET", "CLIENT2", "ADRESSE2",
@@ -67,27 +64,99 @@ public class AdvCompStartup {
 	System.out.println("####################################");
 	System.out.println("# " + this.getClass().getSimpleName() + " - BOOTSTRAP DEV.");
 	System.out.println("#");
+
 	try {
 	    // INSERTION ADMIN
-	    UtilisateurService userService = doUserServiceLookup();
-	    userService.creerUtilisateur(testAdmin);
-	    System.out.println("# \tAdmin insere.");
-	    
+	    UtilisateurDao userDao = doUtilisateurDaoLookUp();
+
+	    try {
+		userDao.delete(testAdmin);
+	    } catch (Exception e) {
+		System.out.println("ECHEC lors de la suppression de l'admin de test");
+		e.printStackTrace();
+	    } finally {
+		userDao.create(testAdmin);
+		System.out.println("# \tAdmin insere.");
+	    }
+
 	    // INSERTION CLIENTS
-	    userService.creerUtilisateur(testUserActif);
-	    System.out.println("# \tUtilisateur actif insere.");
+	    try {
+		userDao.delete(testUserActif);
+		userDao.delete(testUserInactif);
+		userDao.delete(testUserASupprimer);
+	    } catch (Exception e) {
+		System.out.println("ECHEC lors de la suppression des utilisateurs de test.");
+		e.printStackTrace();
+	    } finally {
 
-	    userService.creerUtilisateur(testUserInactif);
-	    System.out.println("# \tUtilisateur inactif insere.");
+		userDao.create(testUserActif);
+		System.out.println("# \tUtilisateur actif insere.");
 
-	    userService.creerUtilisateur(testUserASupprimer);
-	    System.out.println("# \tUtilisateur a supprimer insere.");
-	    
+		userDao.create(testUserInactif);
+		System.out.println("# \tUtilisateur inactif insere.");
+
+		userDao.create(testUserASupprimer);
+		System.out.println("# \tUtilisateur a supprimer insere.");
+
+	    }
+	} catch (Exception e) {
+	    e.printStackTrace();
+	}
+
+	try {
+
 	    // INSERTION FACTURE
 	    FactureDao billingDao = doFacturationDaoLookup();
-	    billingDao.create(testFacture);
-	    System.out.println("# \tFacture test inseree");
+	    try {
+		billingDao.delete(testFacture);
+	    } catch (Exception e) {
+		System.out.println("ECHEC lors de la suppression de la facture de test.");
+		e.printStackTrace();
+	    } finally {
+		billingDao.create(testFacture);
+		System.out.println("# \tFacture test inseree");
+	    }
 
+	} catch (Exception e) {
+	    e.printStackTrace();
+	}
+
+	// CONNEXION
+	// 1 . User
+	try {
+	    System.out.println("CONNEXION ...");
+	    AdvCompServer serveur = doServerLookup();
+	    AdvCompService service = serveur.connexion(testUserActif.getLogin(), testUserActif.getPassword());
+	    System.out.println("CONNEXION SUCCEDED");
+	    service.seDeconnecter();
+	    System.out.println("CONNEXION ...");
+	    serveur = doServerLookup();
+	    service = serveur.connexion(testUserActif.getLogin(), testUserActif.getPassword());
+	    System.out.println("CONNEXION SUCCEDED");
+	    service.seDeconnecter();
+	} catch (Exception e) {
+	    e.printStackTrace();
+	}
+	// 2 . Admin
+	try {
+	    System.out.println("CONNEXION AS ADMIN ...");
+	    AdvCompServer serveur = doServerLookup();
+	    AdvCompAdminService service = serveur.connexionAsAdmin(testAdmin.getLogin(), testAdmin.getPassword());
+	    System.out.println("CONNEXION AS ADMIN SUCEEDED");
+
+	    List<ConnexionAttempt> list = service.getAllTheConnexionAttempt();
+	    for (ConnexionAttempt connexionAttempt : list) {
+		System.out.println("CONNEXION : " + connexionAttempt.toString());
+	    }
+
+	    SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+	    String beginDateString = "20-04-2021";
+	    Date bDate = formatter.parse(beginDateString);
+	    String endDateString = "22-04-2021";
+	    Date eDate = formatter.parse(endDateString);
+
+	    System.out.println("Nombres de connexions entre " + beginDateString + " et " + endDateString + " : "
+		    + service.getNumberOfConnexionFor(bDate, eDate));
 	} catch (Exception e) {
 	    e.printStackTrace();
 	}
@@ -104,20 +173,26 @@ public class AdvCompStartup {
      * @throws AdvcompException
      */
     private AdvCompServer doServerLookup() throws NamingException, AdvcompException {
-	AdvCompServer serveur = InitialContext
-		.doLookup("java:global/AdvCompEjb/AdvCompServerImpl!edu.bd.advcomp.core.service.AdvCompServer");
+	AdvCompServer serveur = InitialContext.doLookup(AdvCompServer.JNDI); // "java:global/AdvCompEjb/AdvCompServerImpl!edu.bd.advcomp.core.service.AdvCompServer");
 	if (serveur == null) {
 	    throw new AdvcompException("AdvCompServer is null");
 	}
 	return serveur;
     }
 
+    /**
+     * doUserServiceLookup
+     *
+     * TODO : Fill method utility
+     * 
+     * @return
+     * @throws AdvcompException
+     */
     private UtilisateurService doUserServiceLookup() throws AdvcompException {
 	// GETS THE USER SERVICE
 	UtilisateurService userService;
 	try {
-	    userService = InitialContext.doLookup(
-		    "java:global/AdvCompEjb/UtilisateurServiceImpl!edu.bd.advcomp.authentification.service.UtilisateurService");
+	    userService = InitialContext.doLookup(UtilisateurService.JNDI); // "java:global/AdvCompEjb/UtilisateurServiceImpl!edu.bd.advcomp.authentification.service.UtilisateurService");
 	    return userService;
 	} catch (NamingException e) {
 	    e.printStackTrace();
@@ -126,6 +201,33 @@ public class AdvCompStartup {
 	}
     }
 
+    /**
+     * doUtilisateurDaoLookUp
+     *
+     * TODO : Fill method utility
+     * 
+     * @return
+     * @throws AdvcompException
+     */
+    private UtilisateurDao doUtilisateurDaoLookUp() throws AdvcompException {
+	// GETS THE UTILISATEUR DAO
+	UtilisateurDao dao;
+	try {
+	    dao = InitialContext.doLookup(UtilisateurDao.JNDI);
+	    return dao;
+	} catch (Exception e) {
+	    throw new AdvcompException(e);
+	}
+    }
+
+    /**
+     * doFacturationDaoLookup
+     *
+     * TODO : Fill method utility
+     * 
+     * @return
+     * @throws AdvcompException
+     */
     private FactureDao doFacturationDaoLookup() throws AdvcompException {
 	// GETS THE FACTURE DAO
 	FactureDao factureDao;
