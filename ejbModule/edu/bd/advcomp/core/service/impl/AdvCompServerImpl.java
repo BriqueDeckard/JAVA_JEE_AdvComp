@@ -2,15 +2,17 @@
 package edu.bd.advcomp.core.service.impl;
 
 import javax.ejb.Stateful;
+import javax.enterprise.event.Event;
 import javax.inject.Inject;
+import javax.interceptor.Interceptors;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
 import edu.bd.advcomp.AdvcompException;
+import edu.bd.advcomp.admin.event.ConnexionEvent;
 import edu.bd.advcomp.admin.service.AdvCompAdminService;
 import edu.bd.advcomp.authentification.Role;
 import edu.bd.advcomp.authentification.entity.Utilisateur;
-import edu.bd.advcomp.authentification.entity.impl.UtilisateurImpl;
 import edu.bd.advcomp.authentification.service.AuthentificationService;
 import edu.bd.advcomp.authentification.service.UtilisateurService;
 import edu.bd.advcomp.core.service.AdvCompServer;
@@ -22,6 +24,7 @@ import edu.bd.advcomp.core.service.AdvCompService;
  * @author Brique DECKARD
  *
  */
+@Interceptors({ edu.bd.advcomp.admin.interceptors.impl.ConnexionInterceptorImpl.class })
 @Stateful
 public class AdvCompServerImpl implements AdvCompServer {
 
@@ -45,6 +48,12 @@ public class AdvCompServerImpl implements AdvCompServer {
     }
 
     /**
+     * Permet de publier un event pour la connexion.
+     */
+    @Inject
+    Event<ConnexionEvent> connexionEvents;
+
+    /**
      * See @see
      * edu.bd.advcomp.core.service.AdvCompServer#connexion(java.lang.String,
      * java.lang.String)
@@ -55,14 +64,17 @@ public class AdvCompServerImpl implements AdvCompServer {
     public AdvCompService connexion(String login, String password) throws AdvcompException {
 
 	if (!this.authentificationService.authentifier(login, password)) {
+	    connexionEvents.fire(new ConnexionEvent(login, false));
 	    throw new AdvcompException("Echec lors de l'authentification");
 	}
 	Utilisateur client = utilisateurService.obtenirUtilisateur(login);
 	if (client == null) {
+	    connexionEvents.fire(new ConnexionEvent(login, false));
 	    throw new AdvcompException("Client null !");
 	}
 
 	if (!client.getIsActive()) {
+	    connexionEvents.fire(new ConnexionEvent(login, false));
 	    throw new AdvcompException("Client non actif.");
 	}
 
@@ -72,6 +84,7 @@ public class AdvCompServerImpl implements AdvCompServer {
 	remoteService.setClient(client);
 
 	System.out.println(this.getClass().getSimpleName() + " - Connexion succeeded.");
+	connexionEvents.fire(new ConnexionEvent(login, true));
 	return remoteService;
 
     }
@@ -113,6 +126,12 @@ public class AdvCompServerImpl implements AdvCompServer {
 
     }
 
+    /**
+     * do AdvComp Service Lookup
+     *
+     * @return
+     * @throws AdvcompException
+     */
     private AdvCompService doAdvCompServiceLookup() throws AdvcompException {
 	try {
 	    String serviceName = AdvCompService.class.getName();
@@ -125,12 +144,16 @@ public class AdvCompServerImpl implements AdvCompServer {
 	}
     }
 
+    /**
+     * do AdvCompAdminService Lookup
+     *
+     * @return
+     * @throws AdvcompException
+     */
     private AdvCompAdminService doAdvCompAdminServiceLookup() throws AdvcompException {
 	try {
 	    String serviceName = AdvCompAdminService.class.getName();
-	    AdvCompAdminService remoteService = (AdvCompAdminService) InitialContext.doLookup(
-		    "java:global/AdvCompEjb/AdvCompAdminServiceImpl!edu.bd.advcomp.admin.service.AdvCompAdminService");
-	    // .doLookup("edu.bd.advcomp.core.service.AdvCompService");
+	    AdvCompAdminService remoteService = (AdvCompAdminService) InitialContext.doLookup(AdvCompAdminService.JNDI);
 	    return remoteService;
 	} catch (NamingException e) {
 	    e.printStackTrace();
@@ -156,8 +179,6 @@ public class AdvCompServerImpl implements AdvCompServer {
 	nouvelUtilisateur.setPassword(password);
 	nouvelUtilisateur.setIsActive(false);
 	nouvelUtilisateur.setAdresse(adresse);
-
-	// TODO : implémenter validation utilisateur !!
 	utilisateurService.creerUtilisateur(nouvelUtilisateur);
 
     }

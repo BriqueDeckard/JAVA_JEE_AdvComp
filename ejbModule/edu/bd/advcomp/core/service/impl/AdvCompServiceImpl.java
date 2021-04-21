@@ -4,6 +4,7 @@ package edu.bd.advcomp.core.service.impl;
 import javax.ejb.Stateful;
 import javax.enterprise.event.Event;
 import javax.inject.Inject;
+import javax.interceptor.Interceptors;
 
 import edu.bd.advcomp.AdvcompException;
 import edu.bd.advcomp.authentification.entity.Utilisateur;
@@ -20,17 +21,33 @@ import edu.bd.advcomp.facturation.service.FacturationService;
  *
  */
 @Stateful
+//@Interceptors({ edu.bd.advcomp.admin.interceptors.ConnexionInterceptorImpl.class })
 public class AdvCompServiceImpl implements AdvCompService {
 
+    /**
+     * Client courant
+     */
     private Utilisateur client = null;
 
+    /**
+     * Resultat temporaire des calculs
+     */
     private Double resultatTemporaire;
 
+    /**
+     * Resultat final du calcul
+     */
     private Double resultatFinal;
 
+    /**
+     * Service de facturation
+     */
     @Inject
     private FacturationService facturationService;
 
+    /**
+     * Service de calcul
+     */
     @Inject
     private CalculateurService calculateurService;
 
@@ -40,6 +57,11 @@ public class AdvCompServiceImpl implements AdvCompService {
     @Inject
     Event<FacturationEvent> facturationEvents;
 
+    /**
+     * Constructor for AdvCompServiceImpl
+     *
+     * @param client
+     */
     public AdvCompServiceImpl(Utilisateur client) {
 	this.client = client;
     }
@@ -51,17 +73,32 @@ public class AdvCompServiceImpl implements AdvCompService {
     public AdvCompServiceImpl() {
     }
 
-    private boolean clientConnecte() {
+    /**
+     * is Client Connecte
+     *
+     * @return
+     */
+    private boolean isClientConnecte() {
 	return this.client != null;
     }
-    
+
+    /**
+     * test Connexion
+     *
+     * @throws AdvcompException
+     */
     private void testConnexion() throws AdvcompException {
-	if(!clientConnecte()) {
+	if (!isClientConnecte()) {
 	    throw new AdvcompException("Non connecté");
 	}
     }
 
-    private boolean operationChaineeEnCours() {
+    /**
+     * is Operation Chainee En Cours
+     *
+     * @return
+     */
+    private boolean isOperationChaineeEnCours() {
 	return resultatTemporaire != null;
 
     }
@@ -92,7 +129,7 @@ public class AdvCompServiceImpl implements AdvCompService {
     @Override
     public Double faireOperationBasique(Double facteur1, Double facteur2, String operateur) throws AdvcompException {
 	testConnexion();
-	
+
 	try {
 	    String descriptionOperation = facteur1 + " " + operateur + " " + facteur2;
 
@@ -141,7 +178,7 @@ public class AdvCompServiceImpl implements AdvCompService {
     public void commencerOperationChainee(Double facteur1, Double facteur2, String operateur) throws AdvcompException {
 	testConnexion();
 	resultatTemporaire = null;
-	if (operationChaineeEnCours()) {
+	if (isOperationChaineeEnCours()) {
 	    throw new AdvcompException("Operation chainee déjà en cours");
 	}
 	resultatTemporaire = faireOperationBasique(facteur1, facteur2, operateur);
@@ -159,7 +196,7 @@ public class AdvCompServiceImpl implements AdvCompService {
     @Override
     public void poursuivreOperationChainee(Double facteur, String operateur) throws AdvcompException {
 	testConnexion();
-	if (!operationChaineeEnCours()) {
+	if (!isOperationChaineeEnCours()) {
 	    throw new AdvcompException("Operation chainee pas en cours");
 	}
 	resultatTemporaire = faireOperationBasique(resultatTemporaire, facteur, operateur);
@@ -174,7 +211,7 @@ public class AdvCompServiceImpl implements AdvCompService {
     @Override
     public Double acheverOperationChainee() throws AdvcompException {
 	testConnexion();
-	if (!operationChaineeEnCours()) {
+	if (!isOperationChaineeEnCours()) {
 	    throw new AdvcompException("Operation chainee pas en cours");
 	}
 	resultatFinal = resultatTemporaire;
@@ -205,7 +242,7 @@ public class AdvCompServiceImpl implements AdvCompService {
     @Override
     public String afficherResultatFinal() throws AdvcompException {
 	testConnexion();
-	if (operationChaineeEnCours()) {
+	if (isOperationChaineeEnCours()) {
 	    throw new AdvcompException("Opperation chaine en cours");
 	}
 	try {
@@ -226,7 +263,7 @@ public class AdvCompServiceImpl implements AdvCompService {
     @Override
     public String afficherResultatIntermediaire() throws AdvcompException {
 	testConnexion();
-	if (!operationChaineeEnCours()) {
+	if (!isOperationChaineeEnCours()) {
 	    throw new AdvcompException("Opperation chaine pas en cours");
 	}
 	try {
