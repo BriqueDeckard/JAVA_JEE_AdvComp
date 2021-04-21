@@ -7,6 +7,7 @@ import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 import edu.bd.advcomp.AdvcompException;
 import edu.bd.advcomp.DEV_CONFIG;
@@ -14,6 +15,7 @@ import edu.bd.advcomp.authentification.Role;
 import edu.bd.advcomp.authentification.dao.UtilisateurDao;
 import edu.bd.advcomp.authentification.entity.Utilisateur;
 import edu.bd.advcomp.authentification.entity.impl.UtilisateurImpl;
+import edu.bd.advcomp.facturation.entity.Facture;
 import edu.bd.framework.persistence.EntityDaoImpl;
 
 /**
@@ -26,8 +28,8 @@ import edu.bd.framework.persistence.EntityDaoImpl;
 @Stateless
 public class UtilisateurDaoSql extends EntityDaoImpl<Utilisateur, String> implements UtilisateurDao {
 
-    @PersistenceContext(unitName = "advcomp")
-    EntityManager em;
+//    @PersistenceContext(unitName = "advcomp")
+//    EntityManager em;
 
     /**
      * Constructor for UtilisateurDaoSql
@@ -51,7 +53,7 @@ public class UtilisateurDaoSql extends EntityDaoImpl<Utilisateur, String> implem
 	    throw new AdvcompException("ERROR : Id is null");
 	}
 	try {
-	    Utilisateur user = em.find(UtilisateurImpl.class, id);
+	    Utilisateur user = this.getEm().find(UtilisateurImpl.class, id);
 	    return user;
 
 	} catch (Exception e) {
@@ -83,6 +85,19 @@ public class UtilisateurDaoSql extends EntityDaoImpl<Utilisateur, String> implem
     @Override
     public List<Utilisateur> retrieveAll() throws AdvcompException, Exception {
 	return null;
+    }
+
+    /**
+     * See @see
+     * edu.bd.advcomp.authentification.dao.UtilisateurDao#retrieveAllInactiveUsers()
+     *
+     * @return
+     */
+    @Override
+    public List<Utilisateur> retrieveAllInactiveUsers() {
+	Query query = this.getEm().createNamedQuery("liste_user_inactifs", Utilisateur.class);
+	List<Utilisateur> list = query.getResultList();
+	return list;
     }
 
 }

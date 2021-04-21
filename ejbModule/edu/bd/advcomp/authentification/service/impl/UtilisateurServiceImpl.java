@@ -1,6 +1,8 @@
 // File UtilisateurServiceImpl.java - No copyright - 23 mars 2021
 package edu.bd.advcomp.authentification.service.impl;
 
+import java.util.List;
+
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 
@@ -113,5 +115,23 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 	    e.printStackTrace();
 	}
 	return null;
+    }
+
+    /**
+     * See @see
+     * edu.bd.advcomp.authentification.service.UtilisateurService#retrouverUtilisateurInactifs()
+     * 
+     * @return
+     *
+     * @throws AdvcompException
+     */
+    @Override
+    public List<Utilisateur> retrouverUtilisateurInactifs() throws AdvcompException {
+	try {
+	    return this.utilisateurDao.retrieveAllInactiveUsers();
+	} catch (Exception e) {
+	    throw new AdvcompException(e);
+	}
+
     }
 }

@@ -1,6 +1,8 @@
 // File UtilisateurService.java - No copyright - 23 mars 2021
 package edu.bd.advcomp.authentification.service;
 
+import java.util.List;
+
 import javax.ejb.Local;
 
 import edu.bd.advcomp.AdvcompException;
@@ -15,7 +17,7 @@ import edu.bd.advcomp.authentification.entity.Utilisateur;
 @Local
 public interface UtilisateurService {
     String JNDI = "java:global/AdvCompEjb/UtilisateurServiceImpl!edu.bd.advcomp.authentification.service.UtilisateurService";
-    
+
     /**
      * Retourne un utilisateur d'après son login et null si aucun utilisateur avec
      * le login n'existe
@@ -54,4 +56,13 @@ public interface UtilisateurService {
      * @return
      */
     public Utilisateur getNewUtilisateur() throws AdvcompException;
+
+    /**
+     * retrouver Utilisateur Inactifs
+     *
+     * TODO : Fill method utility
+     * @return
+     * @throws AdvcompException
+     */
+    List<Utilisateur> retrouverUtilisateurInactifs() throws AdvcompException;
 }

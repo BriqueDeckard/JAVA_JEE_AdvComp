@@ -6,6 +6,8 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 import edu.bd.advcomp.authentification.Role;
@@ -23,6 +25,8 @@ import edu.bd.advcomp.authentification.entity.Utilisateur;
  */
 @Entity
 @Table(name = "utilisateur")
+@NamedQueries({
+	@NamedQuery(name = "liste_user_inactifs", query = "SELECT u from UtilisateurImpl u WHERE u.isActive = FALSE") })
 public class UtilisateurImpl implements Utilisateur {
 
     /**
