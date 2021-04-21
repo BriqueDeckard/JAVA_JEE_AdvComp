@@ -15,6 +15,9 @@ import edu.bd.advcomp.AdvcompException;
  * @author Brique DECKARD <br/>
  */
 public interface EntityDao<ENTITY_TYPE, ID_TYPE> {
+
+   
+
     /**
      * <u><b>create : </b></u><br/>
      * Créer une entitée. <br/>
@@ -64,9 +67,7 @@ public interface EntityDao<ENTITY_TYPE, ID_TYPE> {
      * @return
      * @throws AdvcompException
      */
-    default List<ENTITY_TYPE> retrieveAll() throws AdvcompException, Exception {
-	return new ArrayList<ENTITY_TYPE>();
-    }
+    public List<ENTITY_TYPE> retrieveAll() throws AdvcompException, Exception;
 
     /**
      * <u><b>getNew : </b></u><br/>

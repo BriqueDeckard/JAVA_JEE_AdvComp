@@ -34,6 +34,16 @@ public abstract class EntityDaoImpl<ENTITY_TYPE, ID_TYPE> implements EntityDao<E
      */
     @PersistenceContext(unitName = "advcomp")
     EntityManager em;
+    
+    
+
+    /** 
+     * Gets em 
+     * @return the em
+     */
+    public EntityManager getEm() {
+        return this.em;
+    }
 
     /**
      * See @see edu.bd.framework.persistence.EntityDao#create(java.lang.Object)
