@@ -5,9 +5,12 @@ import java.util.Date;
 import java.util.List;
 
 import javax.ejb.Stateful;
+import javax.enterprise.event.Observes;
 import javax.inject.Inject;
 
 import edu.bd.advcomp.AdvcompException;
+import edu.bd.advcomp.admin.dao.ConnexionAttemptDao;
+import edu.bd.advcomp.admin.entity.ConnexionAttempt;
 import edu.bd.advcomp.admin.service.AdvCompAdminService;
 import edu.bd.advcomp.authentification.entity.Utilisateur;
 import edu.bd.advcomp.authentification.service.UtilisateurService;
@@ -16,7 +19,7 @@ import edu.bd.advcomp.facturation.entity.Facture;
 import edu.bd.advcomp.facturation.service.FacturationService;
 
 /**
- * TODO Fill type utility
+ * Service d'admin pour AdvComp
  * 
  * @author Brique DECKARD
  *
@@ -24,19 +27,44 @@ import edu.bd.advcomp.facturation.service.FacturationService;
 @Stateful
 public class AdvCompAdminServiceImpl implements AdvCompAdminService {
 
+    /**
+     * Service utilisateurs
+     */
     @Inject
-    public UtilisateurService userService;
+    UtilisateurService userService;
 
+    /**
+     * Service de facturation
+     */
     @Inject
     FacturationService facturationService;
 
+    /**
+     * Dao des factures
+     */
     @Inject
     FactureDao factureDao;
 
+    /**
+     * Dao des tentatives de connexion
+     */
+    @Inject
+    ConnexionAttemptDao connexionAttemptDao;
+
+    /**
+     * is Authenticated
+     *
+     * @return
+     */
     private boolean isAuthenticated() {
 	return this.admin != null;
     }
 
+    /**
+     * test Authentication
+     *
+     * @throws AdvcompException
+     */
     private void testAuthentication() throws AdvcompException {
 	if (!isAuthenticated()) {
 	    throw new AdvcompException("Non authentifié");
@@ -50,6 +78,9 @@ public class AdvCompAdminServiceImpl implements AdvCompAdminService {
     public AdvCompAdminServiceImpl() {
     }
 
+    /**
+     * Administrateur
+     */
     Utilisateur admin = null;
 
     /**
@@ -173,6 +204,54 @@ public class AdvCompAdminServiceImpl implements AdvCompAdminService {
     @Override
     public List<Facture> getAllTheFacture() throws AdvcompException, Exception {
 	return factureDao.retrieveAll();
+    }
+
+    /**
+     * See @see
+     * edu.bd.advcomp.admin.service.AdvCompAdminService#retrouverUtilisateursInactifs()
+     *
+     * @return
+     * @throws AdvcompException
+     */
+    @Override
+    public List<Utilisateur> retrouverUtilisateursInactifs() throws AdvcompException {
+	return this.userService.retrouverUtilisateurInactifs();
+    }
+
+    /**
+     * See @see
+     * edu.bd.advcomp.admin.service.AdvCompAdminService#getAllTheConnexionAttempt()
+     *
+     * @return
+     * @throws AdvcompException
+     */
+    @Override
+    public List<ConnexionAttempt> getAllTheConnexionAttempt() throws AdvcompException {
+	try {
+	    return this.connexionAttemptDao.retrieveAll();
+	} catch (Exception e) {
+	    e.printStackTrace();
+	    throw new AdvcompException(e);
+	}
+    }
+
+    /**
+     * See @see
+     * edu.bd.advcomp.admin.service.AdvCompAdminService#getNumberOfConnexionFor(java.util.Date)
+     *
+     * @param date
+     * @return
+     */
+    @Override
+    public Integer getNumberOfConnexionFor(Date bDate, Date eDate) throws AdvcompException {
+	{
+	    // TODO Fill method utility.
+	    try {
+		return this.connexionAttemptDao.retrieveAllBetween(bDate, eDate).size();
+	    } catch (Exception e) {
+		throw new AdvcompException(e);
+	    }
+	}
     }
 
 }
