@@ -31,8 +31,8 @@ import edu.bd.framework.persistence.EntityDaoImpl;
 public class HistoriqueOperationDaoSql extends EntityDaoImpl<HistoriqueOperation, Long>
 	implements HistoriqueOperationDao {
 
-    @PersistenceContext(unitName = "advcomp")
-    EntityManager em;
+//    @PersistenceContext(unitName = "advcomp")
+//    EntityManager em;
 
     /**
      * Constructor for HistoriqueOperationDaoSql
@@ -55,7 +55,7 @@ public class HistoriqueOperationDaoSql extends EntityDaoImpl<HistoriqueOperation
 	    throw new AdvcompException("ERROR : Id is null");
 	}
 	try {
-	    HistoriqueOperation entity = em.find(HistoriqueOperationImpl.class, id);
+	    HistoriqueOperation entity = this.getEm().find(HistoriqueOperationImpl.class, id);
 	    return entity;
 	} catch (Exception e) {
 	    e.printStackTrace();
@@ -89,7 +89,7 @@ public class HistoriqueOperationDaoSql extends EntityDaoImpl<HistoriqueOperation
 	System.out.println("---------------------------------------------------");
 	System.out.println("INFO : Get operation a facturer");
 
-	Query query = em.createNamedQuery("liste_historique_between", HistoriqueOperation.class);
+	Query query = this.getEm().createNamedQuery("liste_historique_between", HistoriqueOperation.class);
 	query.setParameter("beginDateTime", dateDebut);
 	List<HistoriqueOperation> list = query.getResultList();
 
@@ -103,7 +103,7 @@ public class HistoriqueOperationDaoSql extends EntityDaoImpl<HistoriqueOperation
      */
     @Override
     public List<HistoriqueOperation> retrieveAll() {
-	Query query = em.createNamedQuery("liste_historique", HistoriqueOperation.class);
+	Query query = this.getEm().createNamedQuery("liste_historique", HistoriqueOperation.class);
 	List<HistoriqueOperation> list = query.getResultList();
 	return list;
 

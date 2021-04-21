@@ -67,4 +67,8 @@ public class FacturationSignalEvent implements Serializable {
     public String toString() {
 	return "FacturationSignalEvent [dateDebut=" + this.dateDebut + ", dateFin=" + this.dateFin + "]";
     }
+
+
+
+
 }
