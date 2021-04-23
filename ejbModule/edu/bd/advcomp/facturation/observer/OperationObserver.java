@@ -1,0 +1,28 @@
+// File OperationObserver.java - No copyright - 23 avr. 2021
+package edu.bd.advcomp.facturation.observer;
+
+import javax.ejb.Local;
+import javax.enterprise.event.Observes;
+
+import edu.bd.advcomp.AdvcompException;
+import edu.bd.advcomp.facturation.event.OperationEvent;
+
+/**
+ * Contract for operation observer.
+ * 
+ * @author Brique DECKARD
+ *
+ */
+@Local
+public interface OperationObserver {
+
+    /**
+     * listen Operation Events
+     *
+     * TODO : Fill method utility
+     * 
+     * @param facturationEvent
+     * @throws AdvcompException
+     */
+    public void listenOperationEvents(@Observes OperationEvent facturationEvent) throws AdvcompException;
+}

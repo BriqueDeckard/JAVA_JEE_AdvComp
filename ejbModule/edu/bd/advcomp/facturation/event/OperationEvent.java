@@ -11,7 +11,7 @@ import edu.bd.advcomp.authentification.entity.Utilisateur;
  * @author Brique DECKARD
  *
  */
-public class FacturationEvent implements Serializable {
+public class OperationEvent implements Serializable {
 
     private Utilisateur user;
 
@@ -25,7 +25,7 @@ public class FacturationEvent implements Serializable {
      * Constructor for FacturationEvent
      *
      */
-    public FacturationEvent(Utilisateur user, String message) {
+    public OperationEvent(Utilisateur user, String message) {
 	super();
 	this.message = message;
 	this.user = user;

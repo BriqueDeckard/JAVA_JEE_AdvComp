@@ -1,5 +1,5 @@
 // File ConnexionObserverImpl.java - No copyright - 21 avr. 2021
-package edu.bd.advcomp.admin.service.impl;
+package edu.bd.advcomp.admin.observer.impl;
 
 import java.util.Date;
 
@@ -11,7 +11,7 @@ import edu.bd.advcomp.AdvcompException;
 import edu.bd.advcomp.admin.dao.ConnexionAttemptDao;
 import edu.bd.advcomp.admin.entity.ConnexionAttempt;
 import edu.bd.advcomp.admin.event.ConnexionEvent;
-import edu.bd.advcomp.admin.service.ConnexionObserver;
+import edu.bd.advcomp.admin.observer.ConnexionObserver;
 
 /**
  * Impl pour l'observation des connexions

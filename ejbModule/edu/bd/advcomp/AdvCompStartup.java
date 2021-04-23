@@ -133,6 +133,7 @@ public class AdvCompStartup {
 	    serveur = doServerLookup();
 	    service = serveur.connexion(testUserActif.getLogin(), testUserActif.getPassword());
 	    System.out.println("CONNEXION SUCCEDED");
+	    service.faireOperationBasique(10d, 12d, "+");
 	    service.seDeconnecter();
 	} catch (Exception e) {
 	    e.printStackTrace();

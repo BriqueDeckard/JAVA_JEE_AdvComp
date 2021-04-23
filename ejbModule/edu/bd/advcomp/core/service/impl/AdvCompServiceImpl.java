@@ -11,7 +11,7 @@ import edu.bd.advcomp.authentification.entity.Utilisateur;
 import edu.bd.advcomp.calcul.CalculException;
 import edu.bd.advcomp.calcul.service.CalculateurService;
 import edu.bd.advcomp.core.service.AdvCompService;
-import edu.bd.advcomp.facturation.event.FacturationEvent;
+import edu.bd.advcomp.facturation.event.OperationEvent;
 import edu.bd.advcomp.facturation.service.FacturationService;
 
 /**
@@ -55,7 +55,7 @@ public class AdvCompServiceImpl implements AdvCompService {
      * Evènements pour la facturation
      */
     @Inject
-    Event<FacturationEvent> facturationEvents;
+    Event<OperationEvent> facturationEvents;
 
     /**
      * Constructor for AdvCompServiceImpl
@@ -154,7 +154,7 @@ public class AdvCompServiceImpl implements AdvCompService {
 	    }
 
 	    // Fire event for facturation
-	    facturationEvents.fire(new FacturationEvent(this.client, descriptionOperation));
+	    facturationEvents.fire(new OperationEvent(this.client, descriptionOperation));
 	    return resultatFinal;
 	} catch (CalculException e) {
 	    e.printStackTrace();

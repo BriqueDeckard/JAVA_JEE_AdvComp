@@ -1,7 +1,6 @@
 // File FacturationServiceImpl.java - No copyright - 23 mars 2021
 package edu.bd.advcomp.facturation.service.impl;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -9,7 +8,6 @@ import java.util.stream.Collectors;
 
 import javax.ejb.Stateless;
 import javax.enterprise.event.Event;
-import javax.enterprise.event.Observes;
 import javax.inject.Inject;
 
 import edu.bd.advcomp.AdvcompException;
@@ -18,7 +16,6 @@ import edu.bd.advcomp.facturation.dao.FactureDao;
 import edu.bd.advcomp.facturation.dao.HistoriqueOperationDao;
 import edu.bd.advcomp.facturation.entity.Facture;
 import edu.bd.advcomp.facturation.entity.HistoriqueOperation;
-import edu.bd.advcomp.facturation.event.FacturationEvent;
 import edu.bd.advcomp.facturation.event.FacturationSignalEvent;
 import edu.bd.advcomp.facturation.service.FacturationService;
 
@@ -51,54 +48,6 @@ public class FacturationServiceImpl implements FacturationService {
      *
      */
     public FacturationServiceImpl() {
-    }
-
-    /**
-     * See @see
-     * edu.bd.advcomp.facturation.service.FacturationService#listenToTimerEvents(edu.bd.advcomp.facturation.event.FacturationSignalEvent)
-     *
-     * @param facturationSignalEvent
-     * @throws AdvcompException
-     */
-    @Override
-    public void listenToTimerEvents(@Observes FacturationSignalEvent facturationSignalEvent) throws AdvcompException {
-	System.out.println("************************************************");
-	System.out.println("INFO : Facturation timer : ".toUpperCase() + facturationSignalEvent.toString());
-
-	Date dateDebut = facturationSignalEvent.getDateDebut();
-	Date dateFin = facturationSignalEvent.getDateFin();
-
-	try {
-	    facturer(dateDebut, dateFin);
-	    System.out.println("------------------------------------------------");
-	} catch (Exception e) {
-	    throw new AdvcompException(e);
-	}
-
-    }
-
-    /**
-     * See @see
-     * edu.bd.advcomp.facturation.service.FacturationService#listenToAdvCompServiceEvents(edu.bd.advcomp.facturation.event.FacturationEvent)
-     *
-     * @param facturationEvent
-     * @throws AdvcompException
-     */
-    @Override
-    public void listenToAdvCompServiceEvents(@Observes FacturationEvent facturationEvent) throws AdvcompException {
-	System.out.println("************************************************");
-	System.out.println("INFO : Facturation event : ".toUpperCase() + facturationEvent.toString());
-
-	Utilisateur user = facturationEvent.getUser();
-	String message = facturationEvent.getMessage();
-
-	try {
-	    historiserOperation(user, message);
-	    System.out.println("------------------------------------------------");
-	} catch (AdvcompException e) {
-	    throw new AdvcompException(e);
-	}
-
     }
 
     /**

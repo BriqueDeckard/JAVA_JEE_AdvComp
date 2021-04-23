@@ -1,5 +1,5 @@
 // File ConnexionObserver.java - No copyright - 21 avr. 2021
-package edu.bd.advcomp.admin.service;
+package edu.bd.advcomp.admin.observer;
 
 import javax.ejb.Local;
 

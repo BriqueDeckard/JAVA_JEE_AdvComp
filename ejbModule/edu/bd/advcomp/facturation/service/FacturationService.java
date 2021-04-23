@@ -9,7 +9,7 @@ import javax.ejb.Remote;
 import edu.bd.advcomp.AdvcompException;
 import edu.bd.advcomp.authentification.entity.Utilisateur;
 import edu.bd.advcomp.facturation.entity.Facture;
-import edu.bd.advcomp.facturation.event.FacturationEvent;
+import edu.bd.advcomp.facturation.event.OperationEvent;
 import edu.bd.advcomp.facturation.event.FacturationSignalEvent;
 
 /**
@@ -56,19 +56,4 @@ public interface FacturationService {
      */
     public Facture obtenirFacture(String numeroFacture);
 
-    /**
-     * listen To AdvCompService Events *
-     * 
-     * @param facturationEvent
-     * @throws AdvcompException
-     */
-    void listenToAdvCompServiceEvents(FacturationEvent facturationEvent) throws AdvcompException;
-
-    /**
-     * listen To Timer Events
-     *
-     * @param facturationSignalEvent
-     * @throws AdvcompException
-     */
-    void listenToTimerEvents(FacturationSignalEvent facturationSignalEvent) throws AdvcompException;
 }
