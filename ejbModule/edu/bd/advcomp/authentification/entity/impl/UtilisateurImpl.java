@@ -1,6 +1,8 @@
 // File UtilisateurImpl.java - No copyright - 23 mars 2021
 package edu.bd.advcomp.authentification.entity.impl;
 
+import java.io.Serializable;
+
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -27,7 +29,23 @@ import edu.bd.advcomp.authentification.entity.Utilisateur;
 @Table(name = "utilisateur")
 @NamedQueries({
 	@NamedQuery(name = "liste_user_inactifs", query = "SELECT u from UtilisateurImpl u WHERE u.isActive = FALSE") })
-public class UtilisateurImpl implements Utilisateur {
+public class UtilisateurImpl implements Utilisateur, Serializable {
+
+    /**
+     * TODO : Fill field utility
+     */
+    private static final long serialVersionUID = 8116352146061006821L;
+
+    /**
+     * See @see java.lang.Object#toString()
+     *
+     * @return
+     */
+    @Override
+    public String toString() {
+	return "UtilisateurImpl [login=" + this.login + ", password=" + this.password + ", nom=" + this.nom
+		+ ", adresse=" + this.adresse + ", role=" + this.role + ", isActive=" + this.isActive + "]";
+    }
 
     /**
      * Constructor for UtilisateurImpl

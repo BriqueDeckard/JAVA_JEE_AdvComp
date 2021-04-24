@@ -65,16 +65,21 @@ public class AdvCompServerImpl implements AdvCompServer {
 
 	if (!this.authentificationService.authentifier(login, password)) {
 	    connexionEvents.fire(new ConnexionEvent(login, false));
-	    throw new AdvcompException("Echec lors de l'authentification");
+	    AdvcompException exception = new AdvcompException("Echec lors de l'authentification");
+	    exception.printStackTrace();
+	    System.out.println("Identification échouée.");
+	    return null;
 	}
 	Utilisateur client = utilisateurService.obtenirUtilisateur(login);
 	if (client == null) {
 	    connexionEvents.fire(new ConnexionEvent(login, false));
+	    System.out.println("Identification échouée.");
 	    throw new AdvcompException("Client null !");
 	}
 
 	if (!client.getIsActive()) {
 	    connexionEvents.fire(new ConnexionEvent(login, false));
+	    System.out.println("Identification échouée.");
 	    throw new AdvcompException("Client non actif.");
 	}
 
@@ -102,15 +107,25 @@ public class AdvCompServerImpl implements AdvCompServer {
     @Override
     public AdvCompAdminService connexionAsAdmin(String login, String password) throws AdvcompException {
 	if (!this.authentificationService.authentifier(login, password)) {
-	    throw new AdvcompException("Echec lors de l'authentification");
+	    AdvcompException exception = new AdvcompException("Echec lors de l'authentification");
+	    // exception.printStackTrace();
+	    System.out.println("Identification échouée.");
+	    return null;
 	}
 	Utilisateur admin = utilisateurService.obtenirUtilisateur(login);
 	if (admin == null) {
-	    throw new AdvcompException("Client null !");
+	    AdvcompException exception = new AdvcompException("Echec lors de l'authentification");
+	    // exception.printStackTrace();
+	    System.out.println("Identification échouée.");
+	    return null;
 	}
 
 	if (!admin.getIsActive()) {
-	    throw new AdvcompException("Client non actif.");
+	    AdvcompException exception = new AdvcompException("Echec lors de l'authentification");
+	    // exception.printStackTrace();
+	    System.out.println("Client non actif.");
+	    return null;
+
 	}
 
 	if (admin.getRole() != Role.ADMINISTRATEUR) {

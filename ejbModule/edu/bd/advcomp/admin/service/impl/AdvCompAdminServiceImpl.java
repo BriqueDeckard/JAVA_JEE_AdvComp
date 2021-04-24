@@ -170,7 +170,9 @@ public class AdvCompAdminServiceImpl implements AdvCompAdminService {
      */
     @Override
     public Utilisateur findUser(String login) throws AdvcompException {
-	return userService.obtenirUtilisateur(login);
+	Utilisateur user = userService.obtenirUtilisateur(login);
+	System.out.println("Utilisateur : " + user);
+	return user;
     }
 
     /**
