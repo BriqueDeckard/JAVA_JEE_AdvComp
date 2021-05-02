@@ -3,11 +3,12 @@ package edu.bd.framework.persistence;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-import edu.bd.advcomp.AdvcompException;
+import edu.bd.advcomp.AdvCompException;
 
 /**
  * TODO Fill type utility
@@ -50,18 +51,18 @@ public abstract class EntityDaoImpl<ENTITY_TYPE, ID_TYPE> implements EntityDao<E
      *
      * @param entity
      * @return
-     * @throws AdvcompException
+     * @throws AdvCompException
      * @throws Exception
      */
     @Override
-    public ENTITY_TYPE create(ENTITY_TYPE entity) throws AdvcompException, Exception {
+    public ENTITY_TYPE create(ENTITY_TYPE entity) throws AdvCompException, Exception {
 	System.out
 		.println("INFO : " + this.getClass().getSimpleName() + " CREATE " + entity.getClass().getSimpleName());
 	try {
 	    em.persist(entity);
 	} catch (Exception e) {
 	    e.printStackTrace();
-	    throw new AdvcompException(e);
+	    throw new AdvCompException(e);
 	}
 	System.out.println("INFO : " + entity.toString() + " CREATED BY " + this.getClass().getSimpleName());
 	return entity;
@@ -72,18 +73,18 @@ public abstract class EntityDaoImpl<ENTITY_TYPE, ID_TYPE> implements EntityDao<E
      *
      * @param entity
      * @return
-     * @throws AdvcompException
+     * @throws AdvCompException
      * @throws Exception
      */
     @Override
-    public ENTITY_TYPE update(ENTITY_TYPE entity) throws AdvcompException, Exception {
+    public ENTITY_TYPE update(ENTITY_TYPE entity) throws AdvCompException, Exception {
 	System.out
 		.println("INFO : " + this.getClass().getSimpleName() + " UPDATE " + entity.getClass().getSimpleName());
 	try {
 	    em.merge(entity);
 	} catch (Exception e) {
 	    e.printStackTrace();
-	    throw new AdvcompException(e);
+	    throw new AdvCompException(e);
 	}
 	System.out.println("INFO : " + entity.toString() + " UPDATED BY " + this.getClass().getSimpleName());
 	return entity;
@@ -93,11 +94,11 @@ public abstract class EntityDaoImpl<ENTITY_TYPE, ID_TYPE> implements EntityDao<E
      * See @see edu.bd.framework.persistence.EntityDao#delete(java.lang.Object)
      *
      * @param entity
-     * @throws AdvcompException
+     * @throws AdvCompException
      * @throws Exception
      */
     @Override
-    public void delete(ENTITY_TYPE entity) throws AdvcompException, Exception {
+    public void delete(ENTITY_TYPE entity) throws AdvCompException, Exception {
 	System.out
 		.println("INFO : " + this.getClass().getSimpleName() + " DELETE " + entity.getClass().getSimpleName());
 	entity = em.merge(entity);
@@ -109,20 +110,29 @@ public abstract class EntityDaoImpl<ENTITY_TYPE, ID_TYPE> implements EntityDao<E
      * See @see edu.bd.framework.persistence.EntityDao#getNew()
      *
      * @return
-     * @throws AdvcompException
+     * @throws AdvCompException
      * @throws Exception
      */
     @Override
-    public abstract ENTITY_TYPE getNew() throws AdvcompException, Exception;
+    public abstract ENTITY_TYPE getNew() throws AdvCompException, Exception;
 
     /**
      * See @see edu.bd.framework.persistence.EntityDao#retrieve(java.lang.Object)
      *
      * @param id
      * @return
-     * @throws AdvcompException
+     * @throws AdvCompException
      */
     @Override
-    public abstract ENTITY_TYPE retrieve(ID_TYPE id) throws AdvcompException;
+    public abstract ENTITY_TYPE retrieve(ID_TYPE id) throws AdvCompException;
+    
+    /**
+     * See @see edu.bd.framework.persistence.EntityDao#retrieveAll()
+     *
+     * @return
+     * @throws AdvCompException
+     */
+    @Override
+    public abstract List<ENTITY_TYPE> retrieveAll() throws AdvCompException;
 
 }

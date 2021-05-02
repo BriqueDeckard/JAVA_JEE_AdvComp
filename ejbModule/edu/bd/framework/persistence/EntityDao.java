@@ -6,7 +6,7 @@ import java.util.List;
 
 import javax.transaction.SystemException;
 
-import edu.bd.advcomp.AdvcompException;
+import edu.bd.advcomp.AdvCompException;
 
 /**
  * TODO Fill type utility Assurer que le DAO propose un CRUD sur les entités.
@@ -24,12 +24,12 @@ public interface EntityDao<ENTITY_TYPE, ID_TYPE> {
      * 
      * @param entity : l'entitée à insérer
      * @return : l'entitée insérée
-     * @throws AdvcompException
+     * @throws AdvCompException
      * @throws SystemException
      * @throws SecurityException
      * @throws IllegalStateException
      */
-    public ENTITY_TYPE create(ENTITY_TYPE entity) throws AdvcompException, Exception;
+    public ENTITY_TYPE create(ENTITY_TYPE entity) throws AdvCompException, Exception;
 
     /**
      * <u><b>retrieve : </b></u><br/>
@@ -37,9 +37,9 @@ public interface EntityDao<ENTITY_TYPE, ID_TYPE> {
      * 
      * @param id
      * @return
-     * @throws AdvcompException
+     * @throws AdvCompException
      */
-    public ENTITY_TYPE retrieve(ID_TYPE id) throws AdvcompException;
+    public ENTITY_TYPE retrieve(ID_TYPE id) throws AdvCompException;
 
     /**
      * <u><b>update : </b></u><br/>
@@ -47,35 +47,35 @@ public interface EntityDao<ENTITY_TYPE, ID_TYPE> {
      * 
      * @param entity
      * @return
-     * @throws AdvcompException
+     * @throws AdvCompException
      */
-    public ENTITY_TYPE update(ENTITY_TYPE entity) throws AdvcompException, Exception;
+    public ENTITY_TYPE update(ENTITY_TYPE entity) throws AdvCompException, Exception;
 
     /**
      * <u><b>delete : </b></u><br/>
      * Supprimer une entitée <br/>
      * 
      * @param entity
-     * @throws AdvcompException
+     * @throws AdvCompException
      */
-    public void delete(ENTITY_TYPE entity) throws AdvcompException, Exception;
+    public void delete(ENTITY_TYPE entity) throws AdvCompException, Exception;
 
     /**
      * <u><b>retrieveAll : </b></u><br/>
      * Retrouver toutes les entitées. <br/>
      * 
      * @return
-     * @throws AdvcompException
+     * @throws AdvCompException
      */
-    public List<ENTITY_TYPE> retrieveAll() throws AdvcompException, Exception;
+    public List<ENTITY_TYPE> retrieveAll() throws AdvCompException, Exception;
 
     /**
      * <u><b>getNew : </b></u><br/>
      * Obtenir une nouvelle entitée. <br/>
      * 
      * @return
-     * @throws AdvcompException
+     * @throws AdvCompException
      */
-    public ENTITY_TYPE getNew() throws AdvcompException, Exception;
+    public ENTITY_TYPE getNew() throws AdvCompException, Exception;
 
 }

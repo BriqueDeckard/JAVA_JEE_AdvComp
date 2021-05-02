@@ -10,6 +10,10 @@ import java.io.Serializable;
  * @author Brique DECKARD
  *
  */
-public interface Entity extends Serializable {
+public interface Entity<IDENTIFIER_TYPE> extends Serializable {
+
+    IDENTIFIER_TYPE getId();
+
+    void setId(IDENTIFIER_TYPE id);
 
 }
