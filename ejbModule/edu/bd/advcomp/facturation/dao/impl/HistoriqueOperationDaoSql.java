@@ -15,7 +15,7 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import javax.ws.rs.QueryParam;
 
-import edu.bd.advcomp.AdvcompException;
+import edu.bd.advcomp.AdvCompException;
 import edu.bd.advcomp.facturation.dao.HistoriqueOperationDao;
 import edu.bd.advcomp.facturation.entity.HistoriqueOperation;
 import edu.bd.advcomp.facturation.entity.impl.HistoriqueOperationImpl;
@@ -46,20 +46,20 @@ public class HistoriqueOperationDaoSql extends EntityDaoImpl<HistoriqueOperation
      *
      * @param id
      * @return
-     * @throws AdvcompException
+     * @throws AdvCompException
      */
     @Override
-    public HistoriqueOperation retrieve(Long id) throws AdvcompException {
+    public HistoriqueOperation retrieve(Long id) throws AdvCompException {
 	System.out.println("RETRIEVE HistoriqueOperation " + id);
 	if (id == null) {
-	    throw new AdvcompException("ERROR : Id is null");
+	    throw new AdvCompException("ERROR : Id is null");
 	}
 	try {
 	    HistoriqueOperation entity = this.getEm().find(HistoriqueOperationImpl.class, id);
 	    return entity;
 	} catch (Exception e) {
 	    e.printStackTrace();
-	    throw new AdvcompException(e);
+	    throw new AdvCompException(e);
 	}
     }
 
@@ -67,11 +67,11 @@ public class HistoriqueOperationDaoSql extends EntityDaoImpl<HistoriqueOperation
      * See @see edu.bd.framework.persistence.EntityDao#getNew()
      *
      * @return
-     * @throws AdvcompException
+     * @throws AdvCompException
      * @throws Exception
      */
     @Override
-    public HistoriqueOperation getNew() throws AdvcompException, Exception {
+    public HistoriqueOperation getNew() throws AdvCompException, Exception {
 	return new HistoriqueOperationImpl();
     }
 

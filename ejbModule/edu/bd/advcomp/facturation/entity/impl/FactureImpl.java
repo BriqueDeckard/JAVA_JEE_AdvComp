@@ -53,7 +53,7 @@ public class FactureImpl implements Facture {
      */
     @Id
     @GeneratedValue(generator = "uuid")
-    private String numero;
+    private String id;
 
     /**
      * See @see java.lang.Object#toString()
@@ -63,9 +63,9 @@ public class FactureImpl implements Facture {
     @Override
     public String toString() {
 	return "\n\n" + "########################################\n" + "# Facture :\n".toUpperCase() + "# -\n"
-		+ "#\tUtilisateur :\t" + this.utilisateur.getLogin() + "\n" + "#\tNumero : \t" + this.numero + "\n"
-		+ "#\tDate :\t\t" + this.date.getDate() + "/" + this.date.getMonth() + "/" + this.date.getYear() + "\n"
-		+ "#\tMontant :\t" + this.montant + "\n" + "#\tIsSoldee : \t" + (this.isSoldee ? "OUI" : "NON")
+		+ "#\tUtilisateur :\t" + this.utilisateur.getId() + "\n" + "#\tNumero : \t" + this.id + "\n"
+		+ "#\tDate :\t\t" + this.date.getDate() + "/" + this.date.getMonth() + "/" + (this.date.getYear() + 121)
+		+ "\n" + "#\tMontant :\t" + this.montant + "\n" + "#\tIsSoldee : \t" + (this.isSoldee ? "OUI" : "NON")
 		+ "\n########################################";
     }
 
@@ -92,11 +92,11 @@ public class FactureImpl implements Facture {
      * @param montant
      * @param isSoldee
      */
-    public FactureImpl(Utilisateur utilisateur, String numero, Date date, double montant, boolean isSoldee) {
+    public FactureImpl(Utilisateur utilisateur, String numero, double montant, boolean isSoldee) {
 	super();
 	this.utilisateur = utilisateur;
-	this.numero = numero;
-	this.date = date;
+	this.id = numero;
+	this.date = new Date();
 	this.montant = montant;
 	this.isSoldee = isSoldee;
     }
@@ -135,8 +135,8 @@ public class FactureImpl implements Facture {
      * @return
      */
     @Override
-    public String getNumero() {
-	return this.numero;
+    public String getId() {
+	return this.id;
     }
 
     /**
@@ -146,8 +146,8 @@ public class FactureImpl implements Facture {
      * @param numero
      */
     @Override
-    public void setNumero(String numero) {
-	this.numero = numero;
+    public void setId(String numero) {
+	this.id = numero;
 
     }
 

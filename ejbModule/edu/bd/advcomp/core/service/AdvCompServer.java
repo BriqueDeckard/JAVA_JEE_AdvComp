@@ -3,7 +3,7 @@ package edu.bd.advcomp.core.service;
 
 import javax.ejb.Remote;
 
-import edu.bd.advcomp.AdvcompException;
+import edu.bd.advcomp.AdvCompException;
 import edu.bd.advcomp.admin.service.AdvCompAdminService;
 
 /**
@@ -21,28 +21,28 @@ public interface AdvCompServer {
     /**
      * Traite la demande de connexion d'un client et lui retourne un
      * {@link AdvCompService} si l'authentification a abouti dans les autres cas une
-     * {@link AdvcompException} est levée.
+     * {@link AdvCompException} est levée.
      * 
      * @param login
      * @param password
      * @return
-     * @throws AdvcompException
+     * @throws AdvCompException
      */
-    public AdvCompService connexion(String login, String password) throws AdvcompException;
+    public AdvCompService connexion(String login, String password) throws AdvCompException;
 
     /**
      * Traite la demande de connexion d'un admin et lui retourne un
      * {@link AdvCompAdminService} si l'authentification aboutit, dans les autres
-     * cas une {@link AdvcompException} est levée.
+     * cas une {@link AdvCompException} est levée.
      *
      * TODO : Fill method utility
      * 
      * @param login
      * @param password
      * @return
-     * @throws AdvcompException
+     * @throws AdvCompException
      */
-    public AdvCompAdminService connexionAsAdmin(String login, String password) throws AdvcompException;
+    public AdvCompAdminService connexionAsAdmin(String login, String password) throws AdvCompException;
 
     /**
      * Traite la demande de creation de compe d'un utilisateur.
@@ -51,7 +51,7 @@ public interface AdvCompServer {
      * @param login
      * @param password
      * @param adresse
-     * @throws AdvcompException
+     * @throws AdvCompException
      */
-    public void creerCompte(String nom, String login, String password, String adresse) throws AdvcompException;
+    public void creerCompte(String nom, String login, String password, String adresse) throws AdvCompException;
 }

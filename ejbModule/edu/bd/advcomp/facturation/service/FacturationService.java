@@ -2,11 +2,12 @@
 package edu.bd.advcomp.facturation.service;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.ejb.Local;
 import javax.ejb.Remote;
 
-import edu.bd.advcomp.AdvcompException;
+import edu.bd.advcomp.AdvCompException;
 import edu.bd.advcomp.authentification.entity.Utilisateur;
 import edu.bd.advcomp.facturation.entity.Facture;
 import edu.bd.advcomp.facturation.event.OperationEvent;
@@ -29,7 +30,7 @@ public interface FacturationService {
      * @param utilisateur
      * @param descriptionOperation
      */
-    public void historiserOperation(Utilisateur client, String descriptionOperation) throws AdvcompException;
+    public void historiserOperation(Utilisateur client, String descriptionOperation) throws AdvCompException;
 
     /**
      * Génère les factures pour tous les clients ayant des opérations historisées
@@ -38,7 +39,7 @@ public interface FacturationService {
      * @param dateDebut
      * @param datefin
      */
-    public void facturer(Date dateDebut, Date datefin) throws AdvcompException;
+    public void facturer(Date dateDebut, Date datefin) throws AdvCompException;
 
     /**
      * Enregistrement du règlement d'une facture
@@ -46,7 +47,7 @@ public interface FacturationService {
      * @param numeroFacture
      * @param rib
      */
-    public void reglerFacture(String numeroFacture, String rib) throws AdvcompException;
+    public void reglerFacture(String numeroFacture, String rib) throws AdvCompException;
 
     /**
      * Retourne une facture d'après son numéro
@@ -55,5 +56,14 @@ public interface FacturationService {
      * @return
      */
     public Facture obtenirFacture(String numeroFacture);
+
+    /**
+     * retrieveAll
+     *
+     * TODO : Fill method utility
+     * @return
+     * @throws AdvCompException 
+     */
+    public List<Facture> retrieveAll() throws AdvCompException;
 
 }

@@ -8,7 +8,7 @@ import javax.ejb.Local;
 import javax.ejb.Remote;
 import javax.enterprise.event.Observes;
 
-import edu.bd.advcomp.AdvcompException;
+import edu.bd.advcomp.AdvCompException;
 import edu.bd.advcomp.admin.entity.ConnexionAttempt;
 import edu.bd.advcomp.authentification.entity.Utilisateur;
 import edu.bd.advcomp.authentification.service.UtilisateurService;
@@ -33,17 +33,17 @@ public interface AdvCompAdminService {
      *
      * @return
      * @throws Exception
-     * @throws AdvcompException
+     * @throws AdvCompException
      */
-    List<Facture> getAllTheFacture() throws AdvcompException, Exception;
+    List<Facture> getAllTheFacture() throws AdvCompException, Exception;
 
     /**
      * get All The Connexion Attempt
      *
      * @return
-     * @throws AdvcompException
+     * @throws AdvCompException
      */
-    List<ConnexionAttempt> getAllTheConnexionAttempt() throws AdvcompException;
+    List<ConnexionAttempt> getAllTheConnexionAttempt() throws AdvCompException;
 
     /**
      * find User by its login
@@ -51,9 +51,9 @@ public interface AdvCompAdminService {
      * 
      * @param login
      * @return
-     * @throws AdvcompException
+     * @throws AdvCompException
      */
-    Utilisateur findUser(String login) throws AdvcompException;
+    Utilisateur findUser(String login) throws AdvCompException;
 
     /**
      * setAdmin
@@ -69,7 +69,7 @@ public interface AdvCompAdminService {
      *
      * @param utilisateurLogin
      */
-    void validerCompteUtilisateur(String utilisateurLogin) throws AdvcompException;
+    void validerCompteUtilisateur(String utilisateurLogin) throws AdvCompException;
 
     /**
      * desactiver Compte Utilisateur
@@ -77,17 +77,17 @@ public interface AdvCompAdminService {
      * TODO : Fill method utility
      * 
      * @param utilisateurLogin
-     * @throws AdvcompException
+     * @throws AdvCompException
      */
-    void desactiverCompteUtilisateur(String utilisateurLogin) throws AdvcompException;
+    void desactiverCompteUtilisateur(String utilisateurLogin) throws AdvCompException;
 
     /**
      * supprimer Compte Utilisateur
      *
      * @param utilisateur
-     * @throws AdvcompException
+     * @throws AdvCompException
      */
-    void supprimerCompteUtilisateur(Utilisateur utilisateur) throws AdvcompException;
+    void supprimerCompteUtilisateur(Utilisateur utilisateur) throws AdvCompException;
 
     /**
      * consulter Facture
@@ -105,7 +105,7 @@ public interface AdvCompAdminService {
      * @param dateDebut
      * @param dateFin
      */
-    void genererFacture(Date dateDebut, Date dateFin) throws AdvcompException;
+    void genererFacture(Date dateDebut, Date dateFin) throws AdvCompException;
 
     /**
      * se Deconnecter
@@ -117,20 +117,27 @@ public interface AdvCompAdminService {
      * retrouver Utilisateurs Inactifs
      *
      * @return
-     * @throws AdvcompException
+     * @throws AdvCompException
      */
-    List<Utilisateur> retrouverUtilisateursInactifs() throws AdvcompException;
+    List<Utilisateur> retrouverUtilisateursInactifs() throws AdvCompException;
 
     /**
      * getNumberOfConnexionFor
-     *
-     * TODO : Fill method utility
      * 
      * @param bDate
      * @param eDate
      * @return
-     * @throws AdvcompException 
+     * @throws AdvCompException
      */
-    Integer getNumberOfConnexionFor(Date bDate, Date eDate) throws AdvcompException;
+    Integer getNumberOfConnexionFor(Date bDate, Date eDate) throws AdvCompException;
+
+    /**
+     * reglerFacture
+     *
+     * @param numero
+     * @param rib
+     * @throws AdvCompException 
+     */
+    void reglerFacture(String numero, String rib) throws AdvCompException;
 
 }

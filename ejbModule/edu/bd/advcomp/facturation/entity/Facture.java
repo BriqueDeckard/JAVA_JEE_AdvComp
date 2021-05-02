@@ -12,73 +12,59 @@ import edu.bd.framework.persistence.Entity;
  * @author Brique DECKARD
  *
  */
-public interface Facture extends Entity {
+public interface Facture extends Entity<String> {
     /**
-     * Do getUtilisateur
-     * TODO : Fill method utility
+     * Do getUtilisateur TODO : Fill method utility
+     * 
      * @return
      */
     public Utilisateur getUtilisateur();
 
     /**
-     * Do setUtilisateur
-     * TODO : Fill method utility
+     * Do setUtilisateur TODO : Fill method utility
+     * 
      * @param utilisateur
      */
     public void setUtilisateur(Utilisateur utilisateur);
 
     /**
-     * Do getNumero
-     * TODO : Fill method utility
-     * @return
-     */
-    public String getNumero();
-
-    /**
-     * Do setNumero
-     * TODO : Fill method utility
-     * @param numero
-     */
-    public void setNumero(String numero);
-
-    /**
-     * Do getDate
-     * TODO : Fill method utility
+     * Do getDate TODO : Fill method utility
+     * 
      * @return
      */
     public Date getDate();
 
     /**
-     * Do setDate
-     * TODO : Fill method utility
+     * Do setDate TODO : Fill method utility
+     * 
      * @param date
      */
     public void setDate(Date date);
 
     /**
-     * Do getMontant
-     * TODO : Fill method utility
+     * Do getMontant TODO : Fill method utility
+     * 
      * @return
      */
     public double getMontant();
 
     /**
-     * Do setMontant
-     * TODO : Fill method utility
+     * Do setMontant TODO : Fill method utility
+     * 
      * @param montant
      */
     public void setMontant(double montant);
 
     /**
-     * Do isSoldee
-     * TODO : Fill method utility
+     * Do isSoldee TODO : Fill method utility
+     * 
      * @return
      */
     public boolean isSoldee();
 
     /**
-     * Do setSoldee
-     * TODO : Fill method utility
+     * Do setSoldee TODO : Fill method utility
+     * 
      * @param soldee
      */
     public void setSoldee(boolean soldee);

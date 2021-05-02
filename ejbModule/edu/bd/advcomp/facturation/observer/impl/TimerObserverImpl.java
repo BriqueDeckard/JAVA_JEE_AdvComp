@@ -7,7 +7,7 @@ import javax.ejb.Stateless;
 import javax.enterprise.event.Observes;
 import javax.inject.Inject;
 
-import edu.bd.advcomp.AdvcompException;
+import edu.bd.advcomp.AdvCompException;
 import edu.bd.advcomp.facturation.event.FacturationSignalEvent;
 import edu.bd.advcomp.facturation.observer.TimerObserver;
 import edu.bd.advcomp.facturation.service.FacturationService;
@@ -39,17 +39,17 @@ public class TimerObserverImpl implements TimerObserver {
      * edu.bd.advcomp.facturation.service.OperationObserver#observesOperation(edu.bd.advcomp.facturation.event.FacturationSignalEvent)
      *
      * @param event
-     * @throws AdvcompException
+     * @throws AdvCompException
      */
     @Override
-    public void observesTimer(@Observes FacturationSignalEvent event) throws AdvcompException {
+    public void observesTimer(@Observes FacturationSignalEvent event) throws AdvCompException {
 	Date dateDebut = event.getDateDebut();
 	Date dateFin = event.getDateFin();
 
 	try {
 	    this.facturationService.facturer(dateDebut, dateFin);
 	} catch (Exception e) {
-	    throw new AdvcompException(e);
+	    throw new AdvCompException(e);
 	}
 
     }

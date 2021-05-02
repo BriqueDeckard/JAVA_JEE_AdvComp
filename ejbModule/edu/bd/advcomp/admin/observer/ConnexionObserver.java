@@ -3,7 +3,7 @@ package edu.bd.advcomp.admin.observer;
 
 import javax.ejb.Local;
 
-import edu.bd.advcomp.AdvcompException;
+import edu.bd.advcomp.AdvCompException;
 import edu.bd.advcomp.admin.event.ConnexionEvent;
 
 /**
@@ -19,7 +19,7 @@ public interface ConnexionObserver {
      * observer Connexion
      *
      * @param connexionEvent
-     * @throws AdvcompException
+     * @throws AdvCompException
      */
-    public void observerConnexion(ConnexionEvent connexionEvent) throws AdvcompException;
+    public void observeConnexion(ConnexionEvent connexionEvent) throws AdvCompException;
 }

@@ -3,7 +3,7 @@ package edu.bd.advcomp.facturation.observer;
 
 import javax.ejb.Local;
 
-import edu.bd.advcomp.AdvcompException;
+import edu.bd.advcomp.AdvCompException;
 import edu.bd.advcomp.facturation.event.FacturationSignalEvent;
 
 /**
@@ -18,7 +18,7 @@ public interface TimerObserver {
      * observes Operation from advCompService
      *
      * @param event
-     * @throws AdvcompException 
+     * @throws AdvCompException 
      */
-    public void observesTimer(FacturationSignalEvent event) throws AdvcompException;
+    public void observesTimer(FacturationSignalEvent event) throws AdvCompException;
 }

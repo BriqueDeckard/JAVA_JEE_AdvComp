@@ -10,7 +10,7 @@ import javax.ejb.Stateless;
 import javax.enterprise.event.Event;
 import javax.inject.Inject;
 
-import edu.bd.advcomp.AdvcompException;
+import edu.bd.advcomp.AdvCompException;
 import edu.bd.advcomp.authentification.entity.Utilisateur;
 import edu.bd.advcomp.facturation.dao.FactureDao;
 import edu.bd.advcomp.facturation.dao.HistoriqueOperationDao;
@@ -27,9 +27,6 @@ import edu.bd.advcomp.facturation.service.FacturationService;
  */
 @Stateless
 public class FacturationServiceImpl implements FacturationService {
-
-    @Inject
-    Event<FacturationSignalEvent> facturationSignalEvents;
 
     /**
      * Dao pour la persistance des entités {@link HistoriqueOperation}
@@ -57,10 +54,10 @@ public class FacturationServiceImpl implements FacturationService {
      *
      * @param client
      * @param descriptionOperation
-     * @throws AdvcompException
+     * @throws AdvCompException
      */
     @Override
-    public void historiserOperation(Utilisateur client, String descriptionOperation) throws AdvcompException {
+    public void historiserOperation(Utilisateur client, String descriptionOperation) throws AdvCompException {
 	System.out.println("************************************************");
 	System.out.println("INFO : HistoriserOperation ".toUpperCase());
 
@@ -78,7 +75,7 @@ public class FacturationServiceImpl implements FacturationService {
 	    historiqueOperation.setFacture(null);
 	} catch (Exception e) {
 	    e.printStackTrace();
-	    throw new AdvcompException(this.getClass().getName() + "Echec creation HistoriqueOperation");
+	    throw new AdvCompException(this.getClass().getName() + "Echec creation HistoriqueOperation");
 	}
 
 	// Persistence
@@ -86,7 +83,7 @@ public class FacturationServiceImpl implements FacturationService {
 	    historiqueOperationDao.create(historiqueOperation);
 	} catch (Exception e) {
 	    e.printStackTrace();
-	    throw new AdvcompException(this.getClass().getName() + "Echec persistance HistoriqueOperation");
+	    throw new AdvCompException(this.getClass().getName() + "Echec persistance HistoriqueOperation");
 	}
 
     }
@@ -97,11 +94,11 @@ public class FacturationServiceImpl implements FacturationService {
      * TODO : Fill method utility
      * 
      * @param descriptionOperation
-     * @throws AdvcompException
+     * @throws AdvCompException
      */
-    private void checkDescription(String descriptionOperation) throws AdvcompException {
+    private void checkDescription(String descriptionOperation) throws AdvCompException {
 	if (descriptionOperation == null || descriptionOperation.isEmpty()) {
-	    throw new AdvcompException(this.getClass().getName() + "Description nulle.");
+	    throw new AdvCompException(this.getClass().getName() + "Description nulle.");
 	}
     }
 
@@ -111,11 +108,11 @@ public class FacturationServiceImpl implements FacturationService {
      * TODO : Fill method utility
      * 
      * @param client
-     * @throws AdvcompException
+     * @throws AdvCompException
      */
-    private void checkClient(Utilisateur client) throws AdvcompException {
+    private void checkClient(Utilisateur client) throws AdvCompException {
 	if (client == null) {
-	    throw new AdvcompException(this.getClass().getName() + " Client nul !");
+	    throw new AdvCompException(this.getClass().getName() + " Client nul !");
 	}
     }
 
@@ -128,19 +125,18 @@ public class FacturationServiceImpl implements FacturationService {
      *
      * @param dateDebut
      * @param datefin
-     * @throws AdvcompException
+     * @throws AdvCompException
      */
     @Override
-    public void facturer(Date dateDebut, Date datefin) throws AdvcompException {
+    public void facturer(Date dateDebut, Date datefin) throws AdvCompException {
 	System.out.println("************************************************");
 	System.out.println("INFO : FACTURATION BETWEEN " + dateDebut.toString() + " AND " + datefin.toString());
 
 	// Lister les operations en cours
 	List<HistoriqueOperation> historiques = historiqueOperationDao.getOperationAFacturer(dateDebut, datefin);
-	System.out.println("INFO : Total historique : " + historiques.size());
 
 	historiques = historiques.stream().filter(h -> h.getFacture() == null).collect(Collectors.toList());
-	System.out.println("INFO : historiques to bill : " + historiques.size());
+	System.out.println("INFO : historiques à facturer : " + historiques.size());
 
 	Iterator<HistoriqueOperation> iterateurHistoriques = historiques.iterator();
 
@@ -169,10 +165,10 @@ public class FacturationServiceImpl implements FacturationService {
 	    try {
 		facture = factureDao.getNew();
 	    } catch (Exception e) {
-		throw new AdvcompException(e);
+		throw new AdvCompException(e);
 	    }
 	    if (facture == null) {
-		throw new AdvcompException("Facture nulle.");
+		throw new AdvCompException("Facture nulle.");
 	    }
 
 	    // Setup des propriétés de la facture
@@ -186,7 +182,7 @@ public class FacturationServiceImpl implements FacturationService {
 		factureDao.create(facture);
 	    } catch (Exception e) {
 		e.printStackTrace();
-		throw new AdvcompException(e);
+		throw new AdvCompException(e);
 	    }
 	    System.out.println("INFO : Created facture : " + facture.getMontant());
 
@@ -194,18 +190,19 @@ public class FacturationServiceImpl implements FacturationService {
 	    int iter2 = 0;
 	    while (iterateurHistoriques.hasNext() && historiqueEnCours.getUtilisateur().equals(user)) {
 		System.out.println("-------------------------------------------");
+		System.out.println("HISTORIQUE : " + historiqueEnCours.toString());
 		iter2 += 1;
-		System.out.println("INFO : ITERATION 2 : " + iter2);
+		//System.out.println("INFO : ITERATION 2 : " + iter2);
 
 		facture.setMontant(facture.getMontant() + PRICE);
 
 		historiqueEnCours.setFacture(facture);
 		try {
-		    System.out.println("INFO : Historique en cours : " + historiqueEnCours.toString());
+		    //System.out.println("INFO : Historique en cours : " + historiqueEnCours.toString());
 		    historiqueOperationDao.update(historiqueEnCours);
-		    System.out.println("INFO : Update 1 facture : " + facture.getMontant());
+		    //System.out.println("INFO : Update 1 facture : " + facture.getMontant());
 		} catch (Exception e) {
-		    throw new AdvcompException(e);
+		    throw new AdvCompException(e);
 		}
 
 		// Passage à l'iteration suivante
@@ -213,11 +210,13 @@ public class FacturationServiceImpl implements FacturationService {
 	    }
 	    try {
 		historiqueOperationDao.update(historiqueEnCours);
-		System.out.println("INFO : FACTURE PRICE : " + facture.getMontant());
-		System.out.println("INFO : Update 2 facture : " + facture.getMontant());
+		//System.out.println("INFO : FACTURE PRICE : " + facture.getMontant());
+		//System.out.println("INFO : Update 2 facture : " + facture.getMontant());
 	    } catch (Exception e1) {
 		e1.printStackTrace();
 	    }
+	    
+	    System.out.println("FACTURE : " + facture.toString());
 
 	}
 
@@ -230,18 +229,16 @@ public class FacturationServiceImpl implements FacturationService {
      *
      * @param numeroFacture
      * @param rib
-     * @throws AdvcompException
+     * @throws AdvCompException
      */
     @Override
-    public void reglerFacture(String numeroFacture, String rib) throws AdvcompException {
+    public void reglerFacture(String numeroFacture, String rib) throws AdvCompException {
 	Facture factureARegler = null;
 	try {
 	    factureARegler = factureDao.retrieve(numeroFacture);
+	    System.out.println("Facture a regler : " + factureARegler.toString());
 	} catch (Exception e) {
-	    throw new AdvcompException(e);
-	}
-	if (factureARegler == null) {
-	    throw new AdvcompException("Id incorrect");
+	    throw new AdvCompException(e);
 	}
 	System.out.println("************************************************");
 	System.out.println("REGLEMENT FACTURE : " + factureARegler.toString());
@@ -250,7 +247,7 @@ public class FacturationServiceImpl implements FacturationService {
 	try {
 	    factureDao.update(factureARegler);
 	} catch (Exception e) {
-	    throw new AdvcompException(e);
+	    throw new AdvCompException(e);
 	}
 	System.out.println("FACTURE REGLEE.");
 
@@ -265,13 +262,26 @@ public class FacturationServiceImpl implements FacturationService {
      */
     @Override
     public Facture obtenirFacture(String numeroFacture) {
-	// TODO Fill method utility.
 	try {
 	    return this.factureDao.retrieve(numeroFacture);
-	} catch (AdvcompException e) {
-	    // TODO Fill catch block.
+	} catch (AdvCompException e) {
 	    e.printStackTrace();
 	    return null;
+	}
+    }
+
+    /**
+     * See @see edu.bd.advcomp.facturation.service.FacturationService#retrieveAll()
+     *
+     * @return
+     * @throws AdvCompException
+     */
+    @Override
+    public List<Facture> retrieveAll() throws AdvCompException {
+	try {
+	    return this.factureDao.retrieveAll();
+	} catch (Exception e) {
+	    throw new AdvCompException(e);
 	}
     }
 

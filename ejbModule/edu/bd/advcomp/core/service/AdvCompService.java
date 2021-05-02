@@ -4,7 +4,7 @@ package edu.bd.advcomp.core.service;
 import javax.ejb.Local;
 import javax.ejb.Remote;
 
-import edu.bd.advcomp.AdvcompException;
+import edu.bd.advcomp.AdvCompException;
 import edu.bd.advcomp.authentification.entity.Utilisateur;
 
 /**
@@ -24,9 +24,9 @@ public interface AdvCompService {
      * @param facteur2
      * @param operateur
      * @return
-     * @throws AdvcompException
+     * @throws AdvCompException
      */
-    public Double faireOperationBasique(Double facteur1, Double facteur2, String operateur) throws AdvcompException;
+    public Double faireOperationBasique(Double facteur1, Double facteur2, String operateur) throws AdvCompException;
 
     /**
      * commencer Operation Chainee
@@ -36,9 +36,9 @@ public interface AdvCompService {
      * @param facteur1
      * @param facteur2
      * @param operateur
-     * @throws AdvcompException
+     * @throws AdvCompException
      */
-    public void commencerOperationChainee(Double facteur1, Double facteur2, String operateur) throws AdvcompException;
+    public void commencerOperationChainee(Double facteur1, Double facteur2, String operateur) throws AdvCompException;
 
     /**
      * poursuivre Operation Chainee
@@ -47,9 +47,9 @@ public interface AdvCompService {
      * 
      * @param facteur
      * @param operateur
-     * @throws AdvcompException
+     * @throws AdvCompException
      */
-    public void poursuivreOperationChainee(Double facteur, String operateur) throws AdvcompException;
+    public void poursuivreOperationChainee(Double facteur, String operateur) throws AdvCompException;
 
     /**
      * achever Operation Chainee
@@ -57,33 +57,33 @@ public interface AdvCompService {
      * Ordre d'interuption de l'operation chaînée.
      * 
      * @return
-     * @throws AdvcompException
+     * @throws AdvCompException
      */
-    public Double acheverOperationChainee() throws AdvcompException;
+    public Double acheverOperationChainee() throws AdvCompException;
 
     /**
      * afficher resultat
      * 
      * @return
-     * @throws AdvcompException
+     * @throws AdvCompException
      */
-    public String afficherResultatFinal() throws AdvcompException;
+    public String afficherResultatFinal() throws AdvCompException;
 
     /**
      * afficher Resultat Intermediaire
      *
      * @return
-     * @throws AdvcompException
+     * @throws AdvCompException
      */
-    public String afficherResultatIntermediaire() throws AdvcompException;
+    public String afficherResultatIntermediaire() throws AdvCompException;
 
     /**
      * se Deconnecter
      *
      * TODO : Fill method utility
      * 
-     * @throws AdvcompException
+     * @throws AdvCompException
      */
-    public void seDeconnecter() throws AdvcompException;
+    public void seDeconnecter() throws AdvCompException;
 
 }

@@ -1,8 +1,6 @@
 // File UtilisateurImpl.java - No copyright - 23 mars 2021
 package edu.bd.advcomp.authentification.entity.impl;
 
-import java.io.Serializable;
-
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -28,8 +26,9 @@ import edu.bd.advcomp.authentification.entity.Utilisateur;
 @Entity
 @Table(name = "utilisateur")
 @NamedQueries({
-	@NamedQuery(name = "liste_user_inactifs", query = "SELECT u from UtilisateurImpl u WHERE u.isActive = FALSE") })
-public class UtilisateurImpl implements Utilisateur, Serializable {
+	@NamedQuery(name = "liste_user_inactifs", query = "SELECT u from UtilisateurImpl u WHERE u.isActive = FALSE"),
+	@NamedQuery(name = "liste_user", query = "SELECT u FROM UtilisateurImpl u") })
+public class UtilisateurImpl implements Utilisateur {
 
     /**
      * TODO : Fill field utility
@@ -43,8 +42,8 @@ public class UtilisateurImpl implements Utilisateur, Serializable {
      */
     @Override
     public String toString() {
-	return "UtilisateurImpl [login=" + this.login + ", password=" + this.password + ", nom=" + this.nom
-		+ ", adresse=" + this.adresse + ", role=" + this.role + ", isActive=" + this.isActive + "]";
+	return "UtilisateurImpl [id=" + this.id + ", password=" + this.password + ", nom=" + this.nom + ", adresse="
+		+ this.adresse + ", role=" + this.role + ", isActive=" + this.isActive + "]";
     }
 
     /**
@@ -60,7 +59,7 @@ public class UtilisateurImpl implements Utilisateur, Serializable {
      */
     @Id
     @GeneratedValue(generator = "uuid")
-    private String login;
+    private String id;
     /**
      * MOt de passe de l'utilisateur
      */
@@ -90,8 +89,8 @@ public class UtilisateurImpl implements Utilisateur, Serializable {
      * @return
      */
     @Override
-    public String getLogin() {
-	return login;
+    public String getId() {
+	return id;
     }
 
     /**
@@ -101,8 +100,8 @@ public class UtilisateurImpl implements Utilisateur, Serializable {
      * @param login
      */
     @Override
-    public void setLogin(String login) {
-	this.login = login;
+    public void setId(String id) {
+	this.id = id;
     }
 
     /**
@@ -223,7 +222,7 @@ public class UtilisateurImpl implements Utilisateur, Serializable {
      */
     public UtilisateurImpl(String login, String password, String nom, String adresse, Role role, Boolean isActive) {
 	super();
-	this.login = login;
+	this.id = login;
 	this.password = password;
 	this.nom = nom;
 	this.adresse = adresse;

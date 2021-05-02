@@ -4,7 +4,7 @@ package edu.bd.advcomp.facturation.observer;
 import javax.ejb.Local;
 import javax.enterprise.event.Observes;
 
-import edu.bd.advcomp.AdvcompException;
+import edu.bd.advcomp.AdvCompException;
 import edu.bd.advcomp.facturation.event.OperationEvent;
 
 /**
@@ -22,7 +22,7 @@ public interface OperationObserver {
      * TODO : Fill method utility
      * 
      * @param facturationEvent
-     * @throws AdvcompException
+     * @throws AdvCompException
      */
-    public void listenOperationEvents(@Observes OperationEvent facturationEvent) throws AdvcompException;
+    public void listenOperationEvents(@Observes OperationEvent facturationEvent) throws AdvCompException;
 }

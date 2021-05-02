@@ -11,7 +11,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.transaction.UserTransaction;
-import edu.bd.advcomp.AdvcompException;
+import edu.bd.advcomp.AdvCompException;
 import edu.bd.advcomp.facturation.dao.FactureDao;
 import edu.bd.advcomp.facturation.entity.Facture;
 import edu.bd.advcomp.facturation.entity.HistoriqueOperation;
@@ -27,9 +27,6 @@ import edu.bd.framework.persistence.EntityDaoImpl;
 @Stateless
 public class FactureDaoSql extends EntityDaoImpl<Facture, String> implements FactureDao {
 
-//    @PersistenceContext(unitName = "advcomp")
-//    EntityManager em;
-
     /**
      * Constructor for FactureDaoSql
      *
@@ -42,21 +39,21 @@ public class FactureDaoSql extends EntityDaoImpl<Facture, String> implements Fac
      *
      * @param id
      * @return
-     * @throws AdvcompException
+     * @throws AdvCompException
      * @throws Exception
      */
     @Override
-    public Facture retrieve(String id) throws AdvcompException {
+    public Facture retrieve(String id) throws AdvCompException {
 	System.out.println(this.getClass().getSimpleName() + "RETRIEVE Facture : " + id);
 	if (id.isEmpty()) {
-	    throw new AdvcompException("ERROR : Id is null");
+	    throw new AdvCompException("ERROR : Id is null");
 	}
 	try {
 	    Facture facture = this.getEm().find(FactureImpl.class, id);
 	    return facture;
 	} catch (Exception e) {
 	    e.printStackTrace();
-	    throw new AdvcompException(e);
+	    throw new AdvCompException(e);
 	}
     }
 
@@ -64,10 +61,10 @@ public class FactureDaoSql extends EntityDaoImpl<Facture, String> implements Fac
      * See @see edu.bd.framework.persistence.EntityDao#getNew()
      *
      * @return
-     * @throws AdvcompException
+     * @throws AdvCompException
      */
     @Override
-    public Facture getNew() throws AdvcompException {
+    public Facture getNew() throws AdvCompException {
 	return new FactureImpl();
     }
 
@@ -75,11 +72,10 @@ public class FactureDaoSql extends EntityDaoImpl<Facture, String> implements Fac
      * See @see edu.bd.framework.persistence.EntityDao#retrieveAll()
      *
      * @return
-     * @throws AdvcompException
-     * @throws Exception
+     * @throws AdvCompException
      */
     @Override
-    public List<Facture> retrieveAll() throws AdvcompException, Exception {
+    public List<Facture> retrieveAll() throws AdvCompException {
 	Query query = this.getEm().createNamedQuery("liste_factures", Facture.class);
 	List<Facture> list = query.getResultList();
 	return list;

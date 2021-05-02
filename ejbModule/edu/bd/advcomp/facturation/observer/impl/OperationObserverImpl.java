@@ -5,7 +5,7 @@ import javax.ejb.Stateless;
 import javax.enterprise.event.Observes;
 import javax.inject.Inject;
 
-import edu.bd.advcomp.AdvcompException;
+import edu.bd.advcomp.AdvCompException;
 import edu.bd.advcomp.authentification.entity.Utilisateur;
 import edu.bd.advcomp.facturation.event.OperationEvent;
 import edu.bd.advcomp.facturation.observer.OperationObserver;
@@ -35,10 +35,10 @@ public class OperationObserverImpl implements OperationObserver {
      * edu.bd.advcomp.facturation.service.OperationObserver#listenOperationEvents(edu.bd.advcomp.facturation.event.FacturationEvent)
      *
      * @param facturationEvent
-     * @throws AdvcompException
+     * @throws AdvCompException
      */
     @Override
-    public void listenOperationEvents(@Observes OperationEvent facturationEvent) throws AdvcompException {
+    public void listenOperationEvents(@Observes OperationEvent facturationEvent) throws AdvCompException {
 	System.out.println("************************************************");
 	System.out.println("INFO : Facturation event : ".toUpperCase() + facturationEvent.toString());
 	Utilisateur user = facturationEvent.getUser();
@@ -48,7 +48,7 @@ public class OperationObserverImpl implements OperationObserver {
 	    this.facturationService.historiserOperation(user, message);
 
 	} catch (Exception e) {
-	    throw new AdvcompException(e);
+	    throw new AdvCompException(e);
 	}
 
     }

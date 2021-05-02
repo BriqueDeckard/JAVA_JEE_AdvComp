@@ -11,7 +11,7 @@ import edu.bd.framework.persistence.Entity;
  * @author Brique DECKARD
  *
  */
-public interface ConnexionAttempt extends Entity {
+public interface ConnexionAttempt extends Entity<String> {
     /**
      * get corresponding Login
      *

@@ -54,7 +54,7 @@ public class ConnexionAttemptImpl implements ConnexionAttempt {
      *
      */
     public ConnexionAttemptImpl() {
-	System.out.println("CONNEXION : "+ this.toString());
+	System.out.println("CONNEXION : " + this.toString());
     }
 
     /**
@@ -132,6 +132,27 @@ public class ConnexionAttemptImpl implements ConnexionAttempt {
     public String toString() {
 	return "ConnexionAttemptImpl [userLogin=" + this.userLogin + ", connexionStatus=" + this.connexionStatus
 		+ ", date=" + this.date + ", id=" + this.id + "]";
+    }
+
+    /**
+     * See @see edu.bd.framework.persistence.Entity#getId()
+     *
+     * @return
+     */
+    @Override
+    public String getId() {
+	return this.id;
+    }
+
+    /**
+     * See @see edu.bd.framework.persistence.Entity#setId(java.lang.Object)
+     *
+     * @param id
+     */
+    @Override
+    public void setId(String id) {
+	this.id = id;
+
     }
 
 }

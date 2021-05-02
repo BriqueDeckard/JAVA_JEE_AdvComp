@@ -9,7 +9,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
-import edu.bd.advcomp.AdvcompException;
+import edu.bd.advcomp.AdvCompException;
 import edu.bd.advcomp.DEV_CONFIG;
 import edu.bd.advcomp.authentification.Role;
 import edu.bd.advcomp.authentification.dao.UtilisateurDao;
@@ -43,14 +43,14 @@ public class UtilisateurDaoSql extends EntityDaoImpl<Utilisateur, String> implem
      * 
      * @param id
      * @return
-     * @throws AdvcompException
+     * @throws AdvCompException
      */
 
     @Override
-    public Utilisateur retrieve(String id) throws AdvcompException {
+    public Utilisateur retrieve(String id) throws AdvCompException {
 	System.out.println("RETRIEVE Utilisateur " + id);
 	if (id.isEmpty()) {
-	    throw new AdvcompException("ERROR : Id is null");
+	    throw new AdvCompException("ERROR : Id is null");
 	}
 	try {
 	    Utilisateur user = this.getEm().find(UtilisateurImpl.class, id);
@@ -58,7 +58,7 @@ public class UtilisateurDaoSql extends EntityDaoImpl<Utilisateur, String> implem
 
 	} catch (Exception e) {
 	    e.printStackTrace();
-	    throw new AdvcompException(e);
+	    throw new AdvCompException(e);
 	}
 
     }
@@ -67,11 +67,11 @@ public class UtilisateurDaoSql extends EntityDaoImpl<Utilisateur, String> implem
      * See @see edu.bd.framework.persistence.EntityDao#getNew()
      * 
      * @return
-     * @throws AdvcompException
+     * @throws AdvCompException
      */
 
     @Override
-    public Utilisateur getNew() throws AdvcompException {
+    public Utilisateur getNew() throws AdvCompException {
 	return new UtilisateurImpl();
     }
 
@@ -79,12 +79,18 @@ public class UtilisateurDaoSql extends EntityDaoImpl<Utilisateur, String> implem
      * See @see edu.bd.framework.persistence.EntityDao#retrieveAll()
      *
      * @return
-     * @throws AdvcompException
-     * @throws Exception
+     * @throws AdvCompException
      */
     @Override
-    public List<Utilisateur> retrieveAll() throws AdvcompException, Exception {
-	return null;
+    public List<Utilisateur> retrieveAll() throws AdvCompException {
+	Query query = this.getEm().createNamedQuery("liste_user", Utilisateur.class);
+	try {
+	    List<Utilisateur> list = (List<Utilisateur>) query.getResultList();
+	    return list;
+	} catch (Exception e) {
+	    throw new AdvCompException(e);
+	}
+
     }
 
     /**

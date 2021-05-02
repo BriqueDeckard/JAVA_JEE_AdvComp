@@ -47,7 +47,7 @@ public class AdvCompStartup {
     public static Utilisateur testAdmin = new UtilisateurImpl("ADMIN1", "SECRET", "ADMIN1", "ADRESSE4",
 	    Role.ADMINISTRATEUR, true);
 
-    public static Facture testFacture = new FactureImpl(testUserActif, "FACTURE1", new Date(), 10d, false);
+    public static Facture testFacture = new FactureImpl(testUserActif, "FACTURE1",  10d, false);
 
     /**
      * Entity Manager
@@ -126,12 +126,12 @@ public class AdvCompStartup {
 	try {
 	    System.out.println("CONNEXION ...");
 	    AdvCompServer serveur = doServerLookup();
-	    AdvCompService service = serveur.connexion(testUserActif.getLogin(), testUserActif.getPassword());
+	    AdvCompService service = serveur.connexion(testUserActif.getId(), testUserActif.getPassword());
 	    System.out.println("CONNEXION SUCCEDED");
 	    service.seDeconnecter();
 	    System.out.println("CONNEXION ...");
 	    serveur = doServerLookup();
-	    service = serveur.connexion(testUserActif.getLogin(), testUserActif.getPassword());
+	    service = serveur.connexion(testUserActif.getId(), testUserActif.getPassword());
 	    System.out.println("CONNEXION SUCCEDED");
 	    service.faireOperationBasique(10d, 12d, "+");
 	    service.seDeconnecter();
@@ -142,7 +142,7 @@ public class AdvCompStartup {
 	try {
 	    System.out.println("CONNEXION AS ADMIN ...");
 	    AdvCompServer serveur = doServerLookup();
-	    AdvCompAdminService service = serveur.connexionAsAdmin(testAdmin.getLogin(), testAdmin.getPassword());
+	    AdvCompAdminService service = serveur.connexionAsAdmin(testAdmin.getId(), testAdmin.getPassword());
 	    System.out.println("CONNEXION AS ADMIN SUCEEDED");
 
 	    List<ConnexionAttempt> list = service.getAllTheConnexionAttempt();
@@ -171,12 +171,12 @@ public class AdvCompStartup {
      * 
      * @return
      * @throws NamingException
-     * @throws AdvcompException
+     * @throws AdvCompException
      */
-    private AdvCompServer doServerLookup() throws NamingException, AdvcompException {
+    private AdvCompServer doServerLookup() throws NamingException, AdvCompException {
 	AdvCompServer serveur = InitialContext.doLookup(AdvCompServer.JNDI); // "java:global/AdvCompEjb/AdvCompServerImpl!edu.bd.advcomp.core.service.AdvCompServer");
 	if (serveur == null) {
-	    throw new AdvcompException("AdvCompServer is null");
+	    throw new AdvCompException("AdvCompServer is null");
 	}
 	return serveur;
     }
@@ -187,9 +187,9 @@ public class AdvCompStartup {
      * TODO : Fill method utility
      * 
      * @return
-     * @throws AdvcompException
+     * @throws AdvCompException
      */
-    private UtilisateurService doUserServiceLookup() throws AdvcompException {
+    private UtilisateurService doUserServiceLookup() throws AdvCompException {
 	// GETS THE USER SERVICE
 	UtilisateurService userService;
 	try {
@@ -197,7 +197,7 @@ public class AdvCompStartup {
 	    return userService;
 	} catch (NamingException e) {
 	    e.printStackTrace();
-	    throw new AdvcompException(e);
+	    throw new AdvCompException(e);
 
 	}
     }
@@ -208,16 +208,16 @@ public class AdvCompStartup {
      * TODO : Fill method utility
      * 
      * @return
-     * @throws AdvcompException
+     * @throws AdvCompException
      */
-    private UtilisateurDao doUtilisateurDaoLookUp() throws AdvcompException {
+    private UtilisateurDao doUtilisateurDaoLookUp() throws AdvCompException {
 	// GETS THE UTILISATEUR DAO
 	UtilisateurDao dao;
 	try {
 	    dao = InitialContext.doLookup(UtilisateurDao.JNDI);
 	    return dao;
 	} catch (Exception e) {
-	    throw new AdvcompException(e);
+	    throw new AdvCompException(e);
 	}
     }
 
@@ -227,16 +227,16 @@ public class AdvCompStartup {
      * TODO : Fill method utility
      * 
      * @return
-     * @throws AdvcompException
+     * @throws AdvCompException
      */
-    private FactureDao doFacturationDaoLookup() throws AdvcompException {
+    private FactureDao doFacturationDaoLookup() throws AdvCompException {
 	// GETS THE FACTURE DAO
 	FactureDao factureDao;
 	try {
 	    factureDao = InitialContext.doLookup(FactureDao.JNDI);
 	    return factureDao;
 	} catch (Exception e) {
-	    throw new AdvcompException(e);
+	    throw new AdvCompException(e);
 	}
     }
 
@@ -244,7 +244,7 @@ public class AdvCompStartup {
      * init TODO : init avec PostConstruct pour fair ele bootstrap. Bootstrap de
      * l'application AdvComp
      * 
-     * @throws AdvcompException
+     * @throws AdvCompException
      * 
      * @throws Exception
      */

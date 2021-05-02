@@ -8,7 +8,7 @@ import javax.interceptor.Interceptors;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
-import edu.bd.advcomp.AdvcompException;
+import edu.bd.advcomp.AdvCompException;
 import edu.bd.advcomp.admin.event.ConnexionEvent;
 import edu.bd.advcomp.admin.service.AdvCompAdminService;
 import edu.bd.advcomp.authentification.Role;
@@ -61,11 +61,11 @@ public class AdvCompServerImpl implements AdvCompServer {
      * @param login @param password @return @throws AdvcompException @throws
      */
     @Override
-    public AdvCompService connexion(String login, String password) throws AdvcompException {
+    public AdvCompService connexion(String login, String password) throws AdvCompException {
 
 	if (!this.authentificationService.authentifier(login, password)) {
 	    connexionEvents.fire(new ConnexionEvent(login, false));
-	    AdvcompException exception = new AdvcompException("Echec lors de l'authentification");
+	    AdvCompException exception = new AdvCompException("Echec lors de l'authentification");
 	    exception.printStackTrace();
 	    System.out.println("Identification échouée.");
 	    return null;
@@ -74,13 +74,13 @@ public class AdvCompServerImpl implements AdvCompServer {
 	if (client == null) {
 	    connexionEvents.fire(new ConnexionEvent(login, false));
 	    System.out.println("Identification échouée.");
-	    throw new AdvcompException("Client null !");
+	    throw new AdvCompException("Client null !");
 	}
 
 	if (!client.getIsActive()) {
 	    connexionEvents.fire(new ConnexionEvent(login, false));
 	    System.out.println("Identification échouée.");
-	    throw new AdvcompException("Client non actif.");
+	    throw new AdvCompException("Client non actif.");
 	}
 
 	AdvCompService remoteService = doAdvCompServiceLookup();
@@ -102,26 +102,26 @@ public class AdvCompServerImpl implements AdvCompServer {
      * @param login
      * @param password
      * @return
-     * @throws AdvcompException
+     * @throws AdvCompException
      */
     @Override
-    public AdvCompAdminService connexionAsAdmin(String login, String password) throws AdvcompException {
+    public AdvCompAdminService connexionAsAdmin(String login, String password) throws AdvCompException {
 	if (!this.authentificationService.authentifier(login, password)) {
-	    AdvcompException exception = new AdvcompException("Echec lors de l'authentification");
+	    AdvCompException exception = new AdvCompException("Echec lors de l'authentification");
 	    // exception.printStackTrace();
 	    System.out.println("Identification échouée.");
 	    return null;
 	}
 	Utilisateur admin = utilisateurService.obtenirUtilisateur(login);
 	if (admin == null) {
-	    AdvcompException exception = new AdvcompException("Echec lors de l'authentification");
+	    AdvCompException exception = new AdvCompException("Echec lors de l'authentification");
 	    // exception.printStackTrace();
 	    System.out.println("Identification échouée.");
 	    return null;
 	}
 
 	if (!admin.getIsActive()) {
-	    AdvcompException exception = new AdvcompException("Echec lors de l'authentification");
+	    AdvCompException exception = new AdvCompException("Echec lors de l'authentification");
 	    // exception.printStackTrace();
 	    System.out.println("Client non actif.");
 	    return null;
@@ -129,7 +129,7 @@ public class AdvCompServerImpl implements AdvCompServer {
 	}
 
 	if (admin.getRole() != Role.ADMINISTRATEUR) {
-	    throw new AdvcompException("Pas admin");
+	    throw new AdvCompException("Pas admin");
 	}
 
 	AdvCompAdminService remoteService = doAdvCompAdminServiceLookup();
@@ -145,9 +145,9 @@ public class AdvCompServerImpl implements AdvCompServer {
      * do AdvComp Service Lookup
      *
      * @return
-     * @throws AdvcompException
+     * @throws AdvCompException
      */
-    private AdvCompService doAdvCompServiceLookup() throws AdvcompException {
+    private AdvCompService doAdvCompServiceLookup() throws AdvCompException {
 	try {
 	    String serviceName = AdvCompService.class.getName();
 	    AdvCompService remoteService = (AdvCompService) InitialContext.doLookup(serviceName);
@@ -155,7 +155,7 @@ public class AdvCompServerImpl implements AdvCompServer {
 	    return remoteService;
 	} catch (NamingException e) {
 	    e.printStackTrace();
-	    throw new AdvcompException(e.getMessage());
+	    throw new AdvCompException(e.getMessage());
 	}
     }
 
@@ -163,16 +163,16 @@ public class AdvCompServerImpl implements AdvCompServer {
      * do AdvCompAdminService Lookup
      *
      * @return
-     * @throws AdvcompException
+     * @throws AdvCompException
      */
-    private AdvCompAdminService doAdvCompAdminServiceLookup() throws AdvcompException {
+    private AdvCompAdminService doAdvCompAdminServiceLookup() throws AdvCompException {
 	try {
 	    String serviceName = AdvCompAdminService.class.getName();
 	    AdvCompAdminService remoteService = (AdvCompAdminService) InitialContext.doLookup(AdvCompAdminService.JNDI);
 	    return remoteService;
 	} catch (NamingException e) {
 	    e.printStackTrace();
-	    throw new AdvcompException(e.getMessage());
+	    throw new AdvCompException(e.getMessage());
 	}
     }
 
@@ -183,17 +183,18 @@ public class AdvCompServerImpl implements AdvCompServer {
      *
      * @param login
      * @param password
-     * @throws AdvcompException
+     * @throws AdvCompException
      */
     @Override
-    public void creerCompte(String nom, String login, String password, String adresse) throws AdvcompException {
+    public void creerCompte(String nom, String login, String password, String adresse) throws AdvCompException {
 	Utilisateur nouvelUtilisateur = utilisateurService.getNewUtilisateur();
 
-	nouvelUtilisateur.setLogin(login);
+	nouvelUtilisateur.setId(login);
 	nouvelUtilisateur.setNom(nom);
 	nouvelUtilisateur.setPassword(password);
 	nouvelUtilisateur.setIsActive(false);
 	nouvelUtilisateur.setAdresse(adresse);
+	System.out.println("Nouvel utilisateur : " + nouvelUtilisateur.toString());
 	utilisateurService.creerUtilisateur(nouvelUtilisateur);
 
     }

@@ -5,7 +5,7 @@ import java.util.List;
 
 import javax.ejb.Local;
 
-import edu.bd.advcomp.AdvcompException;
+import edu.bd.advcomp.AdvCompException;
 import edu.bd.advcomp.authentification.entity.Utilisateur;
 
 /**
@@ -25,7 +25,7 @@ public interface UtilisateurService {
      * @param login
      * @return
      */
-    public Utilisateur obtenirUtilisateur(String login) throws AdvcompException;
+    public Utilisateur obtenirUtilisateur(String login) throws AdvCompException;
 
     /**
      * Crée un nouvel utilisateur
@@ -33,7 +33,7 @@ public interface UtilisateurService {
      * @param utilisateur
      * @return
      */
-    public Utilisateur creerUtilisateur(Utilisateur utilisateur) throws AdvcompException;
+    public Utilisateur creerUtilisateur(Utilisateur utilisateur) throws AdvCompException;
 
     /**
      * Met à jour l'utilisateur
@@ -41,28 +41,28 @@ public interface UtilisateurService {
      * @param utilisateur
      * @return
      */
-    public Utilisateur modifierUtilisateur(Utilisateur utilisateur) throws AdvcompException;
+    public Utilisateur modifierUtilisateur(Utilisateur utilisateur) throws AdvCompException;
 
     /**
      * Supprime l'utilisateur
      * 
      * @param utilisateur
      */
-    public void supprimerUtilisateur(Utilisateur utilisateur) throws AdvcompException;
+    public void supprimerUtilisateur(Utilisateur utilisateur) throws AdvCompException;
 
     /**
      * retourne une nouvelle instance d'utilisateur
      * 
      * @return
      */
-    public Utilisateur getNewUtilisateur() throws AdvcompException;
+    public Utilisateur getNewUtilisateur() throws AdvCompException;
 
     /**
      * retrouver Utilisateur Inactifs
      *
      * TODO : Fill method utility
      * @return
-     * @throws AdvcompException
+     * @throws AdvCompException
      */
-    List<Utilisateur> retrouverUtilisateurInactifs() throws AdvcompException;
+    List<Utilisateur> retrouverUtilisateurInactifs() throws AdvCompException;
 }

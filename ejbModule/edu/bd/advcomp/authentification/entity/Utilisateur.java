@@ -10,7 +10,7 @@ import edu.bd.framework.persistence.Entity;
  * @author Brique DECKARD
  *
  */
-public interface Utilisateur extends Entity {
+public interface Utilisateur extends Entity<String> {
 
     /**
      * is Active
@@ -31,14 +31,14 @@ public interface Utilisateur extends Entity {
      * 
      * @return
      */
-    String getLogin();
+    String getId();
 
     /**
      * setLogin Définit le login
      * 
      * @param login
      */
-    void setLogin(String login);
+    void setId(String login);
 
     /**
      * getPassword Retourne le mot de passe

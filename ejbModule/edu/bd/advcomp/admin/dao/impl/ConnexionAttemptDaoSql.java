@@ -7,7 +7,7 @@ import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.Query;
 
-import edu.bd.advcomp.AdvcompException;
+import edu.bd.advcomp.AdvCompException;
 import edu.bd.advcomp.admin.dao.ConnexionAttemptDao;
 import edu.bd.advcomp.admin.entity.ConnexionAttempt;
 import edu.bd.advcomp.admin.entity.impl.ConnexionAttemptImpl;
@@ -35,11 +35,10 @@ public class ConnexionAttemptDaoSql extends EntityDaoImpl<ConnexionAttempt, Stri
      * See @see edu.bd.framework.persistence.EntityDao#retrieveAll()
      *
      * @return
-     * @throws AdvcompException
-     * @throws Exception
+     * @throws AdvCompException
      */
     @Override
-    public List<ConnexionAttempt> retrieveAll() throws AdvcompException, Exception {
+    public List<ConnexionAttempt> retrieveAll() throws AdvCompException {
 	Query query = this.getEm().createNamedQuery("liste_connexions", ConnexionAttempt.class);
 	List<ConnexionAttempt> list = query.getResultList();
 	return list;
@@ -49,11 +48,11 @@ public class ConnexionAttemptDaoSql extends EntityDaoImpl<ConnexionAttempt, Stri
      * See @see edu.bd.framework.persistence.EntityDaoImpl#getNew()
      *
      * @return
-     * @throws AdvcompException
+     * @throws AdvCompException
      * @throws Exception
      */
     @Override
-    public ConnexionAttempt getNew() throws AdvcompException, Exception {
+    public ConnexionAttempt getNew() throws AdvCompException, Exception {
 	return new ConnexionAttemptImpl();
     }
 
@@ -63,20 +62,20 @@ public class ConnexionAttemptDaoSql extends EntityDaoImpl<ConnexionAttempt, Stri
      *
      * @param id
      * @return
-     * @throws AdvcompException
+     * @throws AdvCompException
      */
     @Override
-    public ConnexionAttempt retrieve(String id) throws AdvcompException {
+    public ConnexionAttempt retrieve(String id) throws AdvCompException {
 	System.out.println(this.getClass().getSimpleName() + "RETRIEVE Connexion attempt : " + id);
 	if (id.isEmpty()) {
-	    throw new AdvcompException("ERROR : Id is null");
+	    throw new AdvCompException("ERROR : Id is null");
 	}
 	try {
 	    ConnexionAttempt connexion = this.getEm().find(ConnexionAttemptImpl.class, id);
 	    return connexion;
 	} catch (Exception e) {
 	    e.printStackTrace();
-	    throw new AdvcompException(e);
+	    throw new AdvCompException(e);
 	}
     }
 
@@ -88,8 +87,11 @@ public class ConnexionAttemptDaoSql extends EntityDaoImpl<ConnexionAttempt, Stri
     @Override
     public List<ConnexionAttempt> retrieveAllBetween(Date bDate, Date eDate) {
 	Query query = this.getEm().createNamedQuery("list_connexion_for", ConnexionAttempt.class);
+
 	query.setParameter("bDate", bDate);
+	System.out.println("BDATE : " + bDate.toString());
 	query.setParameter("eDate", eDate);
+	System.out.println("EDATE : " + eDate.toString());
 	List<ConnexionAttempt> list = query.getResultList();
 	return list;
     }

@@ -8,10 +8,11 @@ import javax.ejb.Stateful;
 import javax.enterprise.event.Observes;
 import javax.inject.Inject;
 
-import edu.bd.advcomp.AdvcompException;
+import edu.bd.advcomp.AdvCompException;
 import edu.bd.advcomp.admin.dao.ConnexionAttemptDao;
 import edu.bd.advcomp.admin.entity.ConnexionAttempt;
 import edu.bd.advcomp.admin.service.AdvCompAdminService;
+import edu.bd.advcomp.admin.service.ConnexionAttemptService;
 import edu.bd.advcomp.authentification.entity.Utilisateur;
 import edu.bd.advcomp.authentification.service.UtilisateurService;
 import edu.bd.advcomp.facturation.dao.FactureDao;
@@ -42,14 +43,17 @@ public class AdvCompAdminServiceImpl implements AdvCompAdminService {
     /**
      * Dao des factures
      */
-    @Inject
-    FactureDao factureDao;
+    // @Inject
+    // FactureDao factureDao;
 
     /**
      * Dao des tentatives de connexion
      */
+    // @Inject
+    // ConnexionAttemptDao connexionAttemptDao;
+
     @Inject
-    ConnexionAttemptDao connexionAttemptDao;
+    ConnexionAttemptService connexionService;
 
     /**
      * is Authenticated
@@ -63,11 +67,11 @@ public class AdvCompAdminServiceImpl implements AdvCompAdminService {
     /**
      * test Authentication
      *
-     * @throws AdvcompException
+     * @throws AdvCompException
      */
-    private void testAuthentication() throws AdvcompException {
+    private void testAuthentication() throws AdvCompException {
 	if (!isAuthenticated()) {
-	    throw new AdvcompException("Non authentifié");
+	    throw new AdvCompException("Non authentifié");
 	}
     }
 
@@ -100,15 +104,15 @@ public class AdvCompAdminServiceImpl implements AdvCompAdminService {
      * @param utilisateurLogin
      */
     @Override
-    public void validerCompteUtilisateur(String utilisateurLogin) throws AdvcompException {
+    public void validerCompteUtilisateur(String utilisateurLogin) throws AdvCompException {
 	try {
 	    System.out.println("Validation utilisateur : " + utilisateurLogin);
 	    Utilisateur utilisateurAValider = userService.obtenirUtilisateur(utilisateurLogin);
 	    utilisateurAValider.setIsActive(true);
 	    userService.modifierUtilisateur(utilisateurAValider);
 
-	} catch (AdvcompException e) {
-	    throw new AdvcompException(e);
+	} catch (AdvCompException e) {
+	    throw new AdvCompException(e);
 	}
 
     }
@@ -118,14 +122,14 @@ public class AdvCompAdminServiceImpl implements AdvCompAdminService {
      * edu.bd.advcomp.admin.service.AdvCompAdminService#supprimerCompteUtilisateur(edu.bd.advcomp.authentification.entity.Utilisateur)
      *
      * @param utilisateur
-     * @throws AdvcompException
+     * @throws AdvCompException
      */
     @Override
-    public void supprimerCompteUtilisateur(Utilisateur utilisateur) throws AdvcompException {
+    public void supprimerCompteUtilisateur(Utilisateur utilisateur) throws AdvCompException {
 	try {
 	    userService.supprimerUtilisateur(utilisateur);
 	} catch (Exception e) {
-	    throw new AdvcompException(e);
+	    throw new AdvCompException(e);
 	}
 
     }
@@ -135,19 +139,8 @@ public class AdvCompAdminServiceImpl implements AdvCompAdminService {
      *
      */
     @Override
-    public void genererFacture(Date dateDebut, Date dateFin) throws AdvcompException {
+    public void genererFacture(Date dateDebut, Date dateFin) throws AdvCompException {
 	this.facturationService.facturer(dateDebut, dateFin);
-    }
-
-    /**
-     * See @see edu.bd.advcomp.admin.service.AdvCompAdminService#consulterFacture()
-     *
-     */
-    @Override
-    public String consulterFacture(String numero) {
-	Facture facture = this.facturationService.obtenirFacture(numero);
-	return facture.toString();
-
     }
 
     /**
@@ -166,10 +159,10 @@ public class AdvCompAdminServiceImpl implements AdvCompAdminService {
      *
      * @param login
      * @return
-     * @throws AdvcompException
+     * @throws AdvCompException
      */
     @Override
-    public Utilisateur findUser(String login) throws AdvcompException {
+    public Utilisateur findUser(String login) throws AdvCompException {
 	Utilisateur user = userService.obtenirUtilisateur(login);
 	System.out.println("Utilisateur : " + user);
 	return user;
@@ -180,18 +173,18 @@ public class AdvCompAdminServiceImpl implements AdvCompAdminService {
      * edu.bd.advcomp.admin.service.AdvCompAdminService#desactiverCompteUtilisateur(java.lang.String)
      *
      * @param utilisateurLogin
-     * @throws AdvcompException
+     * @throws AdvCompException
      */
     @Override
-    public void desactiverCompteUtilisateur(String utilisateurLogin) throws AdvcompException {
+    public void desactiverCompteUtilisateur(String utilisateurLogin) throws AdvCompException {
 	try {
 	    System.out.println("Validation utilisateur : " + utilisateurLogin);
 	    Utilisateur utilisateurAValider = userService.obtenirUtilisateur(utilisateurLogin);
 	    utilisateurAValider.setIsActive(false);
 	    userService.modifierUtilisateur(utilisateurAValider);
 
-	} catch (AdvcompException e) {
-	    throw new AdvcompException(e);
+	} catch (AdvCompException e) {
+	    throw new AdvCompException(e);
 	}
 
     }
@@ -201,11 +194,11 @@ public class AdvCompAdminServiceImpl implements AdvCompAdminService {
      *
      * @return
      * @throws Exception
-     * @throws AdvcompException
+     * @throws AdvCompException
      */
     @Override
-    public List<Facture> getAllTheFacture() throws AdvcompException, Exception {
-	return factureDao.retrieveAll();
+    public List<Facture> getAllTheFacture() throws AdvCompException, Exception {
+	return facturationService.retrieveAll();
     }
 
     /**
@@ -213,10 +206,10 @@ public class AdvCompAdminServiceImpl implements AdvCompAdminService {
      * edu.bd.advcomp.admin.service.AdvCompAdminService#retrouverUtilisateursInactifs()
      *
      * @return
-     * @throws AdvcompException
+     * @throws AdvCompException
      */
     @Override
-    public List<Utilisateur> retrouverUtilisateursInactifs() throws AdvcompException {
+    public List<Utilisateur> retrouverUtilisateursInactifs() throws AdvCompException {
 	return this.userService.retrouverUtilisateurInactifs();
     }
 
@@ -225,15 +218,15 @@ public class AdvCompAdminServiceImpl implements AdvCompAdminService {
      * edu.bd.advcomp.admin.service.AdvCompAdminService#getAllTheConnexionAttempt()
      *
      * @return
-     * @throws AdvcompException
+     * @throws AdvCompException
      */
     @Override
-    public List<ConnexionAttempt> getAllTheConnexionAttempt() throws AdvcompException {
+    public List<ConnexionAttempt> getAllTheConnexionAttempt() throws AdvCompException {
 	try {
-	    return this.connexionAttemptDao.retrieveAll();
+	    return this.connexionService.retrouverToutesLesConnexions();
 	} catch (Exception e) {
 	    e.printStackTrace();
-	    throw new AdvcompException(e);
+	    throw new AdvCompException(e);
 	}
     }
 
@@ -245,15 +238,50 @@ public class AdvCompAdminServiceImpl implements AdvCompAdminService {
      * @return
      */
     @Override
-    public Integer getNumberOfConnexionFor(Date bDate, Date eDate) throws AdvcompException {
+    public Integer getNumberOfConnexionFor(Date bDate, Date eDate) throws AdvCompException {
 	{
-	    // TODO Fill method utility.
 	    try {
-		return this.connexionAttemptDao.retrieveAllBetween(bDate, eDate).size();
+		List<ConnexionAttempt> connexions = this.connexionService.retrouverToutesLesConnexionsEntreDeuxDates(bDate, eDate);
+		for (ConnexionAttempt connexionAttempt : connexions) {
+		    System.out.println("Connexion : "+ connexionAttempt.toString());
+		}
+		return connexions.size();
 	    } catch (Exception e) {
-		throw new AdvcompException(e);
+		throw new AdvCompException(e);
 	    }
 	}
+    }
+
+    /**
+     * See @see
+     * edu.bd.advcomp.admin.service.AdvCompAdminService#reglerFacture(java.lang.String,
+     * java.lang.String)
+     *
+     * @param numero
+     * @param rib
+     * @throws AdvCompException
+     */
+    @Override
+    public void reglerFacture(String numero, String rib) throws AdvCompException {
+	Facture facture = facturationService.obtenirFacture(numero);
+	System.out.println("REGLEMENT : \n" + facture.toString() + "\nAvec : " + rib);
+	try {
+	    facturationService.reglerFacture(numero, rib);
+	} catch (AdvCompException e) {
+	    throw new AdvCompException(e);
+	}
+
+    }
+
+    /**
+     * See @see edu.bd.advcomp.admin.service.AdvCompAdminService#consulterFacture()
+     *
+     */
+    @Override
+    public String consulterFacture(String numero) {
+	Facture facture = this.facturationService.obtenirFacture(numero);
+	return facture.toString();
+
     }
 
 }

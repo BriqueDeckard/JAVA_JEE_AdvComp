@@ -8,12 +8,12 @@ package edu.bd.advcomp;
  * @author Brique DECKARD
  *
  */
-public class AdvcompException extends Exception {
+public class AdvCompException extends Exception {
 
     /**
      * Constructor for AdvCompException
      */
-    public AdvcompException() {
+    public AdvCompException() {
     }
 
     /**
@@ -21,7 +21,7 @@ public class AdvcompException extends Exception {
      * 
      * @param message
      */
-    public AdvcompException(String message) {
+    public AdvCompException(String message) {
 	super(message);
     }
 
@@ -30,7 +30,7 @@ public class AdvcompException extends Exception {
      * 
      * @param cause
      */
-    public AdvcompException(Throwable cause) {
+    public AdvCompException(Throwable cause) {
 	super(cause);
     }
 
@@ -40,7 +40,7 @@ public class AdvcompException extends Exception {
      * @param message
      * @param cause
      */
-    public AdvcompException(String message, Throwable cause) {
+    public AdvCompException(String message, Throwable cause) {
 	super(message, cause);
     }
 
@@ -52,7 +52,7 @@ public class AdvcompException extends Exception {
      * @param enableSuppression
      * @param writableStackTrace
      */
-    public AdvcompException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
+    public AdvCompException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
 	super(message, cause, enableSuppression, writableStackTrace);
     }
 
