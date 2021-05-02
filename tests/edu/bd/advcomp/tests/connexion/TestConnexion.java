@@ -14,7 +14,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import edu.bd.advcomp.AdvCompStartup;
-import edu.bd.advcomp.AdvcompException;
+import edu.bd.advcomp.AdvCompException;
 import edu.bd.advcomp.DEV_CONFIG;
 import edu.bd.advcomp.admin.service.AdvCompAdminService;
 import edu.bd.advcomp.authentification.Role;
@@ -47,10 +47,10 @@ public class TestConnexion {
 
     static AdvCompServer serveur;
 
-    private static AdvCompServer doServerLookup() throws NamingException, AdvcompException {
+    private static AdvCompServer doServerLookup() throws NamingException, AdvCompException {
 	AdvCompServer serveur = InitialContext.doLookup(AdvCompServer.JNDI);
 	if (serveur == null) {
-	    throw new AdvcompException("AdvCompServer is null");
+	    throw new AdvCompException("AdvCompServer is null");
 	}
 	return serveur;
     }
@@ -82,10 +82,10 @@ public class TestConnexion {
      *
      * TODO : Fill method utility
      * 
-     * @throws AdvcompException
+     * @throws AdvCompException
      */
-    @Test(expected = AdvcompException.class)
-    public void testConnexion_doitLeverUneException() throws AdvcompException {
+    @Test(expected = AdvCompException.class)
+    public void testConnexion_doitLeverUneException() throws AdvCompException {
 	serveur.connexion("login", "password");
     }
     

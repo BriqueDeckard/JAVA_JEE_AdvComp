@@ -11,7 +11,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import edu.bd.advcomp.AdvCompStartup;
-import edu.bd.advcomp.AdvcompException;
+import edu.bd.advcomp.AdvCompException;
 import edu.bd.advcomp.core.service.AdvCompServer;
 import edu.bd.advcomp.core.service.AdvCompService;
 
@@ -26,10 +26,10 @@ public class AdvCompServiceTest {
 
     static AdvCompService service;
 
-    private static AdvCompServer doServerLookup() throws NamingException, AdvcompException {
+    private static AdvCompServer doServerLookup() throws NamingException, AdvCompException {
 	AdvCompServer serveur = InitialContext.doLookup(AdvCompServer.JNDI);
 	if (serveur == null) {
-	    throw new AdvcompException("AdvCompServer est null");
+	    throw new AdvCompException("AdvCompServer est null");
 	}
 	return serveur;
     }
@@ -45,7 +45,7 @@ public class AdvCompServiceTest {
     public static void setUpBeforeClass() throws Exception {
 	serveur = doServerLookup();
 	System.out.println("Demarrage du serveur.");
-	service = serveur.connexion(AdvCompStartup.testUserActif.getLogin(),
+	service = serveur.connexion(AdvCompStartup.testUserActif.getId(),
 		AdvCompStartup.testUserActif.getPassword());
 	assertTrue(service != null);
 	assertTrue(service instanceof AdvCompService);
@@ -67,10 +67,10 @@ public class AdvCompServiceTest {
      * Test method for
      * {@link edu.bd.advcomp.core.service.AdvCompService#faireOperationBasique(java.lang.Double, java.lang.Double, java.lang.String)}.
      * 
-     * @throws AdvcompException
+     * @throws AdvCompException
      */
     @Test
-    public void testFaireOperationBasique() throws AdvcompException {
+    public void testFaireOperationBasique() throws AdvCompException {
 	Double expected = 3d;
 	Double actual = service.faireOperationBasique(1d, 2d, "+");
 	assertEquals(expected, actual);
@@ -84,7 +84,7 @@ public class AdvCompServiceTest {
     public void testCommencerOperationChainee() {
 	try {
 	    service.commencerOperationChainee(1d, 2d, "+");
-	} catch (AdvcompException e) {
+	} catch (AdvCompException e) {
 	    assertTrue(false);
 	}
     }
@@ -94,7 +94,7 @@ public class AdvCompServiceTest {
 	try {
 	    service.commencerOperationChainee(1d, 2d, "+");
 	    service.commencerOperationChainee(1d, 2d, "+");
-	} catch (AdvcompException e) {
+	} catch (AdvCompException e) {
 	    assertTrue(true);
 	}
     }
@@ -108,7 +108,7 @@ public class AdvCompServiceTest {
 	try {
 	    service.commencerOperationChainee(1d, 2d, "+");
 	    service.poursuivreOperationChainee(3d, "*");
-	} catch (AdvcompException e) {
+	} catch (AdvCompException e) {
 	    assertTrue(false);
 	}
     }
@@ -117,7 +117,7 @@ public class AdvCompServiceTest {
     public void testPoursuivreOperationChainee_doitLeverUneException() {
 	try {
 	    service.poursuivreOperationChainee(3d, "*");
-	} catch (AdvcompException e) {
+	} catch (AdvCompException e) {
 	    assertTrue(true);
 	}
     }
@@ -132,7 +132,7 @@ public class AdvCompServiceTest {
 	    service.commencerOperationChainee(1d, 2d, "+");
 	    service.poursuivreOperationChainee(3d, "*");
 	    service.acheverOperationChainee();
-	} catch (AdvcompException e) {
+	} catch (AdvCompException e) {
 	    assertTrue(false);
 	}
     }
@@ -141,7 +141,7 @@ public class AdvCompServiceTest {
     public void testAcheverOperationChainee_doitLeverUneException() {
 	try {
 	    service.acheverOperationChainee();
-	} catch (AdvcompException e) {
+	} catch (AdvCompException e) {
 	    assertTrue(true);
 	}
     }
@@ -159,7 +159,7 @@ public class AdvCompServiceTest {
 	    service.poursuivreOperationChainee(3d, "*");
 	    service.acheverOperationChainee();
 	    actual = service.afficherResultatFinal();
-	} catch (AdvcompException e) {
+	} catch (AdvCompException e) {
 	    assertTrue(false);
 	}
 	assertEquals(expected, actual);
@@ -170,7 +170,7 @@ public class AdvCompServiceTest {
 
 	try {
 	    service.afficherResultatFinal();
-	} catch (AdvcompException e) {
+	} catch (AdvCompException e) {
 	    assertTrue(true);
 	}
     }
@@ -187,7 +187,7 @@ public class AdvCompServiceTest {
 	    service.commencerOperationChainee(1d, 2d, "+");
 	    service.poursuivreOperationChainee(3d, "*");
 	    actual = service.afficherResultatIntermediaire();
-	} catch (AdvcompException e) {
+	} catch (AdvCompException e) {
 	    assertTrue(false);
 	}
 	assertEquals(expected, actual);
@@ -198,7 +198,7 @@ public class AdvCompServiceTest {
 
 	try {
 	    String actual = service.afficherResultatIntermediaire();
-	} catch (AdvcompException e) {
+	} catch (AdvCompException e) {
 	    assertTrue(true);
 	}
 
@@ -208,17 +208,17 @@ public class AdvCompServiceTest {
      * Test method for
      * {@link edu.bd.advcomp.core.service.AdvCompService#seDeconnecter()}.
      * 
-     * @throws AdvcompException
+     * @throws AdvCompException
      */
     @Test
-    public void testSeDeconnecter() throws AdvcompException {
+    public void testSeDeconnecter() throws AdvCompException {
 	try {
 	    service.seDeconnecter();
 	    assertTrue(true);
 	} catch (Exception e) {
 	    assertTrue(false);
 	} finally {
-	    service = serveur.connexion(AdvCompStartup.testUserActif.getLogin(),
+	    service = serveur.connexion(AdvCompStartup.testUserActif.getId(),
 		    AdvCompStartup.testUserActif.getPassword());
 	}
 
@@ -228,17 +228,17 @@ public class AdvCompServiceTest {
      * Test method for
      * {@link edu.bd.advcomp.core.service.AdvCompService#seDeconnecter()}.
      * 
-     * @throws AdvcompException
+     * @throws AdvCompException
      */
     @Test
-    public void testSeDeconnecter_doitLeveeUneException() throws AdvcompException {
+    public void testSeDeconnecter_doitLeveeUneException() throws AdvCompException {
 	try {
 	    service.seDeconnecter();
 	    service.faireOperationBasique(1d, 1d, "+");
 	} catch (Exception e) {
 	    assertTrue(true);
 	} finally {
-	    service = serveur.connexion(AdvCompStartup.testUserActif.getLogin(),
+	    service = serveur.connexion(AdvCompStartup.testUserActif.getId(),
 		    AdvCompStartup.testUserActif.getPassword());
 	}
     }

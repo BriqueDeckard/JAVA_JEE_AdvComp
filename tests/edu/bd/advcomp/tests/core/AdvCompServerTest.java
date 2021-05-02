@@ -11,7 +11,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import edu.bd.advcomp.AdvCompStartup;
-import edu.bd.advcomp.AdvcompException;
+import edu.bd.advcomp.AdvCompException;
 import edu.bd.advcomp.admin.service.AdvCompAdminService;
 import edu.bd.advcomp.core.service.AdvCompServer;
 import edu.bd.advcomp.core.service.AdvCompService;
@@ -26,10 +26,10 @@ public class AdvCompServerTest {
 
     static AdvCompServer serveur;
 
-    private static AdvCompServer doServerLookup() throws NamingException, AdvcompException {
+    private static AdvCompServer doServerLookup() throws NamingException, AdvCompException {
 	AdvCompServer serveur = InitialContext.doLookup(AdvCompServer.JNDI);
 	if (serveur == null) {
-	    throw new AdvcompException("AdvCompServer est null");
+	    throw new AdvCompException("AdvCompServer est null");
 	}
 	return serveur;
     }
@@ -62,12 +62,12 @@ public class AdvCompServerTest {
      * Test method for
      * {@link edu.bd.advcomp.core.service.AdvCompServer#connexion(java.lang.String, java.lang.String)}.
      * 
-     * @throws AdvcompException
+     * @throws AdvCompException
      */
     @Test
-    public void testConnexionUserActif() throws AdvcompException {
+    public void testConnexionUserActif() throws AdvCompException {
 	try {
-	    AdvCompService service = serveur.connexion(AdvCompStartup.testUserActif.getLogin(),
+	    AdvCompService service = serveur.connexion(AdvCompStartup.testUserActif.getId(),
 		    AdvCompStartup.testUserActif.getPassword());
 	    assertTrue(service != null);
 	    assertTrue(service instanceof AdvCompService);
@@ -84,7 +84,7 @@ public class AdvCompServerTest {
     @Test
     public void testConnexionUserInactif() {
 	try {
-	    AdvCompService service = serveur.connexion(AdvCompStartup.testUserInactif.getLogin(),
+	    AdvCompService service = serveur.connexion(AdvCompStartup.testUserInactif.getId(),
 		    AdvCompStartup.testUserInactif.getPassword());
 	    assertTrue(service == null);
 
@@ -101,7 +101,7 @@ public class AdvCompServerTest {
     @Test
     public void testConnexionAsAdmin() {
 	try {
-	    AdvCompAdminService service = serveur.connexionAsAdmin(AdvCompStartup.testAdmin.getLogin(),
+	    AdvCompAdminService service = serveur.connexionAsAdmin(AdvCompStartup.testAdmin.getId(),
 		    AdvCompStartup.testAdmin.getPassword());
 
 	    assertTrue(service != null);

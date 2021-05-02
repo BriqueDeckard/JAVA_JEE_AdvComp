@@ -15,7 +15,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import edu.bd.advcomp.AdvCompStartup;
-import edu.bd.advcomp.AdvcompException;
+import edu.bd.advcomp.AdvCompException;
 import edu.bd.advcomp.admin.service.AdvCompAdminService;
 import edu.bd.advcomp.authentification.entity.Utilisateur;
 import edu.bd.advcomp.core.service.AdvCompServer;
@@ -34,22 +34,22 @@ public class AdvCompAdminServiceTest {
     static AdvCompAdminService service;
     static AdvCompService advCompService;
 
-    private static AdvCompServer doServerLookup() throws NamingException, AdvcompException {
+    private static AdvCompServer doServerLookup() throws NamingException, AdvCompException {
 	AdvCompServer serveur = InitialContext.doLookup(AdvCompServer.JNDI);
 	if (serveur == null) {
-	    throw new AdvcompException("AdvCompServer est null");
+	    throw new AdvCompException("AdvCompServer est null");
 	}
 	return serveur;
     }
 
-    @Test(expected = AdvcompException.class)
-    public final void testSeConnecter_doitLeverUneException() throws AdvcompException {
-	serveur.connexionAsAdmin(AdvCompStartup.testUserActif.getLogin(), AdvCompStartup.testUserActif.getPassword());
+    @Test(expected = AdvCompException.class)
+    public final void testSeConnecter_doitLeverUneException() throws AdvCompException {
+	serveur.connexionAsAdmin(AdvCompStartup.testUserActif.getId(), AdvCompStartup.testUserActif.getPassword());
     }
 
     @Test
-    public final void testSeConnecter_doitRetournerUnAdvCompAdminService() throws AdvcompException {
-	AdvCompAdminService adminService = serveur.connexionAsAdmin(AdvCompStartup.testAdmin.getLogin(),
+    public final void testSeConnecter_doitRetournerUnAdvCompAdminService() throws AdvCompException {
+	AdvCompAdminService adminService = serveur.connexionAsAdmin(AdvCompStartup.testAdmin.getId(),
 		AdvCompStartup.testAdmin.getPassword());
 
 	assertTrue(adminService != null);
@@ -67,11 +67,11 @@ public class AdvCompAdminServiceTest {
     public static void setUpBeforeClass() throws Exception {
 	serveur = doServerLookup();
 	System.out.println("Demarrage du serveur.");
-	service = serveur.connexionAsAdmin(AdvCompStartup.testAdmin.getLogin(), AdvCompStartup.testAdmin.getPassword());
+	service = serveur.connexionAsAdmin(AdvCompStartup.testAdmin.getId(), AdvCompStartup.testAdmin.getPassword());
 	assertTrue(service != null);
 	assertTrue(service instanceof AdvCompAdminService);
 
-	advCompService = serveur.connexion(AdvCompStartup.testUserActif.getLogin(),
+	advCompService = serveur.connexion(AdvCompStartup.testUserActif.getId(),
 		AdvCompStartup.testUserActif.getPassword());
 	assertTrue(advCompService != null);
 	assertTrue(advCompService instanceof AdvCompService);
@@ -81,18 +81,18 @@ public class AdvCompAdminServiceTest {
      * Test method for
      * {@link edu.bd.advcomp.admin.service.AdvCompAdminService#validerCompteUtilisateur(java.lang.String)}.
      * 
-     * @throws AdvcompException
+     * @throws AdvCompException
      */
     @Test
-    public final void testValiderCompteUtilisateur() throws AdvcompException {
+    public final void testValiderCompteUtilisateur() throws AdvCompException {
 	try {
-	    service.validerCompteUtilisateur(AdvCompStartup.testUserInactif.getLogin());
-	    Utilisateur actual = service.findUser(AdvCompStartup.testUserInactif.getLogin());
+	    service.validerCompteUtilisateur(AdvCompStartup.testUserInactif.getId());
+	    Utilisateur actual = service.findUser(AdvCompStartup.testUserInactif.getId());
 	    assertTrue(actual.getIsActive());
 	} catch (Exception e) {
 	    assertTrue(false);
 	} finally {
-	    service.desactiverCompteUtilisateur(AdvCompStartup.testUserInactif.getLogin());
+	    service.desactiverCompteUtilisateur(AdvCompStartup.testUserInactif.getId());
 	}
     }
 
@@ -105,7 +105,7 @@ public class AdvCompAdminServiceTest {
 	try {
 	    service.supprimerCompteUtilisateur(AdvCompStartup.testUserASupprimer);
 	    Utilisateur actual = null;
-	    actual = service.findUser(AdvCompStartup.testUserASupprimer.getLogin());
+	    actual = service.findUser(AdvCompStartup.testUserASupprimer.getId());
 	    assertNull(actual);
 	} catch (Exception e) {
 	    assertTrue(false);
@@ -120,7 +120,7 @@ public class AdvCompAdminServiceTest {
     public final void testConsulterFacture() {
 	try {
 	    String expected = AdvCompStartup.testFacture.toString();
-	    String actual = service.consulterFacture(AdvCompStartup.testFacture.getNumero());
+	    String actual = service.consulterFacture(AdvCompStartup.testFacture.getId());
 	    assertEquals(expected, actual);
 
 	} catch (Exception e) {
@@ -157,17 +157,17 @@ public class AdvCompAdminServiceTest {
      * Test method for
      * {@link edu.bd.advcomp.admin.service.AdvCompAdminService#seDeconnecter()}.
      * 
-     * @throws AdvcompException
+     * @throws AdvCompException
      */
     @Test
-    public final void testSeDeconnecter() throws AdvcompException {
+    public final void testSeDeconnecter() throws AdvCompException {
 	try {
 	    service.seDeconnecter();
 	    assertTrue(true);
 	} catch (Exception e) {
 	    assertTrue(false);
 	} finally {
-	    service = serveur.connexionAsAdmin(AdvCompStartup.testAdmin.getLogin(),
+	    service = serveur.connexionAsAdmin(AdvCompStartup.testAdmin.getId(),
 		    AdvCompStartup.testAdmin.getPassword());
 	}
     }
@@ -176,19 +176,19 @@ public class AdvCompAdminServiceTest {
      * Test method for
      * {@link edu.bd.advcomp.admin.service.AdvCompAdminService#seDeconnecter()}.
      * 
-     * @throws AdvcompException
+     * @throws AdvCompException
      */
     @Test
-    public final void testSeDeconnecter_doitLeverUneException() throws AdvcompException {
+    public final void testSeDeconnecter_doitLeverUneException() throws AdvCompException {
 	try {
 	    service.seDeconnecter();
-	    service.desactiverCompteUtilisateur(AdvCompStartup.testUserActif.getLogin());
+	    service.desactiverCompteUtilisateur(AdvCompStartup.testUserActif.getId());
 	} catch (Exception e) {
 	    assertTrue(true);
 	} finally {
-	    service = serveur.connexionAsAdmin(AdvCompStartup.testAdmin.getLogin(),
+	    service = serveur.connexionAsAdmin(AdvCompStartup.testAdmin.getId(),
 		    AdvCompStartup.testAdmin.getPassword());
-	    service.validerCompteUtilisateur(AdvCompStartup.testUserActif.getLogin());
+	    service.validerCompteUtilisateur(AdvCompStartup.testUserActif.getId());
 	}
     }
 }
