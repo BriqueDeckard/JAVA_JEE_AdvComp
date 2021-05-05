@@ -31,9 +31,6 @@ import edu.bd.framework.persistence.EntityDaoImpl;
 public class HistoriqueOperationDaoSql extends EntityDaoImpl<HistoriqueOperation, Long>
 	implements HistoriqueOperationDao {
 
-//    @PersistenceContext(unitName = "advcomp")
-//    EntityManager em;
-
     /**
      * Constructor for HistoriqueOperationDaoSql
      *

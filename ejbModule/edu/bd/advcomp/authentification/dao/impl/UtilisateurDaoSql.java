@@ -28,9 +28,6 @@ import edu.bd.framework.persistence.EntityDaoImpl;
 @Stateless
 public class UtilisateurDaoSql extends EntityDaoImpl<Utilisateur, String> implements UtilisateurDao {
 
-//    @PersistenceContext(unitName = "advcomp")
-//    EntityManager em;
-
     /**
      * Constructor for UtilisateurDaoSql
      */

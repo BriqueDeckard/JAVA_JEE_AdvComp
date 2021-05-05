@@ -16,7 +16,7 @@ import edu.bd.advcomp.AdvCompException;
  * @author Brique DECKARD
  *
  */
-public abstract class EntityDaoImpl<ENTITY_TYPE, ID_TYPE> implements EntityDao<ENTITY_TYPE, ID_TYPE> {
+public abstract class EntityDaoImpl<ENTITY_TYPE extends Entity<IDENTIFIER_TYPE>, IDENTIFIER_TYPE> implements EntityDao<ENTITY_TYPE, IDENTIFIER_TYPE> {
 
     private Class<ENTITY_TYPE> type;
 
@@ -124,7 +124,7 @@ public abstract class EntityDaoImpl<ENTITY_TYPE, ID_TYPE> implements EntityDao<E
      * @throws AdvCompException
      */
     @Override
-    public abstract ENTITY_TYPE retrieve(ID_TYPE id) throws AdvCompException;
+    public abstract ENTITY_TYPE retrieve(IDENTIFIER_TYPE id) throws AdvCompException;
     
     /**
      * See @see edu.bd.framework.persistence.EntityDao#retrieveAll()

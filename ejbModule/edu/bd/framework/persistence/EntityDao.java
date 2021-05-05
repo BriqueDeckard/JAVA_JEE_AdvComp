@@ -14,7 +14,7 @@ import edu.bd.advcomp.AdvCompException;
  * 
  * @author Brique DECKARD <br/>
  */
-public interface EntityDao<ENTITY_TYPE, ID_TYPE> {
+public interface EntityDao<ENTITY_TYPE extends Entity<IDENTIFIER_TYPE>, IDENTIFIER_TYPE> {
 
    
 
@@ -39,7 +39,7 @@ public interface EntityDao<ENTITY_TYPE, ID_TYPE> {
      * @return
      * @throws AdvCompException
      */
-    public ENTITY_TYPE retrieve(ID_TYPE id) throws AdvCompException;
+    public ENTITY_TYPE retrieve(IDENTIFIER_TYPE id) throws AdvCompException;
 
     /**
      * <u><b>update : </b></u><br/>

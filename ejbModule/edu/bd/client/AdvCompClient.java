@@ -3,21 +3,15 @@ package edu.bd.client;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Properties;
 import java.util.Scanner;
 
-import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
-import com.sun.xml.rpc.processor.modeler.j2ee.xml.serviceEndpointInterfaceMappingType;
-
 import edu.bd.advcomp.AdvCompException;
-import edu.bd.advcomp.DEV_CONFIG;
 import edu.bd.advcomp.admin.entity.ConnexionAttempt;
 import edu.bd.advcomp.admin.service.AdvCompAdminService;
 import edu.bd.advcomp.authentification.entity.Utilisateur;
-import edu.bd.advcomp.authentification.service.AuthentificationService;
 import edu.bd.advcomp.core.service.AdvCompServer;
 import edu.bd.advcomp.core.service.AdvCompService;
 import edu.bd.advcomp.facturation.entity.Facture;
@@ -84,6 +78,7 @@ public class AdvCompClient {
 		service = serveur.connexion(login, secret);
 		if (service == null) {
 		    System.out.println("La connexion a échoué.");
+		    prompt(serveur);
 		    break;
 		} else {
 		    userProcess(serveur, service);
@@ -99,6 +94,7 @@ public class AdvCompClient {
 		admin = serveur.connexionAsAdmin(login, secret);
 		if (admin == null) {
 		    System.out.println("La connexion a échoué.");
+		    prompt(serveur);
 		    break;
 		} else {
 		    adminProcess(serveur, admin);
@@ -108,7 +104,6 @@ public class AdvCompClient {
 		break;
 	    }
 	}
-
     }
 
     /**
@@ -372,7 +367,7 @@ public class AdvCompClient {
 		while (!answerG.equalsIgnoreCase("A")) {
 
 		    // ANNEE DE DEBUT
-		    while ((anneeDebutG <= 1980 || anneeDebutG >= 2021)) {
+		    while ((anneeDebutG <= 1980 || anneeDebutG >= 2022)) {
 			System.out.println("Entrez l'année de début ou 'A' pour annuler : \n");
 
 			try {
@@ -432,7 +427,7 @@ public class AdvCompClient {
 		    }
 
 		    // ANNEE FIN
-		    while (anneeFinG <= 1980 || anneeFinG > 2021) {
+		    while (anneeFinG <= 1980 || anneeFinG > 2022) {
 			System.out.println("Entrez l'année de fin ou 'A' pour annuler : \n");
 
 			try {
