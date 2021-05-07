@@ -167,9 +167,7 @@ public class FacturationServiceImpl implements FacturationService {
 	    } catch (Exception e) {
 		throw new AdvCompException(e);
 	    }
-	    if (facture == null) {
-		throw new AdvCompException("Facture nulle.");
-	    }
+	 
 
 	    // Setup des propriétés de la facture
 	    facture.setUtilisateur(user);

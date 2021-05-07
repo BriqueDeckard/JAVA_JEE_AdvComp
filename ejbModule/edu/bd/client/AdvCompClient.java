@@ -17,7 +17,7 @@ import edu.bd.advcomp.core.service.AdvCompService;
 import edu.bd.advcomp.facturation.entity.Facture;
 
 /**
- * TODO Fill type utility
+ * Client d'AdvComp
  * 
  * @author Brique DECKARD
  *
